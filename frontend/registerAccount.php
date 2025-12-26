@@ -57,7 +57,7 @@
                                         <input type="checkbox" class="form-check-input" id="terms">
                                         <div class="form-check-label small text-white" for="terms">
                                             I agree to the <a href="#" class="text-white fw-bold">Terms & Conditions</a>
-                                            <br><div class="span" style="">Allow EscaPinas to
+                                            <br><div class="span">Allow EscaPinas to
                                                 process my personal data for booking services</div>
                                         </div>
                                     </div>
