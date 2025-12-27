@@ -1,85 +1,54 @@
-CREATE TABLE regions(
+-- 1. Regions / Island Groups
+CREATE TABLE regions (
     island_id INT AUTO_INCREMENT PRIMARY KEY,
     island_name VARCHAR(50),
     description TEXT
 );
 
-CREATE TABLE destinations(
+-- 2. Destinations
+CREATE TABLE destinations (
     destination_id INT AUTO_INCREMENT PRIMARY KEY,
     island_id INT,
     destination_name VARCHAR(100),
     description TEXT,
-    STATUS ENUM
-        ('Active', 'Inactive'),
-        FOREIGN KEY(island_id) REFERENCES islands(island_id)
+    status ENUM('Active', 'Inactive'),
+    FOREIGN KEY (island_id) REFERENCES regions(island_id)
 );
 
-CREATE TABLE tour_packages(
-    tour_id INT AUTO_INCREMENT PRIMARY KEY,
-    destination_id INT,
-    tour_name VARCHAR(150),
-    duration_days INT,
-    duration_nights INT,
-    description TEXT,
-    price DECIMAL(10, 2),
-    STATUS ENUM
-        ('Available', 'Unavailable'),
-        FOREIGN KEY(destination_id) REFERENCES destinations(destination_id)
-);
-
-CREATE TABLE tour_schedules(
-    schedule_id INT AUTO_INCREMENT PRIMARY KEY,
-    tour_id INT,
-    start_date DATE,
-    end_date DATE,
-    available_slots INT,
-    FOREIGN KEY(tour_id) REFERENCES tours(tour_id)
-);
-
-CREATE TABLE pickup_dropoff(
-    location_id INT AUTO_INCREMENT PRIMARY KEY,
-    tour_id INT,
-    booking_id INT,
-    location_name VARCHAR(150),
-    location_address TEXT,
-    pickup_time TIME,
-    dropoff_time TIME,
-    FOREIGN KEY(tour_id) REFERENCES tours(tour_id),
-    FOREIGN KEY(booking_id) REFERENCES bookings(booking_id)
-);
-
-CREATE TABLE tour_inclusions(
-    inclusion_id INT AUTO_INCREMENT PRIMARY KEY,
-    tour_id INT,
-    inclusion_detail VARCHAR(255),
-    FOREIGN KEY(tour_id) REFERENCES tours(tour_id)
-);
-
-CREATE TABLE tour_exclusions(
-    exclusion_id INT AUTO_INCREMENT PRIMARY KEY,
-    tour_id INT,
-    exclusion_detail VARCHAR(255),
-    FOREIGN KEY(tour_id) REFERENCES tours(tour_id)
-);
-
-CREATE TABLE tour_place(
-    place_id INT AUTO_INCREMENT PRIMARY KEY,
-    tour_id INT,
-    place_name VARCHAR(150),
-    day_number INT,
-    FOREIGN KEY(tour_id) REFERENCES tours(tour_id)
-);
-
+-- 3. Users
 CREATE TABLE users (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
     first_name VARCHAR(30),
-    middle_initial CHAR(1),
     last_name VARCHAR(30),
     email VARCHAR(100),
     password VARCHAR(255),
     role ENUM('user','admin')
 );
 
+-- 4. Tour Packages
+CREATE TABLE tour_packages (
+    tour_id INT AUTO_INCREMENT PRIMARY KEY,
+    destination_id INT,
+    tour_name VARCHAR(150),
+    duration_days INT,
+    duration_nights INT,
+    description TEXT,
+    price DECIMAL(10,2),
+    status ENUM('Available','Unavailable'),
+    FOREIGN KEY (destination_id) REFERENCES destinations(destination_id)
+);
+
+-- 5. Tour Schedules
+CREATE TABLE tour_schedules (
+    schedule_id INT AUTO_INCREMENT PRIMARY KEY,
+    tour_id INT,
+    start_date DATE,
+    end_date DATE,
+    available_slots INT,
+    FOREIGN KEY (tour_id) REFERENCES tour_packages(tour_id)
+);
+
+-- 6. Bookings
 CREATE TABLE bookings (
     booking_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT,
@@ -89,17 +58,58 @@ CREATE TABLE bookings (
     booking_status ENUM('Pending','Confirmed','Cancelled'),
     booking_reference VARCHAR(20),
     FOREIGN KEY (user_id) REFERENCES users(user_id),
-    FOREIGN KEY (schedule_id) REFERENCES tour_schedule(schedule_id)
+    FOREIGN KEY (schedule_id) REFERENCES tour_schedules(schedule_id)
 );
+
+-- 7. Pickup & Drop-off
+CREATE TABLE pickup_dropoff (
+    location_id INT AUTO_INCREMENT PRIMARY KEY,
+    tour_id INT,
+    booking_id INT,
+    location_name VARCHAR(150),
+    location_address TEXT,
+    pickup_time TIME,
+    dropoff_time TIME,
+    FOREIGN KEY (tour_id) REFERENCES tour_packages(tour_id),
+    FOREIGN KEY (booking_id) REFERENCES bookings(booking_id)
+);
+
+-- 8. Tour Inclusions
+CREATE TABLE tour_inclusions (
+    inclusion_id INT AUTO_INCREMENT PRIMARY KEY,
+    tour_id INT,
+    inclusion_detail VARCHAR(255),
+    FOREIGN KEY (tour_id) REFERENCES tour_packages(tour_id)
+);
+
+-- 9. Tour Exclusions
+CREATE TABLE tour_exclusions (
+    exclusion_id INT AUTO_INCREMENT PRIMARY KEY,
+    tour_id INT,
+    exclusion_detail VARCHAR(255),
+    FOREIGN KEY (tour_id) REFERENCES tour_packages(tour_id)
+);
+
+-- 10. Tour Places
+CREATE TABLE tour_place (
+    place_id INT AUTO_INCREMENT PRIMARY KEY,
+    tour_id INT,
+    place_name VARCHAR(150),
+    day_number INT,
+    FOREIGN KEY (tour_id) REFERENCES tour_packages(tour_id)
+);
+
+-- 11. Ratings / Reviews
 CREATE TABLE ratings (
     review_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT,
     tour_id INT,
     review_text VARCHAR(255),
     FOREIGN KEY (user_id) REFERENCES users(user_id),
-    FOREIGN KEY (tour_id) REFERENCES tours(tour_id)
+    FOREIGN KEY (tour_id) REFERENCES tour_packages(tour_id)
 );
 
+-- 12. Vouchers
 CREATE TABLE vouchers (
     voucher_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
