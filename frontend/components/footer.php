@@ -1,4 +1,4 @@
-<div class="container-fluid fixed-bottom" style="background-color: #0CA458;">
+<div class="container-fluid" style="background-color: #0CA458;">
     <div class="container pb-4">
         <div class="row text-center text-md-start justify-content-between">
             
