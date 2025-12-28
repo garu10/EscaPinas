@@ -23,7 +23,7 @@
 .front-title {
   font-size: 3.2rem;
   font-weight: 700;
-  color: #1fbf75;
+  color: #cff2dc;
 }
 
 .front-subtitle {
@@ -33,7 +33,7 @@
 }
 
 .search-box {
-  background: #1fbf75;
+  background: #0CA443;
   padding: 18px;
   border-radius: 14px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
@@ -53,7 +53,7 @@
 }
 
 .search-box .btn-success {
-  background-color: #0e8f57;
+  background-color: #A5D6A7;
   border: none;
   height: 48px;
   border-radius: 10px;
