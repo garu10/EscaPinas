@@ -20,10 +20,10 @@
     </head>
 
     <body>
-        <?php include("frontend/components/navbar.php"); ?>
+        <?php include("components/navbar.php"); ?>
 
 
-         <?php include("frontend/components/footer.php"); ?>
+         <?php include("components/footer.php"); ?>
         
         <script
             src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"

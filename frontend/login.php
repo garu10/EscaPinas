@@ -1,3 +1,37 @@
+<?php
+include 'php/connect.php';
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+
+    $get_email = "SELECT * FROM users WHERE email = '$email' LIMIT 1";
+    $result = $conn->query($get_email);
+
+    if ($result->num_rows > 0) {
+        $user = $result->fetch_assoc();
+
+        // verification of password 
+        if (password_verify($password, $user['password'])) {
+            // store session data 
+            $_SESSION['user_id'] = $user['user_id'];
+            $_SESSION['first_name'] = $user['first_name'];
+            $_SESSION['role'] = $user['role'];
+
+            // if mag lagay tayo ng admin (pede areh baguhin)
+            if ($user['role'] == 'admin') {
+                header("Location: admin_dashboard.php");
+            } else {
+                header("Location: index.php");
+            }
+            exit();
+        } else { //baguhin eto gagawa sarili natin modal
+            echo "<script>alert('Invalid Password!'); window.location='login.php';</script>";
+        }
+    } else { //baguhin eto gagawa sarili natin modal
+        echo "<script>alert('No account found with that email!'); window.location='login.php';</script>";
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -31,12 +65,12 @@
                         </div>
                         <div class="col-md-6 login-section">
                             <div class="login-header h2 text-center">Login</div>
-                            <form>
+                            <form method="POST">
                                 <div class="mb-3">
-                                    <input type="email" class="form-control" id="email" placeholder="Email">
+                                    <input type="email" class="form-control" name="email" id="email" placeholder="Email">
                                 </div>
                                 <div class="mb-3">
-                                    <input type="password" class="form-control" id="password" placeholder="Password">
+                                    <input type="password" class="form-control" name="password" id="password" placeholder="Password">
                                 </div>
 
                                 <a href="#" class="forgot-pass">Forgot Password?</a>
