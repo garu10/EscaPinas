@@ -1,9 +1,9 @@
 <?php
 session_start();
 
-// Standardized placeholders
+// Temporary placeholders (mapapaltan base sa DB data)
 $profileImage = $_SESSION['profile_image'] ?? "assets/images/logo2.jpg";
-$userName = $_SESSION['username'] ?? "Your Name";
+$userName = $_SESSION['username'] ?? "EscaPinas";
 ?>
 
 <!doctype html>
@@ -27,7 +27,7 @@ $userName = $_SESSION['username'] ?? "Your Name";
             <div class="col-md-3">
                 <div class="account-sidebar shadow-sm">
                     <div class="profile-image-wrapper">
-                        <img src="<?= $profileImage; ?>" alt="User">
+                        <img src="<?= $profileImage; ?>">
                     </div>
                     <h4 class="profile-name"><?= $userName; ?></h4>
                     <a href="profile.php" class="text-center d-block text-decoration-none text-dark small">Update personal info ></a>
@@ -59,7 +59,7 @@ $userName = $_SESSION['username'] ?? "Your Name";
                                 </div>
                                 <div class="info-box">
                                     <p class="view-text">Not set</p>
-                                    <input type="text" class="custom-input" placeholder="Type here...">
+                                    <input type="text" class="custom-input" placeholder="<?= $field ?>">
                                 </div>
                                 <div class="text-end">
                                     <button type="button" class="btn-save" onclick="openModal(<?= $idx ?>)">Save</button>

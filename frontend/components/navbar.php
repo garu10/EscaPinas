@@ -43,7 +43,7 @@
             </div>
 
             <div class="col-lg-2 d-none d-lg-flex justify-content-end align-items-center gap-3">
-                <a href="chatbot.php" class="text-dark fs-4">
+                <a href="frontend/chatbot.php" class="text-dark fs-4">
                     <i class="bi bi-chat-dots"></i>
                 </a>
                 <div class="dropdown">
