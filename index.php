@@ -10,7 +10,7 @@
 
     <body>
         <?php include "frontend/components/navbar.php"; ?>
-        <?php include "frontend/banner.php"; ?>
+        <?php include "frontend/components/banner.php"; ?>
 
         <div class="container">
             <div class="row">
@@ -30,7 +30,7 @@
             </div>
 
         <div class="row">
-            <div class="col-md-4 mb-4">
+            <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
                 <div class="card h-100 shadow-sm p-2" style="border-radius: 20px; background-color:#A5D6A7;">
                     <img src="frontend/assets/images/package1.jpg"  class="card-img-top p-3 rounded-5 shadow" style="height:300px; object-fit: cover; border-radius: 50px;" >
                     <div class="card-body">
@@ -45,7 +45,7 @@
                 </div>
             </div>
 
-            <div class="col-md-4 mb-4">
+            <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
                 <div class="card h-100 shadow-sm p-2" style="border-radius: 20px; background-color:#A5D6A7;">
                     <img src="frontend/assets/images/package2.jpg"  class="card-img-top p-3 rounded-5 shadow" style="height:300px; object-fit: cover; border-radius: 50px;" >
                     <div class="card-body">
@@ -60,7 +60,7 @@
                 </div>
             </div>
 
-            <div class="col-md-4 mb-4">
+            <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
                 <div class="card h-100 shadow-sm p-2" style="border-radius: 20px; background-color:#A5D6A7;">
                     <img src="frontend/assets/images/package3.jpg"  class="card-img-top p-3 rounded-5 shadow" style="height:300px; object-fit: cover; border-radius: 50px;" >
                     <div class="card-body">
