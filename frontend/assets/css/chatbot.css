@@ -1,0 +1,33 @@
+body { font-family: 'Poppins', sans-serif; }
+
+.header-title { color: #12a65a; letter-spacing: 2px; }
+.back-link { color: #12a65a; font-size: 18px; }
+
+.bot-bubble { 
+    background-color: #d9d9d9; 
+    color: #333; 
+    max-width: 65%; 
+    align-self: flex-start; 
+}
+
+.user-bubble { 
+    background-color: #12a65a; 
+    max-width: 65%; 
+}
+
+.chat{ background-color: #A5D6A7; }
+
+.custom-textarea { 
+    resize: none; 
+    height: 55px; 
+    border-radius: 8px; 
+}
+
+.send-btn { 
+    background-color: #12a65a; 
+    height: 55px; 
+    border-radius: 8px; 
+    transition: 0.3s;
+}
+
+.send-btn:hover { background-color: #0e8c4b; }
