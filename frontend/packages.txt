@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EscaPinas | Packages</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Poppins', sans-serif; overflow-x: hidden; }
+        .glass-card { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); border-radius: 20px; }
+        .btn-filter:hover { background-color: #198754; color: white; }
+    </style>
+</head>
+
+<body>
+    <?php include "components/navbar.php"; ?>
+
+    <div class="container-fluid p-0 position-relative" style="height: 65vh; overflow: hidden;">
+        <img id="bannerImage" src="frontend/assets/images/banner_default.jpg" class="w-100 h-100" style="object-fit: cover; transition: 0.8s ease;">
+        <div class="position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-25"></div>
+        
+        <div class="position-absolute top-50 start-50 translate-middle w-100">
+            <div class="container text-center">
+                <h1 class="text-white fw-bold mb-4 display-4" style="text-shadow: 2px 2px 10px rgba(0,0,0,0.5);">Find Your Next Adventure</h1>
+                <div class="card shadow-lg border-0 p-4 mx-auto glass-card" style="max-width: 950px;">
+                    <div class="row g-3 align-items-end">
+                        <div class="col-md-5 text-start">
+                            <label class="form-label fw-bold text-success small ms-2">WHERE TO GO?</label>
+                            <div class="dropdown">
+                                <button class="btn btn-outline-secondary w-100 text-start dropdown-toggle py-2" type="button" id="locationBtn" data-bs-toggle="dropdown">
+                                    Select Region/Province
+                                </button>
+                                <ul class="dropdown-menu w-100 shadow-lg p-3" style="min-width: 350px;">
+                                    <li><h6 class="dropdown-header text-success fw-bold border-bottom">LUZON</h6></li>
+                                    <li class="d-flex flex-wrap p-2 gap-1">
+                                        <button type="button" class="btn btn-sm btn-light border btn-filter" onclick="updateUI('NCR', 'package1.jpg', ['Intramuros', 'Binondo', 'BGC'])">NCR</button>
+                                        <button type="button" class="btn btn-sm btn-light border btn-filter" onclick="updateUI('Ilocos', 'package2.jpg', ['Vigan City', 'Pagudpud'])">Ilocos</button>
+                                        <button type="button" class="btn btn-sm btn-light border btn-filter" onclick="updateUI('Central Luzon', 'package3.jpg', ['Mount Pinatubo', 'Subic'])">Central Luzon</button>
+                                    </li>
+                                    <li><h6 class="dropdown-header text-success fw-bold border-bottom mt-2">VISAYAS</h6></li>
+                                    <li class="d-flex flex-wrap p-2 gap-1">
+                                        <button type="button" class="btn btn-sm btn-light border btn-filter" onclick="updateUI('Central Visayas', 'package1.jpg', ['Chocolate Hills', 'Oslob'])">Central Visayas</button>
+                                        <button type="button" class="btn btn-sm btn-light border btn-filter" onclick="updateUI('Western Visayas', 'package2.jpg', ['Boracay', 'Antique'])">Western Visayas</button>
+                                    </li>
+                                    <li><h6 class="dropdown-header text-success fw-bold border-bottom mt-2">MINDANAO</h6></li>
+                                    <li class="d-flex flex-wrap p-2 gap-1">
+                                        <button type="button" class="btn btn-sm btn-light border btn-filter" onclick="updateUI('Davao', 'package3.jpg', ['Mount Apo', 'Samal'])">Davao Region</button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="col-md-5 text-start">
+                            <label class="form-label fw-bold text-success small ms-2">WHAT TO SEE?</label>
+                            <select class="form-select py-2" id="attractionSelect" disabled>
+                                <option value="">Select a location first...</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-2">
+                            <button type="submit" class="btn btn-success w-100 py-2 fw-bold" style="height: 46px;">SEARCH</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container my-5 text-center">
+        <h4 class="text-success fw-bold">Exclusive Package Deals</h4>
+        <div id="offerCarousel" class="carousel slide mt-3" data-bs-ride="carousel">
+            <div class="carousel-inner rounded-4 shadow-sm">
+                <div class="carousel-item active bg-light p-5 border">
+                    <h5 class="fw-bold">Early Bird: Palawan Adventure</h5>
+                    <p>Book 3 months early and get 20% off!</p>
+                </div>
+                <div class="carousel-item bg-light p-5 border">
+                    <h5 class="fw-bold">Group Promo: Siargao Surf</h5>
+                    <p>Free surf lesson for groups of 4 or more.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container my-5 text-center">
+        <h2 class="fw-bold text-success">Popular Attractions</h2>
+        <div class="btn-group my-4 shadow-sm rounded-pill overflow-hidden">
+            <button class="btn btn-success px-4">Luzon</button>
+            <button class="btn btn-outline-success px-4">Visayas</button>
+            <button class="btn btn-outline-success px-4">Mindanao</button>
+        </div>
+
+        <div class="row g-4 justify-content-center">
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm h-100 text-start">
+                    <img src="frontend/assets/images/package1.jpg" class="card-img-top rounded-top-4" height="250" style="object-fit: cover;">
+                    <div class="card-body">
+                        <h5 class="fw-bold">Tagaytay Ridge</h5>
+                        <p class="text-muted small">Luzon | CALABARZON</p>
+                        <a href="#" class="btn btn-link text-success p-0 fw-bold text-decoration-none">View Details <i class="bi bi-chevron-right"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm h-100 text-start">
+                    <img src="frontend/assets/images/package1.jpg" class="card-img-top rounded-top-4" height="250" style="object-fit: cover;">
+                    <div class="card-body">
+                        <h5 class="fw-bold">Tagaytay Ridge</h5>
+                        <p class="text-muted small">Luzon | CALABARZON</p>
+                        <a href="#" class="btn btn-link text-success p-0 fw-bold text-decoration-none">View Details <i class="bi bi-chevron-right"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm h-100 text-start">
+                    <img src="frontend/assets/images/package1.jpg" class="card-img-top rounded-top-4" height="250" style="object-fit: cover;">
+                    <div class="card-body">
+                        <h5 class="fw-bold">Tagaytay Ridge</h5>
+                        <p class="text-muted small">Luzon | CALABARZON</p>
+                        <a href="#" class="btn btn-link text-success p-0 fw-bold text-decoration-none">View Details <i class="bi bi-chevron-right"></i></a>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    <div class="container my-5 text-center">
+        <h2 class="fw-bold text-success">Unique Experiences</h2>
+        <div class="d-flex flex-wrap justify-content-center gap-2 my-4">
+            <button class="btn btn-success rounded-pill px-4">Best Things To Do</button>
+            <button class="btn btn-outline-success rounded-pill px-4">Night Attractions</button>
+            <button class="btn btn-outline-success rounded-pill px-4">Family Friendly</button>
+            <button class="btn btn-outline-success rounded-pill px-4">Activities</button>
+        </div>
+
+        <div class="row g-3 justify-content-center">
+            <div class="col-6 col-md-3">
+                <div class="card border-0 shadow-sm">
+                    <img src="frontend/assets/images/package3.jpg" class="card-img-top" height="150" style="object-fit: cover;">
+                    <div class="card-body p-2">
+                        <p class="fw-bold mb-0">Kayaking in Palawan</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="card border-0 shadow-sm">
+                    <img src="frontend/assets/images/package3.jpg" class="card-img-top" height="150" style="object-fit: cover;">
+                    <div class="card-body p-2">
+                        <p class="fw-bold mb-0">Kayaking in Palawan</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="card border-0 shadow-sm">
+                    <img src="frontend/assets/images/package3.jpg" class="card-img-top" height="150" style="object-fit: cover;">
+                    <div class="card-body p-2">
+                        <p class="fw-bold mb-0">Kayaking in Palawan</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="card border-0 shadow-sm">
+                    <img src="frontend/assets/images/package3.jpg" class="card-img-top" height="150" style="object-fit: cover;">
+                    <div class="card-body p-2">
+                        <p class="fw-bold mb-0">Kayaking in Palawan</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <?php include "components/footer.php"; ?>
+
+    <script>
+        function updateUI(locationName, imageName, attractions) {
+            // 1. Update the Banner Image (Ensure folder path is correct)
+            const banner = document.getElementById('bannerImage');
+            banner.src = 'frontend/assets/images/' + imageName;
+
+            // 2. Update the button text
+            document.getElementById('locationBtn').innerText = locationName;
+
+            // 3. Update the Attraction Dropdown
+            const select = document.getElementById('attractionSelect');
+            select.disabled = false;
+            select.innerHTML = '<option value="">Select Attraction...</option>'; 
+            
+            attractions.forEach(function(item) {
+                let option = document.createElement('option');
+                option.value = item;
+                option.text = item;
+                select.appendChild(option);
+            });
+        }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

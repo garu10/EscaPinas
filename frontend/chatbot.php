@@ -29,7 +29,7 @@
         <div class="container-fluid px-4 py-3">
             <div class="row">
                 <div class="col-12">
-                    <a href="index.php" class="back-link fw-bold text-decoration-none">BACK</a>
+                    <a href="../index.php" class="back-link fw-bold text-decoration-none">BACK</a>
                 </div>
             </div>
         </div>

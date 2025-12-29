@@ -13,6 +13,7 @@
 </head>
 
 <body>
+<<<<<<< Updated upstream
 
     <div class="container-fluid p-0 banner-light" style="background-image:url('frontend/assets/images/banner.png'); background-size:cover; background-position:center; height:80vh; position:relative;">
     <div class="row g-0 h-50 align-items-end px-3 px-lg-5 banner-content">
@@ -32,6 +33,16 @@
                 <div class="col-md-4">
                 <label class="small fw-bold mb-1 d-block"><i class="fa-solid fa-location-dot me-1"></i> Destination</label>
                 <input type="text" class="form-control p-2" placeholder="Where to go?">
+=======
+    <div class="container-fluid p-0 position-relative" style="background: url('/EscaPinas/frontend/assets/images/banner.png') no-repeat center center; background-size: cover; height: 80vh;">
+        <div class="container">
+            <div class="row g-0 h-50 align-items-end px-lg-5">
+                <div class="col-12 offset-lg-1 text-start text-white">
+                    <div class="p-4 rounded-3">
+                        <h1 class="display-1 fw-bold text-success fst-italic" style="text-shadow: 2px 2px 10px rgba(0,0,0,0.3);">Magandang Araw!</h1>
+                        <p class="lead fs-3 fw-light">Explore beautiful places in the Philippines with EscaPinas</p>
+                    </div>
+>>>>>>> Stashed changes
                 </div>
                 <div class="col-md-3">
                 <label class="small fw-bold mb-1 d-block"><i class="fa-solid fa-calendar-days me-1"></i> Date</label>
@@ -53,9 +64,15 @@
             </form>
             </div>
         </div>
+<<<<<<< Updated upstream
         </div>
     </div>
     </div>
+=======
+    
+            
+        </div>
+>>>>>>> Stashed changes
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>

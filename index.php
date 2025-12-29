@@ -10,7 +10,26 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 
+<<<<<<< Updated upstream
 <body class="bg-light">
+=======
+        <div class="container">
+            <div class="row">
+                <div class="col-12 p-0">
+                    <h5 class="mt-3" style="font-size:20px; color:#053207;">Your Next Escape Starts Here!</h5>
+                </div>
+            </div>
+            <div class="row align-items-center">
+                <div class="col-6">
+                    <h2 class="mb-2" style="font-size:50px; font-weight:bold; color:#053207;">EscaPinas' Top Choices</h2>
+                </div>
+                <div class="col-6 d-flex justify-content-end">
+                    <h5 class="mb-2" style="font-size:16px; color:#053207;">
+                        <a href="frontend/packages.php" class="text-decoration-none" style="color:#0CA458;"> View All Packages <i class="bi bi-arrow-right"></i></a>
+                    </h5>
+                </div>
+            </div>
+>>>>>>> Stashed changes
 
   <?php include "frontend/components/navbar.php"; ?>
   <?php include "frontend/components/banner.php"; ?>
@@ -44,6 +63,7 @@
           </div>
         </div>
 
+<<<<<<< Updated upstream
         <div class="col-lg-4 col-md-6 col-sm-12">
           <div class="card h-100 shadow p-2 bg-success bg-opacity-25 rounded-4">
             <img src="frontend/assets/images/package2.jpg" class="card-img-top rounded-4 p-2 shadow-sm" alt="Bohol"
@@ -58,6 +78,67 @@
               <a href="frontend/booking_form.php" class="btn btn-success w-100 mt-2">Book Now</a>
             </div>
           </div>
+=======
+        <div class="container-fluid py-5 bg-success text-white text-center">
+            <div class="container">
+                <h2 class="mb-5 fw-bold fs-1">Hear From Other Travellers!</h2>
+
+                <div class="row row-cols-1 row-cols-md-3 g-4 p-5 justify-content-center">
+                    <div class="col-6 col-md-4 mb-4">
+                        <div class="card h-100 border-0 shadow-sm pt-5 mt-4 position-relative overflow-visible">   
+                            <div class="position-absolute top-0 start-50 translate-middle">
+                                <img src="frontend/assets/images/package3.jpg" class="rounded-circle border border-4 border-white" style="width: 100px; height: 100px; object-fit: cover;">
+                            </div>
+                            <div class="card-body text-dark">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h5 class="card-title text-success mb-0 fw-bold">Ralph Alcantara</h5>
+                                <div class="text-warning">★★★★★</div> <!-- eto ay papalitan huh dapat updated ito mula sa inputs ng customer -->
+                            </div>
+                            <p class="card-text text-start">
+                                Well okay naman, maganda, pretty, beatiful place. Sobrang saya ko sa trip na to.Hahahahahah!!!! Sanall
+                            </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-md-4 mb-4">
+                        <div class="card h-100 border-0 shadow-sm pt-5 mt-4 position-relative overflow-visible">   
+                            <div class="position-absolute top-0 start-50 translate-middle">
+                                <img src="frontend/assets/images/package3.jpg" class="rounded-circle border border-4 border-white" style="width: 100px; height: 100px; object-fit: cover;">
+                            </div>
+                            <div class="card-body text-dark">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h5 class="card-title text-success mb-0 fw-bold">Ralph Alcantara</h5>
+                                <div class="text-warning">★★★★★</div> <!-- eto ay papalitan huh dapat updated ito mula sa inputs ng customer -->
+                            </div>
+                            <p class="card-text text-start">
+                                Well okay naman, maganda, pretty, beatiful place. Sobrang saya ko sa trip na to.Hahahahahah!!!! Sanall
+                            </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-md-4 mb-4">
+                        <div class="card h-100 border-0 shadow-sm pt-5 mt-4 position-relative overflow-visible">   
+                            <div class="position-absolute top-0 start-50 translate-middle">
+                                <img src="frontend/assets/images/package3.jpg" class="rounded-circle border border-4 border-white" style="width: 100px; height: 100px; object-fit: cover;">
+                            </div>
+                            <div class="card-body text-dark">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h5 class="card-title text-success mb-0 fw-bold">Ralph Alcantara</h5>
+                                <div class="text-warning">★★★★★</div> <!-- eto ay papalitan huh dapat updated ito mula sa inputs ng customer -->
+                            </div>
+                            <p class="card-text text-start">
+                                Well okay naman, maganda, pretty, beatiful place. Sobrang saya ko sa trip na to.Hahahahahah!!!! Sanall
+                            </p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            
+>>>>>>> Stashed changes
         </div>
 
         <div class="col-lg-4 col-md-6 col-sm-12">
