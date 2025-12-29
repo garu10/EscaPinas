@@ -14,7 +14,8 @@
         <div class="container-fluid px-4 py-2">
             <div class="row align-items-center">
                 <div class="col">
-                    <img src="assets/images/logo2.jpg" height="90" class="d-inline-block align-text-top">
+                     <a class="navbar-brand fw-bold" href="/EscaPinas/index.php">
+                    <img src="assets/images/logo2.jpg" height="90" class="d-inline-block align-text-top"> </a>
                 </div>
                 <div class="col text-center">
                     <h1 class="m-0 fw-bold header-title">CHATBOT</h1>
