@@ -41,7 +41,9 @@ $page = $_GET['page'] ?? 'personal';
                             <i class="bi bi-book"></i> Bookings
                         </a>
                         <a href="#"><i class="bi bi-wallet2"></i> Payment</a>
-                        <a href="#"><i class="bi bi-star"></i> Reviews</a>
+                        <a href="profile.php?page=reviews" class="<?= $page == 'reviews' ? 'fw-bold text-success' : '' ?>">
+                            <i class="bi bi-star"></i> Reviews
+                        </a>
                         <a href="#"><i class="bi bi-gear"></i> Settings</a>
                         <a href="login.php" class="logout"><i class="bi bi-box-arrow-right"></i> Log Out</a>
                     </div>
@@ -51,10 +53,12 @@ $page = $_GET['page'] ?? 'personal';
             <div class="col-md-9">
                 <div class="box-details">
                     <?php
-                    // Para yung content lang ng mga sidebar links ang magbabago
                     switch ($page) {
                         case 'voucher':
                             include "profile/voucher.php";
+                            break;
+                        case 'reviews':
+                            include "profile/reviews.php";
                             break;
                         case 'personal':
                         default:
