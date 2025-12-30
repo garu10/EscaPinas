@@ -53,7 +53,7 @@ $myVouchers = [
     <?php endif; ?>
 </div>
 
-<div id="toast" style="display:none; position:fixed; bottom:20px; left:50%; transform:translateX(-50%); background:#333; color:#fff; padding:8px 16px; border-radius:20px; z-index:99; font-size:13px;">
+<div id="toast" style="display:none; position:fixed; bottom:20px; left:50%; transform:translateX(-50%); background: #333333ff; color: #ffffff; padding:8px 16px; border-radius:20px; z-index:99; font-size:13px;">
     Code Copied! Use It Now!
 </div>
 
