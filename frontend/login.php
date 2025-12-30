@@ -5,7 +5,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = $_POST['password'];
 
     $get_email = "SELECT * FROM users WHERE email = '$email' LIMIT 1";
-    $result = $conn->query($get_email);
+    $result =executeQuery($get_email);
 
     if ($result->num_rows > 0) {
         $user = $result->fetch_assoc();
