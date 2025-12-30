@@ -124,3 +124,186 @@ CREATE TABLE vouchers (
     redeemed_at DATETIME NULL,
     FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
+
+**INSERT QUERIES**
+
+INSERT INTO tour_packages
+(destination_id, tour_name, duration_days, duration_nights, description, price, status)
+VALUES
+(1,'Baguio–Sagada Tour',4,3,
+'A cool-climate adventure combining Baguio’s city charm and Sagada’s rich culture and scenic mountains.',
+7998.00,'Available'),
+
+(2,'Ilocos–Laoag Tour',4,3,
+'A heritage and coastal tour showcasing Spanish-era landmarks and breathtaking northern landscapes.',
+8998.00,'Available'),
+
+(3,'La Union Tour',3,2,
+'A laid-back beach and nature escape ideal for surfing, food trips, and relaxation.',
+6998.00,'Available'),
+
+(4,'Bicol Tour',5,4,
+'An adventure-filled tour featuring volcano views, island hopping, and wildlife encounters.',
+8998.00,'Available'),
+
+(5,'Batangas–Tagaytay Tour',2,1,
+'A relaxing getaway with cool weather, scenic lake views, and diving adventures.',
+5498.00,'Available'),
+
+(6,'Cebu City Tour',4,3,
+'A perfect mix of history, waterfalls, and marine adventures in Cebu.',
+7998.00,'Available'),
+
+(7,'Bohol Countryside Tour',3,2,
+'A scenic countryside tour highlighting Bohol’s natural wonders and culture.',
+6998.00,'Available'),
+
+(8,'Boracay Island Tour',4,3,
+'A world-famous beach destination known for powdery sand and stunning sunsets.',
+7998.00,'Available'),
+
+(9,'Davao City Tour',3,2,
+'A nature-filled city tour featuring wildlife, parks, and island escapes.',
+6998.00,'Available'),
+
+(10,'Siargao Island Tour',4,3,
+'A tropical paradise famous for surfing, lagoons, and island hopping.',
+7998.00,'Available'),
+
+(11,'Cagayan de Oro Tour',3,2,
+'An action-packed adventure tour perfect for thrill-seekers.',
+6998.00,'Available');
+
+INSERT INTO tour_schedules (tour_id, start_date, end_date, available_slots) VALUES
+-- Baguio–Sagada
+(1,'2026-01-15','2026-01-18',30),
+(1,'2026-03-12','2026-03-15',30),
+(1,'2026-06-10','2026-06-13',30),
+(1,'2026-10-07','2026-10-10',30),
+
+-- Ilocos–Laoag
+(2,'2026-02-05','2026-02-08',30),
+(2,'2026-04-16','2026-04-19',30),
+(2,'2026-07-22','2026-07-25',30),
+(2,'2026-11-11','2026-11-14',30),
+
+-- La Union
+(3,'2026-01-23','2026-01-25',30),
+(3,'2026-05-08','2026-05-10',30),
+(3,'2026-08-14','2026-08-16',30),
+(3,'2026-12-04','2026-12-06',30),
+
+-- Bicol
+(4,'2026-02-18','2026-02-22',30),
+(4,'2026-04-22','2026-04-26',30),
+(4,'2026-09-09','2026-09-13',30),
+
+-- Batangas–Tagaytay Tour (Monthly Weekends 2026)
+(5,'2026-01-03','2026-01-04',30),
+(5,'2026-02-07','2026-02-08',30),
+(5,'2026-03-07','2026-03-08',30),
+(5,'2026-04-04','2026-04-05',30),
+(5,'2026-05-02','2026-05-03',30),
+(5,'2026-06-06','2026-06-07',30),
+(5,'2026-07-04','2026-07-05',30),
+(5,'2026-08-01','2026-08-02',30),
+(5,'2026-09-05','2026-09-06',30),
+(5,'2026-10-03','2026-10-04',30),
+(5,'2026-11-07','2026-11-08',30),
+(5,'2026-12-05','2026-12-06',30);
+
+-- Cebu
+(6,'2026-03-04','2026-03-07',30),
+(6,'2026-06-17','2026-06-20',30),
+(6,'2026-09-23','2026-09-26',30),
+
+-- Bohol
+(7,'2026-02-11','2026-02-13',30),
+(7,'2026-05-20','2026-05-22',30),
+(7,'2026-10-21','2026-10-23',30),
+
+-- Boracay
+(8,'2026-01-28','2026-01-31',30),
+(8,'2026-04-08','2026-04-11',30),
+(8,'2026-07-01','2026-07-04',30),
+(8,'2026-12-09','2026-12-12',30),
+
+-- Davao
+(9,'2026-03-18','2026-03-20',30),
+(9,'2026-08-19','2026-08-21',30),
+(9,'2026-11-25','2026-11-27',30),
+
+-- Siargao
+(10,'2026-02-25','2026-02-28',30),
+(10,'2026-06-03','2026-06-06',30),
+(10,'2026-09-30','2026-10-03',30),
+
+-- Cagayan de Oro
+(11,'2026-01-07','2026-01-09',30),
+(11,'2026-05-27','2026-05-29',30),
+(11,'2026-10-14','2026-10-16',30);
+
+**subject to change**
+INSERT INTO tour_inclusions (tour_id, inclusion_detail) VALUES
+(1,'Roundtrip transportation'), (1,'Accommodation'),
+(2,'Roundtrip transportation'), (2,'Accommodation'),
+(3,'Roundtrip transportation'),
+(4,'Accommodation'), (4,'Tour guide'),
+(5,'Transportation'),
+(6,'City tour'),
+(7,'Countryside tour'),
+(8,'Island hopping'),
+(9,'City tour'),
+(10,'Surfing activities'),
+(11,'Adventure activities');
+
+**subject to change**
+INSERT INTO tour_exclusions (tour_id, exclusion_detail) VALUES
+(1,'Personal expenses'),
+(2,'Entrance fees'),
+(3,'Optional activities'),
+(4,'Meals'),
+(5,'Personal expenses'),
+(6,'Airfare'),
+(7,'Personal expenses'),
+(8,'Environmental fees'),
+(9,'Meals'),
+(10,'Surfboard rental'),
+(11,'Insurance');
+
+INSERT INTO tour_place (tour_id, place_name, day_number) VALUES
+(1,'Burnham Park',1),(1,'Mines View Park',1),(1,'The Mansion',1),
+(1,'Hanging Coffins',2),(1,'Sumaguing Cave',2),(1,'Echo Valley',2),
+
+(2,'Vigan Calle Crisologo',1),(2,'Laoag Sand Dunes',2),
+(2,'Paoay Church',2),(2,'Kapurpurawan Rock Formation',3),
+(2,'Pagudpud Beach',4),
+
+(3,'San Juan Surf Beach',1),(3,'Ma-Cho Temple',2),
+(3,'Tangadan Falls',2),(3,'Thunderbird Resort',3),
+
+(4,'Mayon Volcano',1),(4,'Cagsawa Ruins',2),
+(4,'Donsol Whale Shark Interaction',3),
+(4,'Caramoan Islands',4),
+
+(5,'Taal Volcano View Deck',1),(5,'Sky Ranch',1),
+(5,'Picnic Grove',2),(5,'Anilao Diving Sites',3),
+
+(6,'Magellan’s Cross',1),(6,'Basilica del Santo Niño',1),
+(6,'Kawasan Falls',2),(6,'Oslob Whale Sharks',3),
+
+(7,'Chocolate Hills',1),(7,'Tarsier Sanctuary',1),
+(7,'Loboc River Cruise',2),(7,'Baclayon Church',3),
+
+(8,'White Beach',1),(8,'Puka Shell Beach',2),
+(8,'Bulabog Beach',3),(8,'Sunset Sailing',4),
+
+(9,'Philippine Eagle Center',1),(9,'Eden Nature Park',2),
+(9,'People’s Park',3),(9,'Samal Island',4),
+
+(10,'Cloud 9',1),(10,'Magpupungko Rock Pools',2),
+(10,'Sugba Lagoon',3),(10,'Naked Island',4),
+
+(11,'White Water Rafting',1),(11,'Mapawa Nature Park',2),
+(11,'Seven Seas Waterpark',3);
+
