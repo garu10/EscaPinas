@@ -17,6 +17,7 @@
         <div class="row g-0">
             <div class="col">
                 <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+                    <a href="javascript:history.back()" class="btn btn-light btn-sm position-absolute rounded-pill shadow-sm px-3 py-2" style="top: 20px; left: 20px; z-index: 1050; opacity: 0.9;"><i class="bi bi-chevron-left"></i> Back</a>
                     <div class="carousel-indicators">
                         <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
                         <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
