@@ -44,19 +44,19 @@ $profileImage = $isLoggedIn && !empty($_SESSION['profile_image'])
                         <a class="nav-link active fw-semibold text-dark" href="/EscaPinas/index.php">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link fw-semibold text-dark" href="#">Packages</a>
+                        <a class="nav-link fw-semibold text-dark" href="/EscaPinas/packages.php">Packages</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link fw-semibold text-dark" href="#">Bookings</a>
+                        <a class="nav-link fw-semibold text-dark" href="/EscaPinas/bookings.php">Bookings</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link fw-semibold text-dark" href="#">About</a>
+                        <a class="nav-link fw-semibold text-dark" href="/EscaPinas/about.php">About</a>
                     </li>
                 </ul>
             </div>
 
             <div class="col-lg-2 d-none d-lg-flex justify-content-end align-items-center gap-3">
-                <a href="/EscaPinas/chatbot.php" class="text-dark fs-4">
+                <a href="frontend/chatbot.php" class="text-dark fs-4">
                     <i class="bi bi-chat-dots"></i>
                 </a>
                 <?php if ($isLoggedIn): ?>
@@ -73,7 +73,7 @@ $profileImage = $isLoggedIn && !empty($_SESSION['profile_image'])
                                 <hr class="dropdown-divider">
                             </li>
                             <li>
-                                <a class="dropdown-item" href="profile.php">
+                                <a class="dropdown-item" href="frontend/profile.php">
                                     <i class="bi bi-person"></i> Profile Settings
                                 </a>
                             </li>
