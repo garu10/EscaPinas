@@ -164,12 +164,14 @@
                                     </div>
                                 </div>
                             </div>
-                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev" style="left: -100px;">
-                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev" 
+                                    style="left: 0; width: 5%;"> <span class="carousel-control-prev-icon bg-dark rounded-circle" aria-hidden="true"></span>
                                 <span class="visually-hidden">Previous</span>
                             </button>
-                            <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next" style="right: -100px;">
-                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+
+                            <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next" 
+                                    style="right: 0; width: 5%;">
+                                <span class="carousel-control-next-icon bg-dark rounded-circle" aria-hidden="true"></span>
                                 <span class="visually-hidden">Next</span>
                             </button>
                             <p class="text-center text-white">Discover breathtaking destinations handpicked by Escapinas. From iconic tourist spots to hidden gems,</p>
