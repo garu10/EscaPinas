@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>EscaPinas</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" 
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
 </head>
@@ -31,26 +31,31 @@
                         <a class="nav-link active fw-semibold text-dark" href="/EscaPinas/index.php">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link fw-semibold text-dark" href="/EscaPinas/packages.php">Packages</a>
+                        <a class="nav-link fw-semibold text-dark" href="/EscaPinas/frontend/packages.php">Packages</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link fw-semibold text-dark" href="/EscaPinas/bookings.php">Bookings</a>
+                        <a class="nav-link fw-semibold text-dark" href="/EscaPinas/frontend/bookings.php">Bookings</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link fw-semibold text-dark" href="/EscaPinas/about.php">About</a>
+                        <a class="nav-link fw-semibold text-dark" href="/EscaPinas/frontend/about.php">About</a>
                     </li>
                 </ul>
             </div>
 
             <div class="col-lg-2 d-none d-lg-flex justify-content-end align-items-center gap-3">
-                <a href="frontend/chatbot.php" class="text-dark fs-4">
+                <a href="/EscaPinas/frontend/chatbot.php" class="text-dark fs-4">
                     <i class="bi bi-chat-dots"></i>
                 </a>
-                <div class="dropdown">
+                <div class="dropdown"
+                    onmouseenter="this.querySelector('.dropdown-menu').style.display='block'"
+                    onmouseleave="this.querySelector('.dropdown-menu').style.display='none'">
+
                     <a href="#" class="text-dark fs-4 lh-1" id="profileDropdown" data-bs-toggle="dropdown">
                         <i class="bi bi-person-circle"></i> <!-- papaltan, magbbase sa profile ng user -->
                     </a>
-                    <ul class="dropdown-menu dropdown-menu-end shadow border-0">
+
+                    <ul class="dropdown-menu shadow border-0"
+                        style="right: 0; left: auto; margin-top: 0; min-width: 180px;">
                         <li class="px-3 py-2 small text-muted fw-semibold"> <!-- papaltan, magbbase sa username ng user -->
                             Kween Yasmin
                         </li>
@@ -58,7 +63,7 @@
                             <hr class="dropdown-divider">
                         </li>
                         <li>
-                            <a class="dropdown-item" href="frontend/profile.php">
+                            <a class="dropdown-item" href="/EscaPinas/frontend/profile.php">
                                 <i class="bi bi-person"></i> Profile Settings
                             </a>
                         </li>
@@ -81,9 +86,9 @@
         </div>
     </nav>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" 
-    integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" 
-    crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
 </body>
 
 </html>
