@@ -61,3 +61,36 @@
     padding: 35px;
     box-shadow: 0 8px 32px 0 #0000005e;
 }
+/* for payment only */
+.payment-card {
+    border: 2px solid #0ca458;
+    border-radius: 25px;
+    transition: transform 0.2s ease;
+}
+
+.payment img {
+    width: 100px;
+    height: 75px;
+    object-fit: cover;
+    border-radius: 12px;
+}
+
+.status-dot {
+    height: 12px;
+    width: 12px;
+    border-radius: 50%;
+}
+#paymentTab .nav-link {
+    color: #0ca458;
+    border: 1px solid #0ca458;
+    font-weight: bold;
+    border-radius: 10px;
+    padding: 8px 25px;
+    margin-right: 10px;
+}
+
+#paymentTab .nav-link.active {
+    background-color: #1aa866;
+    color: white;
+    border-color: #1aa866;
+}
