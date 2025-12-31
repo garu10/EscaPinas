@@ -34,7 +34,7 @@
                         <a class="nav-link fw-semibold text-dark" href="/EscaPinas/frontend/packages.php">Packages</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link fw-semibold text-dark" href="/EscaPinas/frontend/bookings.php">Bookings</a>
+                        <a class="nav-link fw-semibold text-dark" href="/EscaPinas/frontend/booking.php">Bookings</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link fw-semibold text-dark" href="/EscaPinas/frontend/about.php">About</a>
