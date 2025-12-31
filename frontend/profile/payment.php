@@ -20,7 +20,7 @@ if (!function_exists('renderPaymentCard')) {
         $statusColor = $status_map[$booking['status']] ?? "#6c757d";
 ?>
         <div class="payment-item mb-4">
-            <div class="payment-card container-fluid p-3 shadow-sm">
+            <div class="activity-card container-fluid p-3 shadow-sm">
                 <div class="row align-items-center">
                     <div class="col-8 d-flex align-items-center gap-3">
                         <div class="payment">
@@ -91,7 +91,7 @@ if (!function_exists('renderPaymentCard')) {
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content border-0 shadow" style="border-radius: 24px; overflow: hidden;">
                 <div class="modal-header text-white border-0" style="background-color: #0ca458;">
-                    <h5 class="fw-bold m-0">Booking Summary</h5>
+                    <h5 class="fw-bold m-0">Payment Summary</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body p-4 text-center">
