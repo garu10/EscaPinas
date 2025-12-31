@@ -37,10 +37,6 @@ body {
     transition: transform 0.3s ease;
 }
 
-.stat-box:hover { 
-    transform: translateY(-5px); 
-}
-
 /* Containers */
 .mv-container {
     background-color: #f8f9fa;

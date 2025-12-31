@@ -13,7 +13,6 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-    
     <link rel="stylesheet" href="assets/css/about.css">
 </head>
 <body>
@@ -54,21 +53,30 @@
         <section class="py-5 border-top border-bottom bg-light">
             <div class="container">
                 <div class="row g-4 text-center">
-                    <?php
-                    $stats = [
-                        ['num' => '81', 'label' => 'Provinces Across Pilipinas'],
-                        ['num' => '15,000+', 'label' => 'Happy Explorers'],
-                        ['num' => '500+', 'label' => 'Local Community Partners'],
-                        ['num' => '100%', 'label' => 'Proudly Pinoy Founded']
-                    ];
-                    foreach ($stats as $stat): ?>
                     <div class="col-md-3">
                         <div class="stat-box shadow-sm">
-                            <h2 class="fw-bold text-success"><?= $stat['num'] ?></h2>
-                            <p class="mb-0 text-muted fw-semibold"><?= $stat['label'] ?></p>
+                            <h2 class="fw-bold text-success">81</h2>
+                            <p class="mb-0 text-muted fw-semibold">Provinces Across Pilipinas</p>
                         </div>
                     </div>
-                    <?php endforeach; ?>
+                    <div class="col-md-3">
+                        <div class="stat-box shadow-sm">
+                            <h2 class="fw-bold text-success">15,000+</h2>
+                            <p class="mb-0 text-muted fw-semibold">Happy Explorers</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stat-box shadow-sm">
+                            <h2 class="fw-bold text-success">500+</h2>
+                            <p class="mb-0 text-muted fw-semibold">Local Community Partners</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stat-box shadow-sm">
+                            <h2 class="fw-bold text-success">100%</h2>
+                            <p class="mb-0 text-muted fw-semibold">Proudly Pinoy Founded</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
