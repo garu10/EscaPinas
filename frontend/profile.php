@@ -46,6 +46,9 @@ $page = $_GET['page'] ?? 'personal';
                         <a href="profile.php?page=review" class="<?= $page == 'review' ? 'fw-bold text-success' : '' ?>">
                             <i class="bi bi-wallet2"></i> Reviews
                         </a>
+                        <a href="about.php">
+                            <i class="bi bi-info-circle"></i> About Us
+                        </a>
                         <a href="login.php" class="logout"><i class="bi bi-box-arrow-right"></i> Log Out</a>
                     </div>
                 </div>
