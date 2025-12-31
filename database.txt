@@ -23,7 +23,7 @@ CREATE TABLE users (
     first_name VARCHAR(30),
     last_name VARCHAR(30),
     middle_initial CHAR(1),
-    contact_num INT(15),
+    contact_num VARCHAR(15),
     region VARCHAR(30),
     province VARCHAR(30),
     city VARCHAR(30),
