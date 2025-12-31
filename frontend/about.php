@@ -4,62 +4,138 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Us | EscaPinas</title>
+    
+    <title>About Us | EscaPinas - Discover the Heart of the Philippines</title>
+    <meta name="description" content="Learn more about EscaPinas, your gateway to 7,641 reasons to love the Philippines. We provide affordable, sustainable, and authentic tour packages across the islands.">
+    <meta name="keywords" content="EscaPinas, Philippines Travel, Tour Packages, Sustainable Tourism, Pinoy Travel Agency">
+    <meta name="author" content="EscaPinas Team">
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-    <style>
-        body { font-family: 'Poppins', sans-serif; background-color: #f8f9fa; }
-        .about-header {
-            background: linear-gradient(rgba(12, 164, 88, 0.8), rgba(12, 164, 88, 0.8)), url('frontend/assets/images/banner.png');
-            background-size: cover;
-            background-position: center;
-            color: white;
-            padding: 100px 0;
-            text-align: center;
-        }
-        .mission-vision { border-left: 5px solid #0CA458; padding-left: 20px; }
-    </style>
+    
+    <link rel="stylesheet" href="assets/css/about.css">
 </head>
 <body>
-
     <?php include "components/navbar.php"; ?>
 
     <header class="about-header">
         <div class="container">
-            <h1 class="display-4 fw-bold">About EscaPinas</h1>
-            <p class="lead">Your gateway to affordable and unforgettable Philippine adventures.</p>
+            <h1 class="display-2 fw-bold mb-3 text-uppercase">Tuklasin ang Pilipinas</h1>
+            <div class="title-divider"></div>
+            <p class="lead fs-3 fw-light">Empowering every traveler to experience the soul of the islands.</p>
         </div>
     </header>
 
-    <div class="container my-5">
-        <div class="row align-items-center mb-5">
-            <div class="col-md-6">
-                <h2 class="fw-bold text-success">Who We Are</h2>
-                <p>EscaPinas is a dedicated travel platform that aims to showcase the hidden gems of the Philippines. From the white sands of Palawan to the historic streets of Vigan, we make travel accessible for everyone.</p>
+    <main>
+        <section class="py-5 mt-5">
+            <div class="container">
+                <div class="row align-items-center g-5">
+                    <div class="col-md-6">
+                        <h6 class="text-success fw-bold text-uppercase">Our Story</h6>
+                        <h2 class="display-5 fw-bold mb-4">The Heart of EscaPinas</h2>
+                        <div class="story-text text-muted">
+                            <p>It all began with a simple backpack and a deep-seated love for the Filipino landscape. In the heart of Tanauan City, EscaPinas was conceptualized not as a business, but as a movement to bridge the gap between dream destinations and reality.</p>
+                            <p>We realized that many of our fellow countrymen and international friends were missing out on the raw beauty of <strong>Pilipinas</strong> due to complex bookings and intimidating costs. We decided to change that story.</p>
+                            <p>Today, EscaPinas stands as more than just a booking site. We are storytellers, adventure-seekers, and your ultimate guide to the 7,641 reasons why we love our country.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 text-center">
+                        <div class="p-2 border rounded-5 d-inline-block bg-light shadow-sm">
+                            <img src="/EscaPinas/frontend/assets/images/Logo%201.png" 
+                                 alt="EscaPinas Official Logo - Sustainable Travel and Tours Philippines" 
+                                 class="img-fluid rounded-5 p-4 bg-white brand-logo-img">
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="col-md-6 text-center">
-                <img src="frontend/assets/images/logo2.jpg" alt="EscaPinas Logo" class="img-fluid rounded-4 shadow" style="max-height: 300px;">
-            </div>
-        </div>
+        </section>
 
-        <div class="row g-4">
-            <div class="col-md-6">
-                <div class="p-4 bg-white rounded-4 shadow-sm mission-vision h-100">
-                    <h4 class="fw-bold text-success">Our Mission</h4>
-                    <p>To provide budget-friendly and high-quality tour packages that allow travelers to explore the Philippines without breaking the bank.</p>
+        <section class="py-5 border-top border-bottom bg-light">
+            <div class="container">
+                <div class="row g-4 text-center">
+                    <?php
+                    $stats = [
+                        ['num' => '81', 'label' => 'Provinces Across Pilipinas'],
+                        ['num' => '15,000+', 'label' => 'Happy Explorers'],
+                        ['num' => '500+', 'label' => 'Local Community Partners'],
+                        ['num' => '100%', 'label' => 'Proudly Pinoy Founded']
+                    ];
+                    foreach ($stats as $stat): ?>
+                    <div class="col-md-3">
+                        <div class="stat-box shadow-sm">
+                            <h2 class="fw-bold text-success"><?= $stat['num'] ?></h2>
+                            <p class="mb-0 text-muted fw-semibold"><?= $stat['label'] ?></p>
+                        </div>
+                    </div>
+                    <?php endforeach; ?>
                 </div>
             </div>
-            <div class="col-md-6">
-                <div class="p-4 bg-white rounded-4 shadow-sm mission-vision h-100">
-                    <h4 class="fw-bold text-success">Our Vision</h4>
-                    <p>To become the leading travel companion for every Filipino and international tourist seeking authentic local experiences.</p>
+        </section>
+
+        <section class="py-5 mv-container my-5 shadow-sm">
+            <div class="container">
+                <div class="row g-5">
+                    <div class="col-md-6 border-end">
+                        <div class="icon-box" aria-hidden="true"><i class="bi bi-flag-fill"></i></div>
+                        <h3 class="fw-bold mb-3">Our Mission</h3>
+                        <p class="text-muted fs-5 lh-base">To democratize travel by providing high-quality yet budget-friendly tour packages. We aim to make the wonders of the Philippines accessible to all.</p>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="icon-box" aria-hidden="true"><i class="bi bi-compass-fill"></i></div>
+                        <h3 class="fw-bold mb-3">Our Vision</h3>
+                        <p class="text-muted fs-5 lh-base">To be the Philippines' leading travel technology platform that inspires people to "EscaPe" the ordinary and celebrate our heritage.</p>
+                    </div>
                 </div>
             </div>
+        </section>
+
+        <section class="py-5">
+            <div class="container text-center">
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <h2 class="fw-bold mb-4">Our Travel Philosophy</h2>
+                        <p class="text-muted mb-5">At EscaPinas, we believe that travel should be <strong>responsible, immersive, and inclusive</strong>.</p>
+                    </div>
+                </div>
+                <div class="row g-4 mt-2">
+                    <div class="col-md-4">
+                        <div class="p-3">
+                            <h5 class="fw-bold text-success">Authentic Experiences</h5>
+                            <p class="small text-muted">We prioritize local homestays and community-led tours.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="p-3 border-start border-end">
+                            <h5 class="fw-bold text-success">Sustainability First</h5>
+                            <p class="small text-muted">We promote "Leave No Trace" principles to protect our natural wonders.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="p-3">
+                            <h5 class="fw-bold text-success">Radical Transparency</h5>
+                            <p class="small text-muted">What you see is what you get. No hidden fees, just honest pricing.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="container">
+            <section class="cta-section shadow-lg text-center">
+                <div class="container">
+                    <h2 class="display-5 fw-bold mb-3">Dito sa EscaPinas, bawat biyahe ay may kwento.</h2>
+                    <p class="mb-5 fs-5 opacity-90">Experience the magic of Pilipinas today.</p>
+                    <a href="packages.php" class="btn btn-light btn-lg rounded-pill px-5 py-3 fw-bold text-success shadow">Explore Packages</a>
+                </div>
+            </section>
         </div>
-    </div>
+    </main>
+
+    <div class="footer-spacer"></div>
 
     <?php include "components/footer.php"; ?>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

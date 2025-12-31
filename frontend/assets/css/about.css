@@ -1,0 +1,82 @@
+/* about.css */
+body { 
+    font-family: 'Poppins', sans-serif; 
+    background-color: #ffffff; 
+    color: #333; 
+}
+
+/* Header & Banner */
+.about-header {
+    background: linear-gradient(rgba(5, 50, 7, 0.75), rgba(12, 164, 88, 0.65)), url('../images/banner.png');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    color: white;
+    padding: 150px 0;
+    text-align: center;
+}
+
+.title-divider {
+    height: 3px; 
+    width: 80px;
+    background-color: white;
+    margin: 0 auto 1.5rem; /* center-aligned margin bottom 4 */
+}
+
+/* Logo specific */
+.brand-logo-img {
+    max-height: 420px;
+}
+
+/* Statistics */
+.stat-box { 
+    border: 1px solid #eee; 
+    padding: 30px; 
+    border-radius: 15px;
+    background: #fff;
+    transition: transform 0.3s ease;
+}
+
+.stat-box:hover { 
+    transform: translateY(-5px); 
+}
+
+/* Containers */
+.mv-container {
+    background-color: #f8f9fa;
+    border-radius: 40px;
+    padding: 80px 0;
+}
+
+.icon-box {
+    width: 60px;
+    height: 60px;
+    background: #0CA458;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+}
+
+/* CTA Section */
+.cta-section {
+    background: linear-gradient(45deg, #053207, #0ca458);
+    color: white;
+    padding: 80px 0;
+    border-radius: 30px;
+    margin-bottom: -60px;
+    position: relative;
+    z-index: 2;
+}
+
+.story-text {
+    line-height: 1.8;
+    font-size: 1.1rem;
+}
+
+.footer-spacer {
+    height: 140px;
+}
