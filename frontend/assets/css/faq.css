@@ -33,12 +33,18 @@ body {
     border-radius: 2px;
 }
 
-/* Accordion Custom Styling */
 .accordion-item {
-    border: 1px solid #eee !important;
-    border-radius: 12px !important;
+    border: 1px solid #eee; 
+    border-radius: 12px; 
     margin-bottom: 15px;
     overflow: hidden;
+}
+
+.accordion-item:first-of-type, 
+.accordion-item:last-of-type,
+.accordion-item:first-of-type .accordion-button {
+    border-top-left-radius: 12px !important;
+    border-top-right-radius: 12px !important;
 }
 
 .accordion-button {
@@ -54,7 +60,7 @@ body {
 }
 
 .accordion-button::after {
-    filter: sepia(100%) hue-rotate(90deg) saturate(500%); /* Turns the arrow green */
+    filter: sepia(100%) hue-rotate(90deg) saturate(500%);
 }
 
 .accordion-body {
@@ -64,7 +70,6 @@ body {
     background-color: #f8fffb;
 }
 
-/* Help Box */
 .faq-help-box {
     background-color: #f8f9fa;
     border-top: 4px solid #198754;
