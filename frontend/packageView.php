@@ -1,3 +1,21 @@
+<?php
+include("php/connect.php"); 
+
+$tour_id = isset($_GET['tour_id']) ? $_GET['tour_id'] : die("Tour ID not found.");
+
+$tourQuery = "SELECT tp.*, d.destination_name, r.island_name 
+              FROM tour_packages tp
+              JOIN destinations d ON tp.destination_id = d.destination_id
+              JOIN regions r ON d.island_id = r.island_id
+              WHERE tp.tour_id = $tour_id";
+
+$tourResult = executeQuery($tourQuery);
+$tour = mysqli_fetch_assoc($tourResult);
+
+$placesQuery = "SELECT * FROM tour_place WHERE tour_id = $tour_id";
+$placesResult = executeQuery($placesQuery);
+?>
+
 <!doctype html>
 <html lang="en">
 
@@ -8,6 +26,7 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
 </head>
 
 <body class="bg-light">
@@ -50,8 +69,8 @@
         <div class="row">
             <div class="col-12">
                 <div class="card shadow p-5 rounded-5">
-                    <div class="mb-2">
-                        <h1 class="fw-bold text-success mb-2">₱ 12,500 <small class="fw-bold text-muted fs-6 fw-normal">/ PAX</small></h1>
+                    <div class="mb-2 d-flex justify-content-between align-items-center flex-wrap">
+                        <h1 class="fw-bold text-success ">₱ <?php echo htmlspecialchars($tour['price']); ?> <small class="fw-bold text-muted fs-6 fw-normal">/ PAX</small></h1>
                         <div class="text-warning fs-6">
                             <span class="text-success small ms-2">4.9 RATING</span>
                             <i class="bi bi-star-fill"></i>
@@ -63,28 +82,24 @@
                     </div>
 
                     <div class="mb-3">
-                        <h1 class="fw-bold text-success mb-3">Baguio and Sagada Tour Package</h1>
+                        <h1 class="fw-bold text-success mb-3"><?php echo htmlspecialchars($tour['tour_name']); ?></h1>
                         <p class="text-secondary leading-relaxed">
-                            Enjoy a cool and scenic North Luzon getaway with this Baguio and Sagada 
-                            tour package. Visit Baguio’s top attractions such as Camp John Hay, Mines 
-                            View Park, The Mansion, Wright Park, and Botanical Garden, then head to 
-                            Sagada to explore the Hanging Coffins, Echo Valley, Sumaguing Cave, Bomod-ok 
-                            Falls, and breathtaking sunrise viewpoints. This package offers a perfect 
-                            blend of nature, culture, and relaxation for a memorable mountain escape.
+                            <?php echo htmlspecialchars($tour['description']); ?>
                         </p>
                     </div>
                     <div class="row mb-5 justify-content-start g-2">
                         <div class="col-auto d-flex align-items-center gap-2 px-3">
                             <i class="bi bi-moon-stars text-success fs-6"></i>
-                            <span class="fw-bold">2D - 1N</span>
+                            <span class="fw-bold"><?php echo htmlspecialchars($tour['duration_days']); ?>D - <?php echo htmlspecialchars($tour['duration_nights']); ?>N</span>
                         </div>
                         <div class="col-auto d-flex align-items-center gap-2 px-3 border-start">
                             <i class="bi bi-calendar-range text-success fs-6"></i>
                             <span class="fw-bold">JAN 1 - 2</span>
                         </div>
                         <div class="col-auto d-flex align-items-center gap-2 px-3 border-start">
+                            <span class="fw-bold">MODES OF TRANSPORTATION</span>
                             <i class="bi bi-bus-front text-success fs-6"></i>
-                            <span class="fw-bold">CAR</span>
+                            <i class="bi bi-airplane text-success fs-6"></i>
                         </div>
                         <div class="col-auto d-flex align-items-center gap-2 px-3 border-start">
                             <i class="bi bi-people text-success fs-6"></i>
@@ -95,87 +110,86 @@
             </div>
         </div>
     </div>
-    <div class="container-fluid p-0 position-relative mb-5" style="height: 600px; background: url('/EscaPinas/frontend/assets/images/banner.png') center/cover no-repeat;">
-        <div class="position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-50"></div>
-            <div class="container position-absolute top-50 start-50 translate-middle">
-                <div class="row">
-                    <div class="col">
-                        <h1 class="text-center mb-5 text-white">Places to Visit</h1>
-                        <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
-                            <div class="carousel-indicators" style="bottom: -50px;">
-                                <button type="button" data-bs-target="#carouselExample" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                                <button type="button" data-bs-target="#carouselExample" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                            </div>
-                            <div class="carousel-inner">
-                                <div class="carousel-item active">
-                                    <div class="row g-4">
-                                        <div class="col-4">
-                                            <div class="card destination-card border-0 shadow-lg">
-                                                <img src="assets/images/package1.jpg" class="card-img rounded-3" style="height: 300px; object-fit: cover;" >
-                                                <div class="card-img-overlay d-flex align-items-end p-3">
-                                                    <h5 class="text-white fw-bold m-0">Mines View Park</h5>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-4">
-                                            <div class="card destination-card border-0 shadow-lg">
-                                                <img src="assets/images/package2.jpg" class="card-img rounded-3" style="height: 300px; object-fit: cover;" >
-                                                <div class="card-img-overlay d-flex align-items-end p-3">
-                                                    <h5 class="text-white fw-bold m-0">Wright Park</h5>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-4">
-                                            <div class="card destination-card border-0 shadow-lg">
-                                                <img src="assets/images/package3.jpg" class="card-img rounded-3" style="height: 300px; object-fit: cover;" >
-                                                <div class="card-img-overlay d-flex align-items-end p-3">
-                                                    <h5 class="text-white fw-bold m-0">Hangging Coffins</h5>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="carousel-item">
-                                    <div class="row g-4">
-                                        <div class="col-4">
-                                            <div class="card destination-card border-0 shadow-lg">
-                                                <img src="assets/images/package1.jpg" class="card-img rounded-3" style="height: 300px; object-fit: cover;" >
-                                                <div class="card-img-overlay d-flex align-items-end p-3">
-                                                    <h5 class="text-white fw-bold m-0">Mines View Park</h5>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-4">
-                                            <div class="card destination-card border-0 shadow-lg">
-                                                <img src="assets/images/package2.jpg" class="card-img rounded-3" style="height: 300px; object-fit: cover;" >
-                                                <div class="card-img-overlay d-flex align-items-end p-3">
-                                                    <h5 class="text-white fw-bold m-0">Wright Park</h5>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-4">
-                                            <div class="card destination-card border-0 shadow-lg">
-                                                <img src="assets/images/package3.jpg" class="card-img rounded-3" style="height: 300px; object-fit: cover;" >
-                                                <div class="card-img-overlay d-flex align-items-end p-3">
-                                                    <h5 class="text-white fw-bold m-0">Hangging Coffins</h5>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev" 
-                                    style="left: 0; width: 5%;"> <span class="carousel-control-prev-icon bg-dark rounded-circle" aria-hidden="true"></span>
-                                <span class="visually-hidden">Previous</span>
+    <div class="container-fluid p-0 position-relative mb-5" style="height: 600px;">
+        <div class="container position-absolute top-50 start-50 translate-middle">
+            <div class="row">
+                <div class="col">
+                    <h1 class="text-center mb-5 text-dark">Places to Visit</h1>
+                    <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-indicators" style="bottom: -50px;">
+                            <button type="button" data-bs-target="#carouselExample" data-bs-slide-to="0" class="active bg-dark rounded-circle" style="width: 12px; height: 12px;" aria-current="true" aria-label="Slide 1"></button>
+                            <button type="button" data-bs-target="#carouselExample" data-bs-slide-to="1" class="bg-dark rounded-circle" style="width: 12px; height: 12px;" aria-label="Slide 2">
                             </button>
-
-                            <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next" 
-                                    style="right: 0; width: 5%;">
-                                <span class="carousel-control-next-icon bg-dark rounded-circle" aria-hidden="true"></span>
-                                <span class="visually-hidden">Next</span>
-                            </button>
-                            <p class="text-center text-white">Discover breathtaking destinations handpicked by Escapinas. From iconic tourist spots to hidden gems,</p>
                         </div>
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <div class="row g-4">
+                                    <div class="col-4">
+                                        <div class="card destination-card border-0 shadow-lg">
+                                            <img src="assets/images/package1.jpg" class="card-img rounded-3" style="height: 300px; object-fit: cover;" >
+                                            <div class="card-img-overlay d-flex align-items-end p-3">
+                                                <h5 class="text-white fw-bold m-0">Mines View Park</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="card destination-card border-0 shadow-lg">
+                                            <img src="assets/images/package2.jpg" class="card-img rounded-3" style="height: 300px; object-fit: cover;" >
+                                            <div class="card-img-overlay d-flex align-items-end p-3">
+                                                <h5 class="text-white fw-bold m-0">Wright Park</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="card destination-card border-0 shadow-lg">
+                                            <img src="assets/images/package3.jpg" class="card-img rounded-3" style="height: 300px; object-fit: cover;" >
+                                            <div class="card-img-overlay d-flex align-items-end p-3">
+                                                <h5 class="text-white fw-bold m-0">Hangging Coffins</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="carousel-item">
+                                <div class="row g-4">
+                                    <div class="col-4">
+                                        <div class="card destination-card border-0 shadow-lg">
+                                            <img src="assets/images/package1.jpg" class="card-img rounded-3" style="height: 300px; object-fit: cover;" >
+                                            <div class="card-img-overlay d-flex align-items-end p-3">
+                                                <h5 class="text-white fw-bold m-0">Mines View Park</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="card destination-card border-0 shadow-lg">
+                                            <img src="assets/images/package2.jpg" class="card-img rounded-3" style="height: 300px; object-fit: cover;" >
+                                            <div class="card-img-overlay d-flex align-items-end p-3">
+                                                <h5 class="text-white fw-bold m-0">Wright Park</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="card destination-card border-0 shadow-lg">
+                                            <img src="assets/images/package3.jpg" class="card-img rounded-3" style="height: 300px; object-fit: cover;" >
+                                            <div class="card-img-overlay d-flex align-items-end p-3">
+                                                <h5 class="text-white fw-bold m-0">Hangging Coffins</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev" 
+                                style="left: 0; width: 5%;"> <span class="carousel-control-prev-icon bg-dark rounded-circle" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next" 
+                                style="right: 0; width: 5%;">
+                            <span class="carousel-control-next-icon bg-dark rounded-circle" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                        <p class="text-center text-dark">Discover breathtaking destinations handpicked by Escapinas. From iconic tourist spots to hidden gems,</p>
                     </div>
                 </div>
             </div>

@@ -1,0 +1,9 @@
+/* para sa paghover ng cards packageView.php */
+    .destination-card {
+        transition: transform 0.3s ease-in-out;
+        cursor: pointer;
+    }
+    .destination-card:hover {
+        transform: scale(1.05);
+        z-index: 10; 
+    }
