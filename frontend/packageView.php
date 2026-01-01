@@ -354,10 +354,10 @@ $about = mysqli_fetch_assoc($aboutResult);
             <div class="col-10">
                 <div class="row">
                     <div class="col-6">
-                        <button class="btn btn-success px-5 btn-lg py-3 fw-bold rounded-pill">Book This Trip</button>
+                       <a href="bookingForm.php">  <button class="btn btn-success px-5 btn-lg py-3 fw-bold rounded-pill">Book This Trip</button> </a>
                     </div>
                     <div class="col-6">
-                        <button class="btn btn-outline-secondary px-5 btn-lg py-3 fw-bold rounded-pill">Add to Wishlist</button>
+                     <a href="wishlist.php">  <button class="btn btn-outline-secondary px-5 btn-lg py-3 fw-bold rounded-pill">Add to Wishlist</button> </a>
                     </div>
                 </div>
             </div>
