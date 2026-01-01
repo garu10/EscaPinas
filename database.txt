@@ -764,3 +764,26 @@ INSERT INTO tour_itinerary (tour_id, day_number, short_desc) VALUES
 (12, 6, 'Breakfast at hotel.'),
 (12, 6, 'Free time and relaxation at Palawan Beach Resort.'),
 (12, 6, 'Check-out and transfer to airport for departure.');
+
+CREATE TABLE region_fees (
+    fee_id INT AUTO_INCREMENT PRIMARY KEY,
+    origin_island ENUM('Luzon', 'Visayas', 'Mindanao'),
+    destination_island ENUM('Luzon', 'Visayas', 'Mindanao'),
+    additional_fee DECIMAL(10,2) DEFAULT 0.00
+);
+
+INSERT INTO region_fees (origin_island, destination_island, additional_fee) VALUES
+-- Mula sa LUZON
+('Luzon', 'Luzon', 0.00),
+('Luzon', 'Visayas', 2800.00),
+('Luzon', 'Mindanao', 3500.00),
+
+-- Mula sa VISAYAS
+('Visayas', 'Visayas', 0.00),
+('Visayas', 'Luzon', 2800.00),
+('Visayas', 'Mindanao', 2200.00),
+
+-- Mula sa MINDANAO
+('Mindanao', 'Mindanao', 0.00),
+('Mindanao', 'Luzon', 3500.00),
+('Mindanao', 'Visayas', 2200.00);

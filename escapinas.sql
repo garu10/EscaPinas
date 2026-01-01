@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3307
--- Generation Time: Jan 01, 2026 at 06:02 PM
+-- Generation Time: Jan 01, 2026 at 07:29 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -119,6 +119,34 @@ INSERT INTO `regions` (`island_id`, `island_name`, `description`) VALUES
 (1, 'Luzon', 'Northern and central islands of the Philippines'),
 (2, 'Visayas', 'Central islands of the Philippines'),
 (3, 'Mindanao', 'Southern islands of the Philippines');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `region_fees`
+--
+
+CREATE TABLE `region_fees` (
+  `fee_id` int(11) NOT NULL,
+  `origin_island` enum('Luzon','Visayas','Mindanao') DEFAULT NULL,
+  `destination_island` enum('Luzon','Visayas','Mindanao') DEFAULT NULL,
+  `additional_fee` decimal(10,2) DEFAULT 0.00
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `region_fees`
+--
+
+INSERT INTO `region_fees` (`fee_id`, `origin_island`, `destination_island`, `additional_fee`) VALUES
+(1, 'Luzon', 'Luzon', 0.00),
+(2, 'Luzon', 'Visayas', 2800.00),
+(3, 'Luzon', 'Mindanao', 3500.00),
+(4, 'Visayas', 'Visayas', 0.00),
+(5, 'Visayas', 'Luzon', 2800.00),
+(6, 'Visayas', 'Mindanao', 2200.00),
+(7, 'Mindanao', 'Mindanao', 0.00),
+(8, 'Mindanao', 'Luzon', 3500.00),
+(9, 'Mindanao', 'Visayas', 2200.00);
 
 -- --------------------------------------------------------
 
@@ -760,6 +788,12 @@ ALTER TABLE `regions`
   ADD PRIMARY KEY (`island_id`);
 
 --
+-- Indexes for table `region_fees`
+--
+ALTER TABLE `region_fees`
+  ADD PRIMARY KEY (`fee_id`);
+
+--
 -- Indexes for table `tour_about`
 --
 ALTER TABLE `tour_about`
@@ -855,6 +889,12 @@ ALTER TABLE `ratings`
 --
 ALTER TABLE `regions`
   MODIFY `island_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `region_fees`
+--
+ALTER TABLE `region_fees`
+  MODIFY `fee_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `tour_about`
