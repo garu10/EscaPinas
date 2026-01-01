@@ -217,7 +217,7 @@ VALUES
 
 (12, 'Palawan Island Adventure', 5, 3,
 'A breathtaking tour of Palawan including Puerto Princesa, El Nido, and Coron. Explore beaches, lagoons, and vibrant culture.',
-12000.00, 'Available', 'frontend/assets/images/palawan_tour.jpg');
+12000.00, 'Available', 'assets/images/palawan_tour.jpg');
 
 
 --for Schedules

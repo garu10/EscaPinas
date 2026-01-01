@@ -155,7 +155,7 @@ $islands_result = executeQuery($islands_query);
                                     </div>
                                     <div class="col-5 text-end">
                                         <a href="packageView.php?tour_id=<?php echo $tour['tour_id']; ?>" class="btn btn-success btn-sm px-3 rounded-pill fw-bold shadow-sm" style="font-size: 0.75rem;">
-                                            Details <i class="bi bi-chevron-right"></i>
+                                           View Details <i class="bi bi-chevron-right"></i>
                                         </a>
                                     </div>
                                 </div>
@@ -203,9 +203,9 @@ $islands_result = executeQuery($islands_query);
                                 <span class="fw-bold text-success small">
                                     ₱<?php echo number_format($row['price'], 2); ?>
                                 </span>
-                                <a href="packageView.php?tour_id=<?php echo $row['tour_id']; ?>" class="btn btn-success btn-sm p-0 px-2 rounded-circle" style="font-size: 0.8rem;">
-                                    <i class="bi bi-arrow-right-short"></i>
-                                </a>
+                                    <a href="packageView.php?tour_id=<?php echo $tour['tour_id']; ?>" class="btn btn-success btn-sm px-3 rounded-pill fw-bold shadow-sm" style="font-size: 0.75rem;">
+                                        View Tour <i class="bi bi-chevron-right"></i>
+                                 </a>
                             </div>
                         </div>
                     </div>
