@@ -141,7 +141,7 @@ ALTER TABLE tour_place
 ADD COLUMN image VARCHAR(255) AFTER day_number;
 
 
--- adjusted QUERIES 
+-- adjusted QUERIES as of 01/01/2026
 
 -- for regions
 INSERT INTO regions (island_name, description) VALUES
