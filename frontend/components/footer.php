@@ -21,7 +21,7 @@
                     <li><a href="/EscaPinas/frontend/about.php" class="text-light text-decoration-none hover-link">About Us</a></li>
                     <li><a href="/EscaPinas/faq.php" class="text-light text-decoration-none hover-link">Travel FAQs</a></li>
                     <li><a href="/EscaPinas/privacy.php" class="text-light text-decoration-none hover-link">Privacy Policy</a></li>
-                    <li><a href="/EscaPinas/terms.php" class="text-light text-decoration-none hover-link">Terms & Conditions</a></li>
+                    <li><a href="/EscaPinas/frontend/terms.php" class="text-light text-decoration-none hover-link">Terms & Conditions</a></li>
                 </ul>
             </div>
 
