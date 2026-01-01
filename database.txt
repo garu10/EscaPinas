@@ -279,9 +279,9 @@ INSERT INTO tour_schedules (tour_id, start_date, end_date, available_slots) VALU
 (11,'2026-05-27','2026-05-29',30),
 (11,'2026-10-14','2026-10-16',30);
 
-(12, '2026-01-10', '2026-01-15', 20,),
-(12, '2026-02-05', '2026-02-10', 20,),
-(12, '2026-03-12', '2026-03-17', 20,);
+(12, '2026-01-10', '2026-01-15', 20),
+(12, '2026-02-05', '2026-02-10', 20),
+(12, '2026-03-12', '2026-03-17', 20);
 
 -- Luzon
 INSERT INTO tour_inclusions (tour_id, inclusion_detail) VALUES
@@ -515,3 +515,252 @@ INSERT INTO tour_place (tour_id, place_name, day_number, image) VALUES
 (12, 'Kayangan Lake, Coron', 4, 'frontend/assets/images/kayangan_lake.jpg'),
 (12, 'Snorkeling at Coron Reef', 5, 'frontend/assets/images/coron_reef.jpg'),
 (12, 'Relax at Palawan Beach Resort', 6, 'frontend/assets/images/palawan_resort.jpg');
+
+
+
+CREATE TABLE tour_itinerary (
+    itinerary_id INT AUTO_INCREMENT PRIMARY KEY,
+    tour_id INT NOT NULL,
+    day_number INT NOT NULL,
+    short_desc VARCHAR(255) NOT NULL,
+    FOREIGN KEY (tour_id) REFERENCES tour_packages(tour_id)
+);
+
+-- Tour 1: Baguio-Sagada
+INSERT INTO tour_itinerary (tour_id, day_number, short_desc) VALUES
+(1, 1, 'Arrival at Baguio City and check-in at the hotel. (Breakfast included)'),
+(1, 1, 'Visit Burnham Park and take a boat ride on the lake.'),
+(1, 1, 'Explore the Baguio Mines View Park for panoramic views.'),
+(1, 1, 'Enjoy lunch at the famous Good Taste Restaurant. (Lunch at your own account)'),
+(1, 1, 'Tour The Mansion, the official summer residence of the Philippine President.'),
+(1, 1, 'Take a stroll through the vibrant The Wright Park.'),
+(1, 1, 'Stroll in the Baguio Session Road for shopping and local treats.'),
+(1, 1, 'Enjoy and Shop at the Baguio Public Night Market.'),
+(1, 2, 'Travel to Sagada and visit the Hanging Coffins.'),
+(1, 2, 'Explore the Sumaguing Cave with a guided spelunking tour.'),
+(1, 2, 'Lunch at a local Sagada restaurant. (Lunch at your own account)'),
+(1, 2, 'Hike to Echo Valley and enjoy the scenic views.'),
+(1, 2, 'Travel back to Manila');
+
+-- Tour 2: Ilocos-Laoag
+INSERT INTO tour_itinerary (tour_id, day_number, short_desc) VALUES
+(2, 1, 'Arrival at Ilocos and visit the Bangui Windmills.'),
+(2, 1, 'Explore the historic Cape Bojeador Lighthouse.'),
+(2, 1, 'Visit the beautiful Patapat Viaduct along the coast.'),
+(2, 1, 'Enjoy local Ilocano cuisine for lunch. (Lunch included)'),
+(2, 1, 'Walk along historic cobblestone streets of Vigan.'),
+(2, 1, 'Shop for local crafts and souvenirs at Vigan Market.'),
+(2, 1, 'Enjoy free dinner in hotel.'),
+(2, 2, 'Breakfast at the hotel. (Breakfast included)'),
+(2, 2, 'Visit the beautiful Bantay Church and Bell Tower.'),
+(2, 2, 'Tour the impressive Sand Dunes of Laoag.'),
+(2, 2, 'Enjoy local delicacies for lunch. (Lunch at your own account)'),
+(2, 2, 'Experience thrilling 4x4 rides in the sand dunes.'),
+(2, 2, 'Visit the iconic UNESCO World Heritage Paoay Church.'),
+(2, 3, 'Breakfast at the hotel. (Breakfast included)'),
+(2, 3, 'See stunning white rock formations along the coast.'),
+(2, 3, 'Lunch at a local restaurant. (Lunch at your own account)'),
+(2, 3, 'Explore the historic Malacañang of the North.'),
+(2, 3, 'Enjoy shopping for souvenirs at the Ilocos Norte Capitol.'),
+(2, 4, 'Breakfast at the hotel. (Breakfast included)'),
+(2, 4, 'Relax at the pristine beaches of Pagudpud.'),
+(2, 4, 'Departure to Manila');
+
+-- Tour 3: La Union
+INSERT INTO tour_itinerary (tour_id, day_number, short_desc) VALUES
+(3, 1, 'Arrive in La Union and check-in at the hotel. (Breakfast included)'),
+(3, 1, 'Relax and unwind at the San Juan Surf Beach.'),
+(3, 2, 'Breakfast at the hotel. (Breakfast included)'),
+(3, 2, 'Visit Ma-Cho Temple, a Taoist temple with ocean views.'),
+(3, 2, 'Enjoy lunch at a seaside restaurant. (Lunch at your own account)'),
+(3, 2, 'Explore Tangadan Falls and enjoy the cold water.'),
+(3, 2, 'Check in the Thunderbird Resort for a luxurious stay.'),
+(3, 3, 'Breakfast at the resort. (Breakfast included)'),
+(3, 3, 'Relax and unwind at the resort or explore nearby cafes.'),
+(3, 3, 'Enjoy the luxurious amenities and ocean views.'),
+(3, 3, 'Departure to Manila');
+
+-- Tour 4: Bicol
+INSERT INTO tour_itinerary (tour_id, day_number, short_desc) VALUES
+(4, 1, 'Arrival at Legazpi City and check-in at the hotel.'),
+(4, 1, 'Enjoy free lunch at a local restaurant. (Lunch included)'),
+(4, 1, 'Visit the Mayon Volcano View and Photo Stop.'),
+(4, 2, 'Breakfast at the hotel. (Breakfast included)'),
+(4, 2, 'Discover the Cagsawa Ruins and learn about its history.'),
+(4, 2, 'Take a scenic ATV ride around the base of Mayon Volcano.'),
+(4, 2, 'Enjoy lunch at a local restaurant. (Lunch at your own account)'),
+(4, 2, 'Explore local markets.'),
+(4, 3, 'Breakfast at the hotel. (Breakfast included)'),
+(4, 3, 'Travel to Donsol for whale shark watching.'),
+(4, 3, 'Enjoy lunch at a local restaurant. (Lunch at your own account)'),
+(4, 3, 'Swim with the gentle giants of the sea.'),
+(4, 4, 'Breakfast at the hotel. (Breakfast included)'),
+(4, 4, 'Island hopping tour in Caramoan Islands.'),
+(4, 4, 'Enjoy lunch on one of the islands. (Lunch at your own account)'),
+(4, 4, 'Departure to Manila');
+
+-- Tour 5: Batangas-Tagaytay
+INSERT INTO tour_itinerary (tour_id, day_number, short_desc) VALUES
+(5, 1, 'Arrival at Tagaytay and visit the Taal Volcano Viewpoint.'),
+(5, 1, 'Breakfast at the buffet restaurant with a view. (Breakfast included)'),
+(5, 1, 'Enjoy rides and leisure activities at Sky Ranch.'),
+(5, 2, 'Relax and have a picnic in scenic surroundings.'),
+(5, 2, 'Explore different gardens and cafes in Tagaytay.'),
+(5, 2, 'Enjoy lunch at a local restaurant. (Lunch at your own account)'),
+(5, 2, 'Visit Tagaytay Public Market for local products.'),
+(5, 3, 'Travel to Batangas and check-in at the beach resort.'),
+(5, 3, 'Enjoy a relaxing morning by the beach.'),
+(5, 3, 'Have lunch at the resort. (Lunch included)'),
+(5, 3, 'Dive or snorkel in Anilao with clear waters.'),
+(5, 3, 'Departure to Manila');
+
+-- Tour 6: Cebu
+INSERT INTO tour_itinerary (tour_id, day_number, short_desc) VALUES
+(6, 1, 'Arrival at Cebu City and check-in at the hotel. (Breakfast included)'),
+(6, 1, 'See the historical cross planted by Magellan.'),
+(6, 1, 'Enjoy local Cebuano cuisine for lunch. (Lunch at your own account)'),
+(6, 1, 'Visit the Magellan Basilica Minore del Santo Niño.'),
+(6, 1, 'Visit the vibrant Carbon Market for local goods.'),
+(6, 2, 'Breakfast at the hotel. (Breakfast included)'),
+(6, 2, 'Explore the stunning beaches of Mactan Island.'),
+(6, 2, 'Visit Kawasan and swim in with the waterfalls.'),
+(6, 2, 'Have lunch at a Kawasan. (Lunch included)'),
+(6, 2, 'Relax and unwind at the falls.'),
+(6, 3, 'Breakfast at the hotel. (Breakfast included)'),
+(6, 3, 'Enjoy the Oslob Whale Shark Watching experience.'),
+(6, 3, 'Have lunch at a local restaurant. (Lunch at your own account)'),
+(6, 3, 'Shop for souvenirs at local markets.'),
+(6, 3, 'Departure to Manila');
+
+-- Tour 7: Bohol
+INSERT INTO tour_itinerary (tour_id, day_number, short_desc) VALUES
+(7, 1, 'Arrival at Bohol and check-in at the hotel. (Breakfast included)'),
+(7, 1, 'See the iconic Chocolate Hills and take photos.'),
+(7, 1, 'Visit the Tarsier Sanctuary to see the tiny primates.'),
+(7, 1, 'Enjoy lunch at a local restaurant. (Lunch at your own account)'),
+(7, 1, 'Find unique souvenirs at the Bohol Bee Farm.'),
+(7, 2, 'Breakfast at the hotel. (Breakfast included)'),
+(7, 2, 'Cruise along the Loboc River and enjoy a buffet lunch on a floating restaurant.'),
+(7, 2, 'Enjoy free time at Panglao Beach.'),
+(7, 3, 'Breakfast at the hotel. (Breakfast included)'),
+(7, 3, 'Enjoy amenities at the hotel or explore nearby cafes.'),
+(7, 3, 'Visit the Baclayon Church, one of the oldest churches in the Philippines.'),
+(7, 3, 'Have lunch at a local restaurant. (Lunch at your own account)'),
+(7, 3, 'Departure to Manila');
+
+
+-- Tour 8: Boracay
+INSERT INTO tour_itinerary (tour_id, day_number, short_desc) VALUES
+(8, 1, 'Arrival at Boracay and check-in at the hotel. (Lunch included)'),
+(8, 1, 'Relax and sunbathe on Boracay that is famous for White Beach.'),
+(8, 1, 'Enjoy amenities of the hotel (pool, spa, beach).'),
+(8, 2, 'Breakfast at the hotel. (Breakfast included)'),
+(8, 2, 'Go island hopping in Puka Shell Beach, Crocodile Island, and Crystal Cove.'),
+(8, 2, 'Have lunch on one of the islands. (Lunch included)'),
+(8, 2, 'Relax and unwind at the beach.'),
+(8, 3, 'Check in at the Bulabog Beach Resort. (Breakfast included)'),
+(8, 3, 'Explore Boracay with vibrant underwater world with scuba diving.'),
+(8, 3, 'Engage in water sports like kiteboarding and windsurfing.'),
+(8, 3, 'Enjoy lunch at a local restaurant. (Lunch at your own account)'),
+(8, 4, 'Breakfast at the hotel. (Breakfast included)'),
+(8, 4, 'Relax and enjoy the beautiful beach scenery.'),
+(8, 4, 'Shop for souvenirs at D Mall Boracay.'),
+(8, 4, 'Sail along the coast and watch a breathtaking sunset.'),
+(8, 4, 'Departure to Manila');
+
+-- Tour 9: Davao
+INSERT INTO tour_itinerary (tour_id, day_number, short_desc) VALUES
+(9, 1, 'Arrival at Davao City and check-in at the hotel. (Breakfast included)'),
+(9, 1, 'Visit the Philippine Eagle Center to see the national bird.'),
+(9, 1, 'Enjoy local Davao cuisine for lunch. (Lunch at your own account)'),
+(9, 1, 'See the majestic Philippine eagle up close.'),
+(9, 2, 'Breakfast at the hotel. (Breakfast included)'),
+(9, 2, 'Explore the vibrant Davao City Market for local products.'),
+(9, 2, 'Visit the Davao Crocodile Park and learn about crocodile conservation.'),
+(9, 2, 'Enjoy lunch at a local restaurant. (Lunch at your own account)'),
+(9, 2, 'Relax at the Eden Nature Park and experience nature trails.'),
+(9, 3, 'Breakfast at the hotel. (Breakfast included)'),
+(9, 3, 'Visit different shops at the Aldevinco Shopping Center.'),
+(9, 3, 'Have lunch at a local restaurant. (Lunch at your own account)'),
+(9, 3, 'Explore the Peoples Park.'),
+(9, 4, 'Breakfast at the hotel. (Breakfast included)'),
+(9, 4, 'Take a boat tour to Samal Island and visit Hagimit Falls.'),
+(9, 4, 'Enjoy lunch on Samal Island. (Lunch at your own account)'),
+(9, 4, 'Relax on the pristine beaches of Samal Island.'),
+(9, 4, 'Departure to Manila');
+
+-- Tour 10: Siargao
+INSERT INTO tour_itinerary (tour_id, day_number, short_desc) VALUES
+(10, 1, 'Arrival in Siargao, transfer to hotel, check-in, and settle in.'),
+(10, 1, 'Breakfast at the hotel.'),
+(10, 1, 'Surfing session at Cloud 9 for beginners and enthusiasts.'),
+(10, 1, 'Lunch at a local seaside restaurant.'),
+(10, 1, 'Explore General Luna town, souvenir and local handicraft shopping.'),
+(10, 1, 'Dinner at a beachfront restaurant.'),
+(10, 2, 'Breakfast at the hotel.'),
+(10, 2, 'Visit Magpupungko Rock Pools during low tide, swimming and relaxing.'),
+(10, 2, 'Lunch picnic at Magpupungko beach.'),
+(10, 2, 'Optional snorkeling or cliff diving.'),
+(10, 2, 'Return to hotel and free time for shopping.'),
+(10, 2, 'Dinner at local restaurant.'),
+(10, 3, 'Breakfast at the hotel.'),
+(10, 3, 'Island hopping to Sugba Lagoon with kayaking, swimming, and paddleboarding.'),
+(10, 3, 'Lunch on the boat or at nearby island.'),
+(10, 3, 'Return to hotel for rest and optional shopping.'),
+(10, 3, 'Dinner at hotel or beachfront café.'),
+(10, 4, 'Breakfast at hotel.'),
+(10, 4, 'Relax and unwind at Naked Island, swimming and sunbathing.'),
+(10, 4, 'Lunch on the island.'),
+(10, 4, 'Check-out and transfer to airport for departure.');
+
+-- Tour 11: Cagayan de Oro
+INSERT INTO tour_itinerary (tour_id, day_number, short_desc) VALUES
+(11, 1, 'Arrival in Cagayan de Oro, hotel check-in and settle in.'),
+(11, 1, 'Breakfast at hotel.'),
+(11, 1, 'Exciting White Water Rafting adventure in Cagayan River.'),
+(11, 1, 'Lunch by the riverside after rafting.'),
+(11, 1, 'Free time for souvenir shopping at local market.'),
+(11, 1, 'Dinner at local restaurant.'),
+(11, 2, 'Breakfast at hotel.'),
+(11, 2, 'Hiking and nature exploration at Mapawa Nature Park.'),
+(11, 2, 'Lunch picnic at the park.'),
+(11, 2, 'Zipline or other adventure activities.'),
+(11, 2, 'Return to hotel for rest and shopping.'),
+(11, 2, 'Dinner at hotel or local dining spot.'),
+(11, 3, 'Breakfast at hotel.'),
+(11, 3, 'Fun-filled day at Seven Seas Waterpark, swimming and slides.'),
+(11, 3, 'Lunch at the park.'),
+(11, 3, 'Relax at hotel and optional local shopping.'),
+(11, 3, 'Check-out and transfer to airport for departure.');
+
+-- Tour 12: Palawan
+INSERT INTO tour_itinerary (tour_id, day_number, short_desc) VALUES
+(12, 1, 'Arrival in Puerto Princesa, check-in at hotel and settle in.'),
+(12, 1, 'Breakfast at hotel.'),
+(12, 1, 'Visit Puerto Princesa Underground River.'),
+(12, 1, 'Lunch at local restaurant.'),
+(12, 1, 'Explore local market for souvenirs and handicrafts.'),
+(12, 1, 'Dinner at beachfront restaurant.'),
+(12, 2, 'Breakfast at hotel.'),
+(12, 2, 'Honda Bay Island Hopping including snorkeling and beach visits.'),
+(12, 2, 'Lunch on one of the islands.'),
+(12, 2, 'Relax and enjoy beach activities, optional shopping.'),
+(12, 2, 'Dinner at hotel or nearby restaurant.'),
+(12, 3, 'Breakfast at hotel.'),
+(12, 3, 'El Nido Beaches and Lagoons tour with kayaking and swimming.'),
+(12, 3, 'Lunch at El Nido island restaurant.'),
+(12, 3, 'Free time for sightseeing and shopping in El Nido.'),
+(12, 3, 'Dinner and overnight stay.'),
+(12, 4, 'Breakfast at hotel.'),
+(12, 4, 'Visit Kayangan Lake, Coron for swimming and photo opportunities.'),
+(12, 4, 'Lunch at local eatery.'),
+(12, 4, 'Optional shopping for local products.'),
+(12, 4, 'Return to hotel and dinner.'),
+(12, 5, 'Breakfast at hotel.'),
+(12, 5, 'Snorkeling adventure at Coron Reef.'),
+(12, 5, 'Lunch on the boat or at nearby beach.'),
+(12, 5, 'Relax and enjoy island activities.'),
+(12, 5, 'Dinner at hotel or beachside restaurant.'),
+(12, 6, 'Breakfast at hotel.'),
+(12, 6, 'Free time and relaxation at Palawan Beach Resort.'),
+(12, 6, 'Check-out and transfer to airport for departure.');

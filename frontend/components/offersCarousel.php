@@ -1,72 +1,48 @@
+<?php 
+$query = "SELECT * FROM tour_packages";
+$result = executeQuery($query);
+
+$promoPackages = [];
+if ($result) {
+    while ($row = mysqli_fetch_assoc($result)) {
+        $promoPackages[] = $row;
+    }
+}
+
+$slides = array_chunk($promoPackages, 3);
+?>
+
 <div class="container my-5 text-center">
     <h4 class="text-success fw-bold">Exclusive Package Deals</h4>
     
     <div id="carouselExample" class="carousel slide mt-3" data-bs-ride="carousel">
-        
         <div class="carousel-inner">
-            <div class="carousel-item active">
-                <div class="row g-3 justify-content-center px-5">
-                    <div class="col-12 col-md-6 col-lg-4">
-                        <div class="card h-100 shadow-sm border-0 rounded-4 overflow-hidden">
-                            <img src="frontend/assets/images/package1.jpg" class="card-img-top" style="height: 150px; object-fit: cover;">
-                            <div class="card-body bg-light">
-                                <h6 class="fw-bold">Palawan Adventure</h6>
-                                <p class="small text-muted mb-0">20% Early Bird Discount</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-6 col-lg-4 d-none d-md-block">
-                        <div class="card h-100 shadow-sm border-0 rounded-4 overflow-hidden">
-                            <img src="frontend/assets/images/package2.jpg" class="card-img-top" style="height: 150px; object-fit: cover;">
-                            <div class="card-body bg-light">
-                                <h6 class="fw-bold">Siargao Surf</h6>
-                                <p class="small text-muted mb-0">Free Lessons for Groups</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-lg-4 d-none d-lg-block">
-                        <div class="card h-100 shadow-sm border-0 rounded-4 overflow-hidden">
-                            <img src="frontend/assets/images/package3.jpg" class="card-img-top" style="height: 150px; object-fit: cover;">
-                            <div class="card-body bg-light">
-                                <h6 class="fw-bold">Bohol Escapade</h6>
-                                <p class="small text-muted mb-0">Chocolate Hills Tour</p>
-                            </div>
-                        </div>
-                    </div>
+            <?php if (empty($slides)): ?>
+                <div class="carousel-item active">
+                    <p class="text-muted">Walang promo sa ngayon.</p>
                 </div>
-            </div>
-
-            <div class="carousel-item">
-                <div class="row g-3 justify-content-center px-5">
-                    <div class="col-12 col-md-6 col-lg-4">
-                        <div class="card h-100 shadow-sm border-0 rounded-4 overflow-hidden">
-                            <img src="frontend/assets/images/package1.jpg" class="card-img-top" style="height: 150px; object-fit: cover;">
-                            <div class="card-body bg-light">
-                                <h6 class="fw-bold">Boracay White Beach</h6>
-                                <p class="small text-muted mb-0">Summer Special</p>
-                            </div>
+            <?php else: ?>
+                <?php foreach ($slides as $index => $group): ?>
+                    <div class="carousel-item <?php echo $index === 0 ? 'active' : ''; ?>">
+                        <div class="row g-3 justify-content-center px-5">
+                            <?php foreach ($group as $key => $tour): ?>
+                                <div class="col-12 col-md-6 col-lg-4 <?php echo $key > 0 ? 'd-none d-md-block' : ''; ?>">
+                                    <div class="card h-100 shadow-sm border-0 rounded-4 overflow-hidden">
+                                        <img src="<?php echo htmlspecialchars($tour['image']); ?>" class="card-img-top" style="height: 250px; object-fit: cover;">
+                                        <div class="card-body bg-light text-start">
+                                            <h6 class="fw-bold mb-1"><?php echo htmlspecialchars($tour['tour_name']); ?></h6>
+                                            <p class="small text-muted mb-0">Exclusive Deal</p>
+                                            <div class="mt-2 text-success fw-bold">
+                                                ₱<?php echo number_format($tour['price'], 2); ?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
                         </div>
                     </div>
-                    <div class="col-12 col-md-6 col-lg-4 d-none d-md-block">
-                        <div class="card h-100 shadow-sm border-0 rounded-4 overflow-hidden">
-                            <img src="frontend/assets/images/package2.jpg" class="card-img-top" style="height: 150px; object-fit: cover;">
-                            <div class="card-body bg-light">
-                                <h6 class="fw-bold">Cebu Whale Shark</h6>
-                                <p class="small text-muted mb-0">Daily Tours Available</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-lg-4 d-none d-lg-block">
-                        <div class="card h-100 shadow-sm border-0 rounded-4 overflow-hidden">
-                            <img src="frontend/assets/images/package3.jpg" class="card-img-top" style="height: 150px; object-fit: cover;">
-                            <div class="card-body bg-light">
-                                <h6 class="fw-bold">Vigan Heritage</h6>
-                                <p class="small text-muted mb-0">Historic Walkthrough</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
         </div>
 
         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
