@@ -1,6 +1,8 @@
 <?php
 include("php/connect.php"); 
 
+// test lang itoo
+// dito gineget yung tour id after maclick yung view details sa packages.php
 $tour_id = isset($_GET['tour_id']) ? $_GET['tour_id'] : die("Tour ID not found.");
 
 $tourQuery = "SELECT tp.*, d.destination_name, r.island_name 
@@ -14,6 +16,21 @@ $tour = mysqli_fetch_assoc($tourResult);
 
 $placesQuery = "SELECT * FROM tour_place WHERE tour_id = $tour_id";
 $placesResult = executeQuery($placesQuery);
+
+// query sa pagselect ng mga info para sa itenerary from db
+$itineraryQuery = "SELECT * FROM tour_itinerary WHERE tour_id = $tour_id ORDER BY day_number ASC, itinerary_id ASC";
+$itineraryResult = executeQuery($itineraryQuery);
+
+$itineraryData = [];
+while ($row = mysqli_fetch_assoc($itineraryResult)) {
+    $itineraryData[$row['day_number']][] = $row['short_desc'];
+}
+
+// query sa pagselect ng info para sa about
+$aboutQuery = "SELECT * FROM tour_about WHERE tour_id = $tour_id";
+$aboutResult = executeQuery($aboutQuery);
+$about = mysqli_fetch_assoc($aboutResult);
+
 ?>
 
 <!doctype html>
@@ -121,63 +138,44 @@ $placesResult = executeQuery($placesQuery);
                             <button type="button" data-bs-target="#carouselExample" data-bs-slide-to="1" class="bg-dark rounded-circle" style="width: 12px; height: 12px;" aria-label="Slide 2">
                             </button>
                         </div>
+                        <!-- hindi pa toh gagana kasi wala pa yung mga images, pero para toh dun sa carousel na may tatlong images -->
                         <div class="carousel-inner">
-                            <div class="carousel-item active">
-                                <div class="row g-4">
+                            <?php 
+                            $count = 0;
+                            $isActive = true;
+                            if (mysqli_num_rows($placesResult) > 0):
+                                while ($place = mysqli_fetch_assoc($placesResult)): 
+                                    if ($count % 3 == 0): ?>
+                                        <div class="carousel-item <?php echo $isActive ? 'active' : ''; ?>">
+                                            <div class="row g-4">
+                                    <?php 
+                                    $isActive = false; 
+                                    endif; 
+                                    ?>
+
                                     <div class="col-4">
                                         <div class="card destination-card border-0 shadow-lg">
-                                            <img src="assets/images/package1.jpg" class="card-img rounded-3" style="height: 300px; object-fit: cover;" >
+                                            <img src="<?php echo htmlspecialchars($place['image']); ?>" class="card-img rounded-3" style="height: 300px; object-fit: cover;">
                                             <div class="card-img-overlay d-flex align-items-end p-3">
-                                                <h5 class="text-white fw-bold m-0">Mines View Park</h5>
+                                                <div class="card-img-overlay d-flex align-items-end p-3">
+                                                    <h5 class="text-white fw-bold m-0"><?php echo htmlspecialchars($place['place_name']); ?></h5>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-4">
-                                        <div class="card destination-card border-0 shadow-lg">
-                                            <img src="assets/images/package2.jpg" class="card-img rounded-3" style="height: 300px; object-fit: cover;" >
-                                            <div class="card-img-overlay d-flex align-items-end p-3">
-                                                <h5 class="text-white fw-bold m-0">Wright Park</h5>
+
+                                    <?php 
+                                    $count++;
+                                    if ($count % 3 == 0 || $count == mysqli_num_rows($placesResult)): ?>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="col-4">
-                                        <div class="card destination-card border-0 shadow-lg">
-                                            <img src="assets/images/package3.jpg" class="card-img rounded-3" style="height: 300px; object-fit: cover;" >
-                                            <div class="card-img-overlay d-flex align-items-end p-3">
-                                                <h5 class="text-white fw-bold m-0">Hangging Coffins</h5>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <?php endif; ?>
+                                <?php endwhile; ?>
+                            <?php else: ?>
+                                <div class="carousel-item active">
+                                    <p class="text-center text-muted">No specific places listed for this tour yet.</p>
                                 </div>
-                            </div>
-                            <div class="carousel-item">
-                                <div class="row g-4">
-                                    <div class="col-4">
-                                        <div class="card destination-card border-0 shadow-lg">
-                                            <img src="assets/images/package1.jpg" class="card-img rounded-3" style="height: 300px; object-fit: cover;" >
-                                            <div class="card-img-overlay d-flex align-items-end p-3">
-                                                <h5 class="text-white fw-bold m-0">Mines View Park</h5>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-4">
-                                        <div class="card destination-card border-0 shadow-lg">
-                                            <img src="assets/images/package2.jpg" class="card-img rounded-3" style="height: 300px; object-fit: cover;" >
-                                            <div class="card-img-overlay d-flex align-items-end p-3">
-                                                <h5 class="text-white fw-bold m-0">Wright Park</h5>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-4">
-                                        <div class="card destination-card border-0 shadow-lg">
-                                            <img src="assets/images/package3.jpg" class="card-img rounded-3" style="height: 300px; object-fit: cover;" >
-                                            <div class="card-img-overlay d-flex align-items-end p-3">
-                                                <h5 class="text-white fw-bold m-0">Hangging Coffins</h5>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            <?php endif; ?>
                         </div>
                         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev" 
                                 style="left: 0; width: 5%;"> <span class="carousel-control-prev-icon bg-dark rounded-circle" aria-hidden="true"></span>
@@ -209,21 +207,25 @@ $placesResult = executeQuery($placesQuery);
                         </h2>
                         <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                             <div class="accordion-body">
-                                <ul class="list-unstyled">
-                                    <li class="mb-2"><strong>Day 1: Day 1: Travel to Baguio</strong></li>
-                                    <li class="mb-2">Arrival & Check-in at Baguio Hotel (Breakfast Included)</li>
-                                        <ul>
-                                            <li class="mb-2">Visit Lion’s Head </li>
-                                            <li class="mb-2">Sidetrip to Camp John Hay </li>
-                                            <li class="mb-2">Sidetrip to  Mines View Park</li>
-                                            <li class="mb-2">Sidetrip to  Botanical Garden</li>
-                                        </ul>
-                                    <li class="mb-2"><strong>Day 2: Travel to Sagada</strong></li>
-                                    <li>Sunrise at Marlboro Hills </li>
-                                        <ul>
-                                            <li class="mb-2">Breakfast (on your own account) </li>
-                                        </ul>
-                                </ul>
+                                <?php if (!empty($itineraryData)): ?>
+                                    <?php foreach ($itineraryData as $day => $activities): ?>
+                                        <div class="mb-4">
+                                            <h6 class="fw-bold text-success">
+                                                <i class="bi bi-calendar-check me-2"></i> Day <?php echo $day; ?>
+                                            </h6>
+                                            <ul class="list-unstyled ms-4">
+                                                <?php foreach ($activities as $desc): ?>
+                                                    <li class="mb-2 position-relative">
+                                                        <i class="bi bi-dot position-absolute start-0 top-0 mt-1"></i>
+                                                        <span class="ms-3 d-block"><?php echo htmlspecialchars($desc); ?></span>
+                                                    </li>
+                                                <?php endforeach; ?>
+                                            </ul>
+                                        </div>
+                                    <?php endforeach; ?>
+                                <?php else: ?>
+                                    <p class="text-muted">No itinerary details available for this package.</p>
+                                <?php endif; ?>
                             </div>
                         </div>
                     </div>
@@ -335,17 +337,9 @@ $placesResult = executeQuery($placesQuery);
                         <div id="collapseFive" class="accordion-collapse collapse show" aria-labelledby="headingFive" data-bs-parent="#accordionExample">
                             <div class="accordion-body">
                                 <ul class="list-unstyled">
-                                        <li class="mb-2"><strong>Baguio and Sagada Adventure</strong></li>
+                                        <li class="mb-2"><strong><?php echo htmlspecialchars($tour['tour_name']); ?></strong></li>
                                             <ul>
-                                                <li class="mb-2">Explore the cool, scenic beauty of Baguio 
-                                                    and the serene mountains of Sagada on this unforgettable 
-                                                    tour. Stroll through vibrant city streets, visit local 
-                                                    markets, and enjoy the crisp mountain air. Discover hidden 
-                                                    gems like Sagada’s hanging coffins, caves, and breathtaking 
-                                                    viewpoints. Perfect for adventure seekers and nature lovers
-                                                     alike, this tour combines culture, history, and stunning 
-                                                     landscapes. Create lasting memories while experiencing the 
-                                                     best of northern Philippines.</li>
+                                                <li class="mb-2"><?php echo htmlspecialchars($about['description']); ?></li>
                                             </ul>
                                     </ul>
                             </div>
