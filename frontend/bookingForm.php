@@ -1,6 +1,17 @@
 <?php
 include_once "php/connect.php";
 
+// 1. Get User Info from Session
+session_start();
+$user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : 1;
+$user = null;
+
+if ($user_id) {
+    $userQuery = "SELECT * FROM users WHERE user_id = $user_id";
+    $userResult = executeQuery($userQuery);
+    $user = ($userResult) ? $userResult->fetch_assoc() : null;
+}
+
 $tour_id       = isset($_GET['tour_id']) ? intval($_GET['tour_id']) : 1;
 $pax           = isset($_GET['pax']) ? intval($_GET['pax']) : 1;
 $voucher_code  = isset($_GET['voucher']) ? trim($_GET['voucher']) : "";
@@ -168,7 +179,6 @@ $inclusions = executeQuery("SELECT * FROM tour_inclusions WHERE tour_id = $tour_
                         </div>
                     </div>
                 </div>
-
                 <div class="h5 text-success fw-bold mb-3">Personal & Pickup Information</div>
                 <div class="mb-3 text-muted small">
                     <i class="fas fa-lock text-success me-1"></i> Secure and encrypted data handling.
@@ -193,7 +203,7 @@ $inclusions = executeQuery("SELECT * FROM tour_inclusions WHERE tour_id = $tour_
                             </div>
                         </div>
 
-                        <div class="row g-3 mb-3">
+                        <div class="row g-3 mb-4">
                             <div class="col-md-12">
                                 <label class="form-label small fw-bold">Pickup Location Name (e.g. NAIA T3)</label>
                                 <input type="text" name="loc_name" class="form-control rounded-3 shadow-sm border-light" required>
@@ -204,10 +214,33 @@ $inclusions = executeQuery("SELECT * FROM tour_inclusions WHERE tour_id = $tour_
                             </div>
                         </div>
 
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-5">
+                                <label class="form-label small fw-bold">First Name</label>
+                                <input type="text" class="form-control" value="<?php echo $user['first_name'] ?? ''; ?>" readonly>
+                            </div>
+                            <div class="col-md-5">
+                                <label class="form-label small fw-bold">Last Name</label>
+                                <input type="text" class="form-control" value="<?php echo $user['last_name'] ?? ''; ?>" readonly>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label small fw-bold">M.I.</label>
+                                <input type="text" class="form-control" value="<?php echo $user['middle_initial'] ?? ''; ?>" readonly>
+                            </div>
+                        </div>
+
                         <div class="row g-3">
-                            <div class="col-md-5"><label class="form-label small fw-bold">First Name</label><input type="text" class="form-control"></div>
-                            <div class="col-md-5"><label class="form-label small fw-bold">Last Name</label><input type="text" class="form-control"></div>
-                            <div class="col-md-2"><label class="form-label small fw-bold">M.I.</label><input type="text" class="form-control"></div>
+                            <div class="col-md-7">
+                                <label class="form-label small fw-bold">Email Address</label>
+                                <input type="email" name="email" class="form-control" value="<?php echo $user['email'] ?? ''; ?>" readonly>
+                            </div>
+                            <div class="col-md-5">
+                                <label class="form-label small fw-bold">Contact Number</label>
+                                <input type="text" name="contact_no" class="form-control" value="<?php echo $user['contact_no'] ?? ''; ?>" readonly>
+                            </div>
+                        </div>
+                        <div class="mt-2 small text-muted">
+                            <i class="fas fa-info-circle me-1"></i> These details are pulled from your profile.
                         </div>
                     </form>
                 </div>
@@ -268,10 +301,7 @@ $inclusions = executeQuery("SELECT * FROM tour_inclusions WHERE tour_id = $tour_
                         </div>
                     </div>
                     <div class="d-grid gap-2">
-                        <button type="submit" form="bookingForm" class="btn btn-success w-100 py-3 fw-bold rounded-3 shadow-sm border-0"
-                            style="background: linear-gradient(45deg, #198754, #20c997);">
-                            CONFIRM AND PAY ₱<?php echo number_format($total, 2); ?>
-                        </button>
+                        <div id="paypal-button-container"></div>
 
                         <a href="tour_details.php?tour_id=<?php echo $tour_id ?>" class="btn btn-outline-danger w-100 py-3 fw-bold rounded-3 shadow-sm border-2">
                             CANCEL BOOKING
@@ -281,6 +311,68 @@ $inclusions = executeQuery("SELECT * FROM tour_inclusions WHERE tour_id = $tour_
             </div>
         </div>
     </div>
+    <script src="https://www.paypal.com/sdk/js?client-id=AR_ityCiAr_1l5CInno8S9b7EVE0xZMxuGTaky01nSU3vZUi4DH2UuKmQyCkVs-SDiDondbdcl8VZM4I&currency=PHP"></script>
+
+
+    <script>
+        console.log('PayPal SDK loaded:', typeof paypal !== 'undefined');
+
+        paypal.Buttons({
+            style: {
+                layout: 'vertical',
+                color: 'gold',
+                shape: 'rect',
+                label: 'pay'
+            },
+
+            // 1. Create Order
+            createOrder: function(data, actions) {
+                const formData = new FormData();
+                formData.append('tour_id', '<?php echo $tour_id; ?>');
+                formData.append('pax', '<?php echo $pax; ?>');
+                formData.append('client_region', '<?php echo $client_region; ?>');
+                formData.append('voucher_code', '<?php echo $voucher_code; ?>');
+
+                return fetch('createOrder.php', {
+                    method: 'POST',
+                    body: formData
+                }).then(function(res) {
+                    return res.json();
+                }).then(function(orderData) {
+                    return orderData.id; // Returns the PayPal Order ID
+                });
+            },
+
+            // 2. Capture Order (On Approve)
+            onApprove: function(data, actions) {
+                const form = document.getElementById('bookingForm');
+
+                // Get form values manually to send to captureOrder
+                const formData = new FormData();
+                formData.append('orderID', data.orderID);
+                formData.append('tour_id', '<?php echo $tour_id; ?>');
+                formData.append('pax', '<?php echo $pax; ?>');
+                formData.append('loc_name', form.querySelector('[name="loc_name"]').value);
+                formData.append('loc_addr', form.querySelector('[name="loc_addr"]').value);
+
+                // Note: To capture specific schedule, ensure your select input has a name/id and capture it here.
+
+                return fetch('captureOrder.php', {
+                    method: 'POST',
+                    body: formData
+                }).then(function(res) {
+                    return res.json();
+                }).then(function(details) {
+                    if (details.success) {
+                        alert('Payment Successful! Booking Reference: ' + details.ref);
+                        window.location.href = "index.php"; // Redirect to homepage or history
+                    } else {
+                        alert('Payment failed or Database error: ' + details.message);
+                    }
+                });
+            }
+        }).render('#paypal-button-container');
+    </script>
 
     <?php include "components/footer.php"; ?>
 </body>
