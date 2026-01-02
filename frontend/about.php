@@ -40,10 +40,10 @@
                         </div>
                     </div>
                     <div class="col-md-6 text-center">
-                        <div class="p-2 border rounded-5 d-inline-block bg-light shadow-sm">
-                            <img src="/EscaPinas/frontend/assets/images/Logo%201.png" 
+                        <div class="logo-wrapper p-2 rounded-5 d-inline-block">
+                            <img src="/EscaPinas/frontend/assets/images/logo_upscaled.jpg" 
                                  alt="EscaPinas Official Logo - Sustainable Travel and Tours Philippines" 
-                                 class="img-fluid rounded-5 p-4 bg-white brand-logo-img">
+                                 class="img-fluid rounded-5 p-4 brand-logo-img">
                         </div>
                     </div>
                 </div>
