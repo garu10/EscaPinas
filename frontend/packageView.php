@@ -14,6 +14,7 @@ $tourQuery = "SELECT tp.*, d.destination_name, r.island_name
 $tourResult = executeQuery($tourQuery);
 $tour = mysqli_fetch_assoc($tourResult);
 
+// query sa pagselect ng mga images and other info dun sa places to visit
 $placesQuery = "SELECT * FROM tour_place WHERE tour_id = $tour_id";
 $placesResult = executeQuery($placesQuery);
 
@@ -31,6 +32,20 @@ $aboutQuery = "SELECT * FROM tour_about WHERE tour_id = $tour_id";
 $aboutResult = executeQuery($aboutQuery);
 $about = mysqli_fetch_assoc($aboutResult);
 
+
+// Get the tour_id from the URL
+$tour_id = isset($_GET['tour_id']) ? (int) $_GET['tour_id'] : 0;
+
+// Fetch Average Rating
+$ratingQuery = "SELECT AVG(rating_score) as avg_rating, COUNT(review_id) as total_reviews 
+                FROM ratings 
+                WHERE tour_id = $tour_id";
+$ratingResult = executeQuery($ratingQuery);
+$ratingData = mysqli_fetch_assoc($ratingResult);
+
+$average = $ratingData['avg_rating'] ? round($ratingData['avg_rating'], 1) : 0;
+$count = $ratingData['total_reviews'] ?? 0;
+
 ?>
 
 <!doctype html>
@@ -46,47 +61,60 @@ $about = mysqli_fetch_assoc($aboutResult);
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
 
-<body class="bg-light">
+<body class>
 
     <?php include "components/navbar.php"; ?>
-    <div class="container-fluid p-0">
-        <div class="row g-0">
-            <div class="col">
-                <a href="javascript:history.back()"
-                    class="btn btn-success btn-sm position-absolute rounded-pill shadow-sm px-3 py-2"
-                    style="top: 20px; left: 20px; z-index: 10;">
-                    <i class="bi bi-chevron-left"></i> Back
-                </a>
+    <div class="row g-0">
+        <div class="col">
+            <a href="javascript:history.back()"
+                class="btn btn-success btn-sm position-absolute rounded-pill shadow-sm px-3 py-2"
+                style="top: 20px; left: 20px; z-index: 10;">
+                <i class="bi bi-chevron-left"></i> Back
+            </a>
 
-                <div style="height: 50vh; min-height: 350px; overflow: hidden;">
-                    <?php
-                    // need mag dagdag sa database ng tour_packages ng column para sa banner "banner_image"
-                    $banner_src = !empty($tour['banner_image']) ? "assets/images/" . $tour['banner_image'] : "assets/images/banner.png";
-                    ?>
-                    <img src="<?php echo $banner_src; ?>" class="w-100 h-100" style="object-fit: cover;">
-                </div>
+            <div style="height: 50vh; min-height: 350px; overflow: hidden;">
+                <?php
+                // need mag dagdag ng column sa database ng tour_packages para sa banner "banner_image"
+                $banner_src = !empty($tour['banner_image']) ? "assets/images/" . $tour['banner_image'] : "";
+                ?>
+                <img src="<?php echo $banner_src; ?>" class="w-100 h-100" style="object-fit: cover;">
             </div>
         </div>
+    </div>
     </div>
     <div class="container my-5 mb-5">
         <div class="row">
             <div class="col-12">
                 <div class="card shadow p-5 rounded-5">
                     <div class="mb-2 d-flex justify-content-between align-items-center flex-wrap">
-                        <h1 class="fw-bold text-success ">₱ <?php echo htmlspecialchars($tour['price']); ?> <small
-                                class="fw-bold text-muted fs-6 fw-normal">/ PAX</small></h1>
+                        <h1 class="fw-bold text-success ">₱
+                            <?php echo htmlspecialchars($tour['price']); ?> <small
+                                class="fw-bold text-muted fs-6 fw-normal">/ PAX</small>
+                        </h1>
                         <div class="text-warning fs-6">
-                            <span class="text-success small ms-2">4.9 RATING</span>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-half"></i>
+                            <span class="text-success small ms-2">
+                                <?= $average ?> RATING (
+                                <?= $count ?> Reviews)
+                            </span>
+                            <?php
+                            // need magdagdag ng rating_score sa table ng ratings
+                            for ($i = 1; $i <= 5; $i++) {
+                                if ($i <= $average) {
+                                    echo '<i class="bi bi-star-fill"></i>'; // Full Star
+                                } elseif ($i - 0.5 <= $average) {
+                                    echo '<i class="bi bi-star-half"></i>'; // Half Star
+                                } else {
+                                    echo '<i class="bi bi-star"></i>';      // Empty Star
+                                }
+                            }
+                            ?>
                         </div>
                     </div>
 
                     <div class="mb-3">
-                        <h1 class="fw-bold text-success mb-3"><?php echo htmlspecialchars($tour['tour_name']); ?></h1>
+                        <h1 class="fw-bold text-success mb-3">
+                            <?php echo htmlspecialchars($tour['tour_name']); ?>
+                        </h1>
                         <p class="text-secondary leading-relaxed">
                             <?php echo htmlspecialchars($tour['description']); ?>
                         </p>
@@ -94,8 +122,10 @@ $about = mysqli_fetch_assoc($aboutResult);
                     <div class="row mb-5 justify-content-start g-2">
                         <div class="col-auto d-flex align-items-center gap-2 px-3">
                             <i class="bi bi-moon-stars text-success fs-6"></i>
-                            <span class="fw-bold"><?php echo htmlspecialchars($tour['duration_days']); ?>D -
-                                <?php echo htmlspecialchars($tour['duration_nights']); ?>N</span>
+                            <span class="fw-bold">
+                                <?php echo htmlspecialchars($tour['duration_days']); ?>D -
+                                <?php echo htmlspecialchars($tour['duration_nights']); ?>N
+                            </span>
                         </div>
                         <div class="col-auto d-flex align-items-center gap-2 px-3 border-start">
                             <i class="bi bi-calendar-range text-success fs-6"></i>
@@ -151,7 +181,8 @@ $about = mysqli_fetch_assoc($aboutResult);
                                                     <div class="card-img-overlay d-flex align-items-end p-3">
                                                         <div class="card-img-overlay d-flex align-items-end p-3">
                                                             <h5 class="text-white fw-bold m-0">
-                                                                <?php echo htmlspecialchars($place['place_name']); ?></h5>
+                                                                <?php echo htmlspecialchars($place['place_name']); ?>
+                                                            </h5>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -208,13 +239,16 @@ $about = mysqli_fetch_assoc($aboutResult);
                                     <?php foreach ($itineraryData as $day => $activities): ?>
                                         <div class="mb-4">
                                             <h6 class="fw-bold text-success">
-                                                <i class="bi bi-calendar-check me-2"></i> Day <?php echo $day; ?>
+                                                <i class="bi bi-calendar-check me-2"></i> Day
+                                                <?php echo $day; ?>
                                             </h6>
                                             <ul class="list-unstyled ms-4">
                                                 <?php foreach ($activities as $desc): ?>
                                                     <li class="mb-2 position-relative">
                                                         <i class="bi bi-dot position-absolute start-0 top-0 mt-1"></i>
-                                                        <span class="ms-3 d-block"><?php echo htmlspecialchars($desc); ?></span>
+                                                        <span class="ms-3 d-block">
+                                                            <?php echo htmlspecialchars($desc); ?>
+                                                        </span>
                                                     </li>
                                                 <?php endforeach; ?>
                                             </ul>
@@ -345,10 +379,13 @@ $about = mysqli_fetch_assoc($aboutResult);
                             data-bs-parent="#accordionExample">
                             <div class="accordion-body">
                                 <ul class="list-unstyled">
-                                    <li class="mb-2">
-                                        <strong><?php echo htmlspecialchars($tour['tour_name']); ?></strong></li>
+                                    <li class="mb-2"><strong>
+                                            <?php echo htmlspecialchars($tour['tour_name']); ?>
+                                        </strong></li>
                                     <ul>
-                                        <li class="mb-2"><?php echo htmlspecialchars($about['description']); ?></li>
+                                        <li class="mb-2">
+                                            <?php echo htmlspecialchars($about['description']); ?>
+                                        </li>
                                     </ul>
                                 </ul>
                             </div>
@@ -363,14 +400,11 @@ $about = mysqli_fetch_assoc($aboutResult);
             <div class="col-10">
                 <div class="row">
                     <div class="col-6">
-                        <a href="bookingForm.php"> <button
-                                class="btn btn-success px-5 btn-lg py-3 fw-bold rounded-pill">Book This Trip</button>
-                        </a>
+                        <button class="btn btn-success px-5 btn-lg py-3 fw-bold rounded-pill">Book This Trip</button>
                     </div>
                     <div class="col-6">
-                        <a href="wishlist.php"> <button
-                                class="btn btn-outline-secondary px-5 btn-lg py-3 fw-bold rounded-pill">Add to
-                                Wishlist</button> </a>
+                        <button class="btn btn-outline-secondary px-5 btn-lg py-3 fw-bold rounded-pill">Add to
+                            Wishlist</button>
                     </div>
                 </div>
             </div>
