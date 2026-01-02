@@ -1,17 +1,41 @@
+<?php
+include_once(__DIR__ . "/../php/connect.php");
+
+if (!isset($_SESSION['user_id'])) {
+    header("Location: /EscaPinas/frontend/login.php");
+    exit();
+}
+
+$uid = $_SESSION['user_id'];
+$query = "SELECT * FROM users WHERE user_id = '$uid'";
+$result = executeQuery($query);
+$user = mysqli_fetch_assoc($result);
+
+// labels toh tsaka yung corresponsing values
+// kaya dun sa foreach na loop may $label at $val (value yon)
+$fields = [
+    "First Name"    => $user['first_name'] ?? '',
+    "Last Name"     => $user['last_name'] ?? '',
+    "Address"       => $user['province'] ?? '',
+    "Email Address" => $user['email'] ?? '',
+    "Phone Number"  => $user['contact_num'] ?? ''
+];
+?>
 <h3 class="fw-bold text-success">Personal Details</h3>
 <p class="text-muted small">Keep your details accurate for a smoother booking experience.</p>
 
 <div class="mt-4">
-    <?php
-    $fields = ["First Name", "Last Name", "Address", "Email Address", "Phone Number"];
-    foreach ($fields as $idx => $field): ?>
+    <!-- nandito pa rin yung code at logic, may binago lang ako sa fields/labels at yung laman ng p tag -->
+    <?php 
+    $idx = 0;
+    foreach ($fields as $label => $val): ?>
         <div class="mb-4 profile-row" id="row-<?= $idx ?>">
             <div class="d-flex justify-content-between align-items-center">
-                <label class="fw-semibold text-success small"><?= $field ?></label>
+                <label class="fw-semibold text-success small"><?= $label ?></label>
                 <span class="edit-link text-primary fw-bold" onclick="toggleEdit(<?= $idx ?>, true)" style="font-size: 13px; cursor: pointer;">Edit</span>
             </div>
             <div class="info-box" style="background: #edededff; border-radius: 12px; padding: 12px 15px; min-height: 48px; display: flex; align-items: center; margin-top: 5px;">
-                <p class="view-text m-0 fw-semibold text-dark w-100"><?= ($field == "Email Address" && isset($_SESSION['email'])) ? $_SESSION['email'] : "Not set"; ?></p>
+                <p class="view-text m-0 fw-semibold text-dark w-100"><?= !empty($val) ? htmlspecialchars($val) : "Not set"; ?></p>
                 <input type="text" class="custom-input w-100 fw-semibold text-dark" placeholder="<?= $field ?>"
                     style="background: transparent; border: none; padding: 0; display: none; outline: none;">
             </div>
@@ -20,7 +44,9 @@
                     style="border-radius: 10px; display: none; font-size: 14px;">Save</button>
             </div>
         </div>
-    <?php endforeach; ?>
+    <?php 
+    $idx++;
+    endforeach; ?>
 
     <p class="text-muted small mt-4">
         We'll only use this info to personalize your experience on EscaPinas.
