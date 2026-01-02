@@ -64,38 +64,23 @@ $count = $ratingData['total_reviews'] ?? 0;
 <body class="bg-light">
 
     <?php include "components/navbar.php"; ?>
-    <div class="container-fluid p-0">
         <div class="row g-0">
-            <div class="col">
-                <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
-                    <a href="javascript:history.back()" class="btn btn-light btn-sm position-absolute rounded-pill shadow-sm px-3 py-2" style="top: 20px; left: 20px; z-index: 1050; opacity: 0.9;"><i class="bi bi-chevron-left"></i> Back</a>
-                    <div class="carousel-indicators">
-                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
-                    </div>
-                    <div class="carousel-inner">
-                        <div class="carousel-item active" style="height: 50vh; min-height: 300px;">
-                            <img src="assets/images/banner.png" class="d-block w-100 h-100" style="object-fit: cover;" alt="...">
-                        </div>
-                        <div class="carousel-item" style="height: 50vh; min-height: 300px;">
-                            <img src="assets/images/banner.png" class="d-block w-100 h-100" style="object-fit: cover;" alt="...">
-                        </div>
-                        <div class="carousel-item" style="height: 50vh; min-height: 300px;">
-                            <img src="assets/images/banner.png" class="d-block w-100 h-100" style="object-fit: cover;" alt="...">
-                        </div>
-                    </div>
-                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Previous</span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Next</span>
-                    </button>
-                </div>
+        <div class="col">
+            <a href="javascript:history.back()"
+                class="btn btn-success btn-sm position-absolute rounded-pill shadow-sm px-3 py-2"
+                style="top: 20px; left: 20px; z-index: 10;">
+                <i class="bi bi-chevron-left"></i> Back
+            </a>
+
+            <div style="height: 50vh; min-height: 350px; overflow: hidden;">
+                <?php
+                // need mag dagdag ng column sa database ng tour_packages para sa banner "banner_image"
+                $banner_src = !empty($tour['banner_image']) ? "assets/images/" . $tour['banner_image'] : "assets/images/banner.png";
+                ?>
+                <img src="<?php echo $banner_src; ?>" class="w-100 h-100" style="object-fit: cover;">
             </div>
         </div>
+    </div>
     </div>
    <div class="container my-5 mb-5">
         <div class="row">
