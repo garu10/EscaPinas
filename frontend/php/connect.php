@@ -1,7 +1,5 @@
 <?php
-session_start();
-
-    $dbhost = "localhost:3307"; 
+    $dbhost = "localhost"; 
     $dbuser = "root";
     $dbpass = "";
     $db = "escapinas";

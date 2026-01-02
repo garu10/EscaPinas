@@ -6,7 +6,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = $_POST['password'];
 
     $get_email = "SELECT * FROM users WHERE email = '$email' LIMIT 1";
-    $result =executeQuery($get_email);
+    $result = executeQuery($get_email);
+
+    /*if ($result->num_rows > 0) {
+    $user = $result->fetch_assoc();
+
+    echo "<h3>Debugging Password Issue</h3>";
+    echo "1. Plain Text Entered: " . $password . "<br>";
+    echo "2. Hash stored in DB: " . $user['password'] . "<br>";
+    echo "3. Length of Hash in DB: " . strlen($user['password']) . " characters<br>";
+    
+    if (password_verify($password, $user['password'])) {
+        echo "<b style='color:green'>4. Result: VERIFY SUCCESS!</b>";
+    } else {
+        echo "<b style='color:red'>4. Result: VERIFY FAILED!</b>";
+        
+        // Let's test if the hash in DB is even a valid hash
+        $info = password_get_info($user['password']);
+        echo "<br>5. Is this a valid hash? " . ($info['algo'] != 0 ? 'Yes' : 'No');
+    }
+    exit(); // Stop the page here so we can read this
+}*/
 
     if ($result->num_rows > 0) {
         $user = $result->fetch_assoc();
