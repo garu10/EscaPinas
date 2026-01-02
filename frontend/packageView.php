@@ -37,7 +37,7 @@ $about = mysqli_fetch_assoc($aboutResult);
 $tour_id = isset($_GET['tour_id']) ? (int) $_GET['tour_id'] : 0;
 
 // Fetch Average Rating
-$ratingQuery = "SELECT AVG(rating_score) as avg_rating, COUNT(review_id) as total_reviews 
+$ratingQuery = "SELECT AVG(rating) as avg_rating, COUNT(review_id) as total_reviews 
                 FROM ratings 
                 WHERE tour_id = $tour_id";
 $ratingResult = executeQuery($ratingQuery);
@@ -132,9 +132,9 @@ $count = $ratingData['total_reviews'] ?? 0;
                             <span class="fw-bold">JAN 1 - 2</span>
                         </div>
                         <div class="col-auto d-flex align-items-center gap-2 px-3 border-start">
-                            <span class="fw-bold">MODES OF TRANSPORTATION</span>
                             <i class="bi bi-bus-front text-success fs-6"></i>
                             <i class="bi bi-airplane text-success fs-6"></i>
+                            <span class="fw-bold">TRANSPO</span>
                         </div>
                         <div class="col-auto d-flex align-items-center gap-2 px-3 border-start">
                             <i class="bi bi-people text-success fs-6"></i>
@@ -152,8 +152,8 @@ $count = $ratingData['total_reviews'] ?? 0;
                     <div class="text-center mb-5">
                         <h1 class="fw-bold text-success display-5 mb-2" style="font-family: 'Poppins', sans-serif;">
                             Places to Visit</h1>
-                        <p class="text-success fw-bold " style="font-size:1rem; font-family: 'Poppins', sans-serif;">
-                            Discover breathtaking destinations handpicked by Escapinas.From iconic tourist spots to hidden gems.</p>
+                        <p class="text-success text-dark" style="font-size:1rem; font-family: 'Poppins', sans-serif;">
+                            Discover breathtaking destinations handpicked by Escapinas. From iconic tourist spots to hidden gems.</p>
                     </div>
 
                     <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
@@ -216,8 +216,8 @@ $count = $ratingData['total_reviews'] ?? 0;
                         </button>
                     </div>
 
-                    <div class="mt-3 pt-4 text-center">
-                        <p class="fw-bold mb-0 text-muted">Destinations may vary based on weather and site availability. </p>
+                    <div class="mt-5 pt-4 text-center">
+                        <p class="fst-italic mb-0 text-muted">Destinations may vary based on weather and site availability. </p>
                     </div>
                 </div>
             </div>

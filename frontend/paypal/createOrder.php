@@ -1,96 +1,38 @@
 <?php
-require_once "php/connect.php";
+session_start();
+include_once "../php/connect.php"; 
 
-// Use the credentials found in your uploaded file
-$clientId = "AR_ityCiAr_1l5CInno8S9b7EVE0xZMxuGTaky01nSU3vZUi4DH2UuKmQyCkVs-SDiDondbdcl8VZM4I";
-$secret   = "key ko ito dapat";
+header('Content-Type: application/json');
 
-function generateAccessToken($clientId, $secret) {
-    $ch = curl_init("https://api-m.sandbox.paypal.com/v1/oauth2/token");
-    curl_setopt_array($ch, [
-        CURLOPT_HTTPHEADER => ["Accept: application/json", "Accept-Language: en_US"],
-        CURLOPT_USERPWD => "$clientId:$secret",
-        CURLOPT_POSTFIELDS => "grant_type=client_credentials",
-        CURLOPT_POST => true,
-        CURLOPT_RETURNTRANSFER => true
-    ]);
-    $response = curl_exec($ch);
-    return json_decode($response, true)["access_token"];
-}
+$clientId = "AUFm83PF0D4DzFwlx6OfKVsry3C5e1gyFgN3rATp7lGjNRVhxVrdcRLAqTy7ZXbuLiP5d0O769_gFu2H";
+$secret = "EPPCj52zDcZjVYDfv3vrEkvchOMXyXYNHjQbg73XhQvIOYFOY6nIE_qhOwAtkmZut5nq5U_Gr6Wrm9q9"; 
+$baseUrl = "https://api-m.sandbox.paypal.com";
 
-/* ===== RECEIVE DATA FROM JS ===== */
-$tour_id       = isset($_POST['tour_id']) ? (int)$_POST['tour_id'] : 0;
-$pax           = isset($_POST['pax']) ? (int)$_POST['pax'] : 1;
-// Note: Based on your previous code, these tables (region_fees, vouchers) were implied. 
-// If they are not in your SQL dump, these values will default to 0.
-$client_region = isset($_POST['client_region']) ? $_POST['client_region'] : '';
-$voucher_code  = isset($_POST['voucher_code']) ? $_POST['voucher_code'] : '';
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, "$baseUrl/v1/oauth2/token");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_USERPWD, "$clientId:$secret");
+curl_setopt($ch, CURLOPT_POSTFIELDS, "grant_type=client_credentials");
+$auth = json_decode(curl_exec($ch));
+$token = $auth->access_token;
 
-/* ===== RECOMPUTE TOTAL SERVER-SIDE ===== */
-// Fetch base price from tour_packages
-$query = "SELECT t.price, t.tour_name, d.island_name 
-          FROM tour_packages t 
-          LEFT JOIN destinations d ON t.destination_id = d.destination_id 
-          LEFT JOIN regions r ON d.island_id = r.island_id 
-          WHERE t.tour_id = $tour_id";
-$result = executeQuery($query);
-$tour   = $result->fetch_assoc();
+$tour_id = intval($_POST['tour_id']);
+$pax = intval($_POST['pax']);
+$res = executeQuery("SELECT price FROM tour_packages WHERE tour_id = $tour_id");
+$tour = $res->fetch_assoc();
+$total_amount = ($tour['price'] * $pax) * 1.12; 
 
-if (!$tour) { die(json_encode(["error" => "Tour not found"])); }
-
-$base_price = $tour['price'];
-$subtotal   = $base_price * $pax;
-$vat        = $subtotal * 0.12;
-$airfare    = 0.00;
-$discount   = 0.00;
-
-// Logic from your bookingForm.php
-if (!empty($client_region)) {
-    // Assuming region_fees table exists as per your original code
-    $tour_island = $tour['island_name'];
-    $fQuery = "SELECT additional_fee FROM region_fees WHERE origin_island = '$client_region' AND destination_island = '$tour_island'";
-    $fRes = executeQuery($fQuery);
-    if ($fRes && $row = $fRes->fetch_assoc()) {
-        $airfare = $row['additional_fee'] * $pax;
-    }
-}
-
-if (!empty($voucher_code)) {
-    // Assuming vouchers table exists as per your original code
-    $vQuery = "SELECT discount_amount FROM vouchers WHERE code = '$voucher_code' AND is_redeemed = 0 AND expires_at > NOW()";
-    $vRes = executeQuery($vQuery);
-    if ($vRes && $row = $vRes->fetch_assoc()) {
-        $discount = $row['discount_amount'];
-    }
-}
-
-$final_total = ($subtotal + $vat + $airfare) - $discount;
-$final_total_formatted = number_format($final_total, 2, '.', '');
-
-/* ===== CREATE PAYPAL ORDER ===== */
-$token = generateAccessToken($clientId, $secret);
-
-$data = [
+$orderData = [
     "intent" => "CAPTURE",
     "purchase_units" => [[
-        "amount" => [
-            "currency_code" => "PHP",
-            "value" => $final_total_formatted
-        ],
-        "description" => "Booking: " . $tour['tour_name'] . " ($pax Pax)"
+        "amount" => ["currency_code" => "PHP", "value" => number_format($total_amount, 2, '.', '')]
     ]]
 ];
 
-$ch = curl_init("https://api-m.sandbox.paypal.com/v2/checkout/orders");
-curl_setopt_array($ch, [
-    CURLOPT_HTTPHEADER => [
-        "Content-Type: application/json",
-        "Authorization: Bearer $token"
-    ],
-    CURLOPT_POST => true,
-    CURLOPT_POSTFIELDS => json_encode($data),
-    CURLOPT_RETURNTRANSFER => true
-]);
+curl_setopt($ch, CURLOPT_URL, "$baseUrl/v2/checkout/orders");
+curl_setopt($ch, CURLOPT_HTTPHEADER, ["Content-Type: application/json", "Authorization: Bearer $token"]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($orderData));
+$response = curl_exec($ch);
+curl_close($ch);
 
-echo curl_exec($ch);
-?>
+echo $response;
