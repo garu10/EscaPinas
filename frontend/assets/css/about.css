@@ -7,13 +7,22 @@ body {
 
 /* Header & Banner */
 .about-header {
-    /* Palitan mo ang line na ito sa about.css */
-    background: linear-gradient(rgba(5, 50, 7, 0.75), rgba(12, 164, 88, 0.65)), url('/EscaPinas/frontend/assets/images/banner_about.jpg');
-    background-size: cover;
-    background-position: center;
+    background: linear-gradient(rgba(5, 50, 7, 0.75), rgba(12, 164, 88, 0.65)), 
+                url('/EscaPinas/frontend/assets/images/banner_about.jpg');
+    
+    /* 1. Control the size: 'contain' fits the image, 
+       or use a percentage/pixel value to scale it down */
+    background-size: 100%; 
+    
+    /* 2. Move image up: change 'center' to 'top' or a specific percentage (e.g., 0% 20%) */
+    background-position: center top; 
+    
     background-attachment: fixed;
     color: white;
-    padding: 150px 0;
+    
+    /* 3. Make the banner smaller by reducing top/bottom padding */
+    padding: 170px 0; 
+    
     text-align: center;
 }
 
