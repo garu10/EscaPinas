@@ -14,6 +14,7 @@ $tourQuery = "SELECT tp.*, d.destination_name, r.island_name
 $tourResult = executeQuery($tourQuery);
 $tour = mysqli_fetch_assoc($tourResult);
 
+// query sa pagselect ng mga images and other info dun sa places to visit
 $placesQuery = "SELECT * FROM tour_place WHERE tour_id = $tour_id";
 $placesResult = executeQuery($placesQuery);
 
@@ -30,6 +31,20 @@ while ($row = mysqli_fetch_assoc($itineraryResult)) {
 $aboutQuery = "SELECT * FROM tour_about WHERE tour_id = $tour_id";
 $aboutResult = executeQuery($aboutQuery);
 $about = mysqli_fetch_assoc($aboutResult);
+
+
+// Get the tour_id from the URL
+$tour_id = isset($_GET['tour_id']) ? (int)$_GET['tour_id'] : 0;
+
+// Fetch Average Rating
+$ratingQuery = "SELECT AVG(rating_score) as avg_rating, COUNT(review_id) as total_reviews 
+                FROM ratings 
+                WHERE tour_id = $tour_id";
+$ratingResult = executeQuery($ratingQuery);
+$ratingData = mysqli_fetch_assoc($ratingResult);
+
+$average = $ratingData['avg_rating'] ? round($ratingData['avg_rating'], 1) : 0;
+$count = $ratingData['total_reviews'] ?? 0;
 
 ?>
 
@@ -89,12 +104,18 @@ $about = mysqli_fetch_assoc($aboutResult);
                     <div class="mb-2 d-flex justify-content-between align-items-center flex-wrap">
                         <h1 class="fw-bold text-success ">₱ <?php echo htmlspecialchars($tour['price']); ?> <small class="fw-bold text-muted fs-6 fw-normal">/ PAX</small></h1>
                         <div class="text-warning fs-6">
-                            <span class="text-success small ms-2">4.9 RATING</span>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-half"></i>
+                            <span class="text-success small ms-2"><?= $average ?> RATING (<?= $count ?> Reviews)</span>
+                            <?php
+                            for ($i = 1; $i <= 5; $i++) {
+                                if ($i <= $average) {
+                                    echo '<i class="bi bi-star-fill"></i>'; // Full Star
+                                } elseif ($i - 0.5 <= $average) {
+                                    echo '<i class="bi bi-star-half"></i>'; // Half Star
+                                } else {
+                                    echo '<i class="bi bi-star"></i>';      // Empty Star
+                                }
+                            }
+                            ?>
                         </div>
                     </div>
 
@@ -354,10 +375,10 @@ $about = mysqli_fetch_assoc($aboutResult);
             <div class="col-10">
                 <div class="row">
                     <div class="col-6">
-                       <a href="bookingForm.php">  <button class="btn btn-success px-5 btn-lg py-3 fw-bold rounded-pill">Book This Trip</button> </a>
+                        <button class="btn btn-success px-5 btn-lg py-3 fw-bold rounded-pill">Book This Trip</button>
                     </div>
                     <div class="col-6">
-                     <a href="wishlist.php">  <button class="btn btn-outline-secondary px-5 btn-lg py-3 fw-bold rounded-pill">Add to Wishlist</button> </a>
+                        <button class="btn btn-outline-secondary px-5 btn-lg py-3 fw-bold rounded-pill">Add to Wishlist</button>
                     </div>
                 </div>
             </div>
