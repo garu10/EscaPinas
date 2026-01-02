@@ -14,13 +14,9 @@
 
 <body>
 
-    <div class="container-fluid p-0 banner-light" style="background-image:url('frontend/assets/images/banner.png'); background-size:cover; background-position:center; height:80vh; position:relative;">
+    <div class="container-fluid p-0 banner-light" style="background-image:url('frontend/assets/images/banner_index.gif'); background-size:cover; background-position:center; height:300px; position:relative;">
     <div class="row g-0 h-50 align-items-end px-3 px-lg-5 banner-content">
         <div class="col-12 text-start">
-        <div class="p-3 p-lg-4">
-            <h1 class="display-1 fw-bold fst-italic banner-title" style="color:#053207;">Magandang Araw!</h1>
-            <p class="lead fs-3 fw-light banner-subtitle">Explore beautiful places in the Philippines with EscaPinas</p>
-        </div>
         </div>
     </div>
 
