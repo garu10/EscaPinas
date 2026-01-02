@@ -1,15 +1,13 @@
 <?php
 include_once(__DIR__ . "/../../php/connect.php");
 
-// Ensure user is logged in
 $uid = $_SESSION['user_id'] ?? null;
 
 if (!$uid) {
     echo "<div class='text-center py-5'><p class='text-muted'>Please log in to view your wishlist.</p></div>";
     return;
 }
-
-// Fetch Wishlist Items with Tour Details
+// query para makuha yung data ng wishlist ng user
 $wishlistQuery = "SELECT w.wishlist_id, tp.* FROM wishlist w
                   JOIN tour_packages tp ON w.tour_id = tp.tour_id
                   WHERE w.user_id = $uid
@@ -20,6 +18,7 @@ $wishlistResult = executeQuery($wishlistQuery);
 
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h4 class="fw-bold text-success m-0">My Wishlist</h4>
+    <!-- count lang toh nung current number nung wishlist -->
     <span class="badge bg-success rounded-pill"><?= mysqli_num_rows($wishlistResult) ?> Items</span>
 </div>
 
@@ -61,7 +60,6 @@ $wishlistResult = executeQuery($wishlistQuery);
 <script>
 function removeFromWishlist(wishlistId) {
     if(confirm('Remove this item from your wishlist?')) {
-        // You would typically use fetch() here to call a backend delete script
         window.location.href = `../backend/remove_wishlist.php?id=${wishlistId}`;
     }
 }
