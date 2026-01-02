@@ -39,7 +39,7 @@
                 <span class="badge bg-success">Starts at</span>
                 <p class="fw-bold mb-0 ms-2 fs-3">₱999 <span class="fs-6">/per pax</span></p>
               </div>
-              <a href="frontend/booking_form.php" class="btn btn-success w-100 mt-2">Book Now</a>
+              <a href="frontend/bookingForm.php" class="btn btn-success w-100 mt-2">Book Now</a>
             </div>
           </div>
         </div>
@@ -55,7 +55,7 @@
                 <span class="badge bg-success">Starts at</span>
                 <p class="fw-bold mb-0 ms-2 fs-3">₱2,999 <span class="fs-6">/per pax</span></p>
               </div>
-              <a href="frontend/booking_form.php" class="btn btn-success w-100 mt-2">Book Now</a>
+              <a href="frontend/bookingForm.php" class="btn btn-success w-100 mt-2">Book Now</a>
             </div>
           </div>
         </div>
@@ -71,7 +71,7 @@
                 <span class="badge bg-success">Starts at</span>
                 <p class="fw-bold mb-0 ms-2 fs-3">₱4,999 <span class="fs-6">/per pax</span></p>
               </div>
-              <a href="frontend/booking_form.php" class="btn btn-success w-100 mt-2">Book Now</a>
+              <a href="frontend/bookingForm.php" class="btn btn-success w-100 mt-2">Book Now</a>
             </div>
           </div>
         </div>
