@@ -1,5 +1,5 @@
 <?php
-include("php/connect.php"); 
+include("php/connect.php");
 
 // test lang itoo
 // dito gineget yung tour id after maclick yung view details sa packages.php
@@ -34,7 +34,7 @@ $about = mysqli_fetch_assoc($aboutResult);
 
 
 // Get the tour_id from the URL
-$tour_id = isset($_GET['tour_id']) ? (int)$_GET['tour_id'] : 0;
+$tour_id = isset($_GET['tour_id']) ? (int) $_GET['tour_id'] : 0;
 
 // Fetch Average Rating
 $ratingQuery = "SELECT AVG(rating_score) as avg_rating, COUNT(review_id) as total_reviews 
@@ -52,19 +52,19 @@ $count = $ratingData['total_reviews'] ?? 0;
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EscaPinas</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EscaPinas</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
 
-<body class="bg-light">
+<body class>
 
     <?php include "components/navbar.php"; ?>
-        <div class="row g-0">
+    <div class="row g-0">
         <div class="col">
             <a href="javascript:history.back()"
                 class="btn btn-success btn-sm position-absolute rounded-pill shadow-sm px-3 py-2"
@@ -75,22 +75,29 @@ $count = $ratingData['total_reviews'] ?? 0;
             <div style="height: 50vh; min-height: 350px; overflow: hidden;">
                 <?php
                 // need mag dagdag ng column sa database ng tour_packages para sa banner "banner_image"
-                $banner_src = !empty($tour['banner_image']) ? "assets/images/" . $tour['banner_image'] : "assets/images/banner.png";
+                $banner_src = !empty($tour['banner_image']) ? "assets/images/" . $tour['banner_image'] : "";
                 ?>
                 <img src="<?php echo $banner_src; ?>" class="w-100 h-100" style="object-fit: cover;">
             </div>
         </div>
     </div>
     </div>
-   <div class="container my-5 mb-5">
+    <div class="container my-5 mb-5">
         <div class="row">
             <div class="col-12">
                 <div class="card shadow p-5 rounded-5">
                     <div class="mb-2 d-flex justify-content-between align-items-center flex-wrap">
-                        <h1 class="fw-bold text-success ">₱ <?php echo htmlspecialchars($tour['price']); ?> <small class="fw-bold text-muted fs-6 fw-normal">/ PAX</small></h1>
+                        <h1 class="fw-bold text-success ">₱
+                            <?php echo htmlspecialchars($tour['price']); ?> <small
+                                class="fw-bold text-muted fs-6 fw-normal">/ PAX</small>
+                        </h1>
                         <div class="text-warning fs-6">
-                            <span class="text-success small ms-2"><?= $average ?> RATING (<?= $count ?> Reviews)</span>
+                            <span class="text-success small ms-2">
+                                <?= $average ?> RATING (
+                                <?= $count ?> Reviews)
+                            </span>
                             <?php
+                            // need magdagdag ng rating_score sa table ng ratings
                             for ($i = 1; $i <= 5; $i++) {
                                 if ($i <= $average) {
                                     echo '<i class="bi bi-star-fill"></i>'; // Full Star
@@ -105,7 +112,9 @@ $count = $ratingData['total_reviews'] ?? 0;
                     </div>
 
                     <div class="mb-3">
-                        <h1 class="fw-bold text-success mb-3"><?php echo htmlspecialchars($tour['tour_name']); ?></h1>
+                        <h1 class="fw-bold text-success mb-3">
+                            <?php echo htmlspecialchars($tour['tour_name']); ?>
+                        </h1>
                         <p class="text-secondary leading-relaxed">
                             <?php echo htmlspecialchars($tour['description']); ?>
                         </p>
@@ -113,7 +122,10 @@ $count = $ratingData['total_reviews'] ?? 0;
                     <div class="row mb-5 justify-content-start g-2">
                         <div class="col-auto d-flex align-items-center gap-2 px-3">
                             <i class="bi bi-moon-stars text-success fs-6"></i>
-                            <span class="fw-bold"><?php echo htmlspecialchars($tour['duration_days']); ?>D - <?php echo htmlspecialchars($tour['duration_nights']); ?>N</span>
+                            <span class="fw-bold">
+                                <?php echo htmlspecialchars($tour['duration_days']); ?>D -
+                                <?php echo htmlspecialchars($tour['duration_nights']); ?>N
+                            </span>
                         </div>
                         <div class="col-auto d-flex align-items-center gap-2 px-3 border-start">
                             <i class="bi bi-calendar-range text-success fs-6"></i>
@@ -129,7 +141,7 @@ $count = $ratingData['total_reviews'] ?? 0;
                             <span class="fw-bold">Max 10 PAX</span>
                         </div>
                     </div>
-                </div> 
+                </div>
             </div>
         </div>
     </div>
@@ -140,39 +152,45 @@ $count = $ratingData['total_reviews'] ?? 0;
                     <h1 class="text-center mb-5 text-dark">Places to Visit</h1>
                     <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
                         <div class="carousel-indicators" style="bottom: -50px;">
-                            <button type="button" data-bs-target="#carouselExample" data-bs-slide-to="0" class="active bg-dark rounded-circle" style="width: 12px; height: 12px;" aria-current="true" aria-label="Slide 1"></button>
-                            <button type="button" data-bs-target="#carouselExample" data-bs-slide-to="1" class="bg-dark rounded-circle" style="width: 12px; height: 12px;" aria-label="Slide 2">
+                            <button type="button" data-bs-target="#carouselExample" data-bs-slide-to="0"
+                                class="active bg-dark rounded-circle" style="width: 12px; height: 12px;"
+                                aria-current="true" aria-label="Slide 1"></button>
+                            <button type="button" data-bs-target="#carouselExample" data-bs-slide-to="1"
+                                class="bg-dark rounded-circle" style="width: 12px; height: 12px;" aria-label="Slide 2">
                             </button>
                         </div>
                         <!-- hindi pa toh gagana kasi wala pa yung mga images, pero para toh dun sa carousel na may tatlong images -->
                         <div class="carousel-inner">
-                            <?php 
+                            <?php
                             $count = 0;
                             $isActive = true;
                             if (mysqli_num_rows($placesResult) > 0):
-                                while ($place = mysqli_fetch_assoc($placesResult)): 
+                                while ($place = mysqli_fetch_assoc($placesResult)):
                                     if ($count % 3 == 0): ?>
                                         <div class="carousel-item <?php echo $isActive ? 'active' : ''; ?>">
                                             <div class="row g-4">
-                                    <?php 
-                                    $isActive = false; 
-                                    endif; 
+                                                <?php
+                                                $isActive = false;
+                                    endif;
                                     ?>
 
-                                    <div class="col-4">
-                                        <div class="card destination-card border-0 shadow-lg">
-                                            <img src="<?php echo htmlspecialchars($place['image']); ?>" class="card-img rounded-3" style="height: 300px; object-fit: cover;">
-                                            <div class="card-img-overlay d-flex align-items-end p-3">
-                                                <div class="card-img-overlay d-flex align-items-end p-3">
-                                                    <h5 class="text-white fw-bold m-0"><?php echo htmlspecialchars($place['place_name']); ?></h5>
+                                            <div class="col-4">
+                                                <div class="card destination-card border-0 shadow-lg">
+                                                    <img src="<?php echo htmlspecialchars($place['image']); ?>"
+                                                        class="card-img rounded-3" style="height: 300px; object-fit: cover;">
+                                                    <div class="card-img-overlay d-flex align-items-end p-3">
+                                                        <div class="card-img-overlay d-flex align-items-end p-3">
+                                                            <h5 class="text-white fw-bold m-0">
+                                                                <?php echo htmlspecialchars($place['place_name']); ?>
+                                                            </h5>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>
 
-                                    <?php 
-                                    $count++;
-                                    if ($count % 3 == 0 || $count == mysqli_num_rows($placesResult)): ?>
+                                            <?php
+                                            $count++;
+                                            if ($count % 3 == 0 || $count == mysqli_num_rows($placesResult)): ?>
                                             </div>
                                         </div>
                                     <?php endif; ?>
@@ -183,23 +201,25 @@ $count = $ratingData['total_reviews'] ?? 0;
                                 </div>
                             <?php endif; ?>
                         </div>
-                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev" 
-                                style="left: 0; width: 5%;"> <span class="carousel-control-prev-icon bg-dark rounded-circle" aria-hidden="true"></span>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample"
+                            data-bs-slide="prev" style="left: 0; width: 5%;"> <span
+                                class="carousel-control-prev-icon bg-dark rounded-circle" aria-hidden="true"></span>
                             <span class="visually-hidden">Previous</span>
                         </button>
 
-                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next" 
-                                style="right: 0; width: 5%;">
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample"
+                            data-bs-slide="next" style="right: 0; width: 5%;">
                             <span class="carousel-control-next-icon bg-dark rounded-circle" aria-hidden="true"></span>
                             <span class="visually-hidden">Next</span>
                         </button>
-                        <p class="text-center text-dark">Discover breathtaking destinations handpicked by Escapinas. From iconic tourist spots to hidden gems,</p>
+                        <p class="text-center text-dark">Discover breathtaking destinations handpicked by Escapinas.
+                            From iconic tourist spots to hidden gems,</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-   <div class="container my-5">
+    <div class="container my-5">
         <div class="row">
             <div class="col-12">
                 <h3 class="fw-bold text-success mb-4">Tour Details & Information</h3>
@@ -207,23 +227,28 @@ $count = $ratingData['total_reviews'] ?? 0;
 
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="headingOne">
-                            <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                            <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
                                 <i class="bi bi-map-fill me-2 text-success"></i> Itinerary
                             </button>
                         </h2>
-                        <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                        <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne"
+                            data-bs-parent="#accordionExample">
                             <div class="accordion-body">
                                 <?php if (!empty($itineraryData)): ?>
                                     <?php foreach ($itineraryData as $day => $activities): ?>
                                         <div class="mb-4">
                                             <h6 class="fw-bold text-success">
-                                                <i class="bi bi-calendar-check me-2"></i> Day <?php echo $day; ?>
+                                                <i class="bi bi-calendar-check me-2"></i> Day
+                                                <?php echo $day; ?>
                                             </h6>
                                             <ul class="list-unstyled ms-4">
                                                 <?php foreach ($activities as $desc): ?>
                                                     <li class="mb-2 position-relative">
                                                         <i class="bi bi-dot position-absolute start-0 top-0 mt-1"></i>
-                                                        <span class="ms-3 d-block"><?php echo htmlspecialchars($desc); ?></span>
+                                                        <span class="ms-3 d-block">
+                                                            <?php echo htmlspecialchars($desc); ?>
+                                                        </span>
                                                     </li>
                                                 <?php endforeach; ?>
                                             </ul>
@@ -238,37 +263,40 @@ $count = $ratingData['total_reviews'] ?? 0;
 
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="headingTwo">
-                            <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
                                 <i class="bi bi-geo-alt-fill me-2 text-success"></i> Pick Up & Drop Off
                             </button>
                         </h2>
-                        <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                        <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+                            data-bs-parent="#accordionExample">
                             <div class="accordion-body">
                                 <ul class="list-unstyled">
                                     <li class="mb-2"><strong>Location Points</strong></li>
                                     <li class="mb-2"><strong>Luzon</strong></li>
-                                        <ul>
-                                            <li class="mb-2">Designated pickup points include Metro Manila
-                                                 (Cubao, Pasay, Makati) and other agreed meetup locations 
-                                                 within Luzon. Final pickup details will be provided upon booking.</li>
-                                        </ul>
+                                    <ul>
+                                        <li class="mb-2">Designated pickup points include Metro Manila
+                                            (Cubao, Pasay, Makati) and other agreed meetup locations
+                                            within Luzon. Final pickup details will be provided upon booking.</li>
+                                    </ul>
                                     <li class="mb-2"><strong>Visayas</strong></li>
-                                        <ul>
-                                            <li class="mb-2">Designated pickup points include Cebu City, 
-                                                Iloilo City, and Bacolod City, with exact locations confirmed after booking.</li>
-                                        </ul>
+                                    <ul>
+                                        <li class="mb-2">Designated pickup points include Cebu City,
+                                            Iloilo City, and Bacolod City, with exact locations confirmed after booking.
+                                        </li>
+                                    </ul>
                                     <li class="mb-2"><strong>Mindanao</strong></li>
-                                        <ul>
-                                            <li class="mb-2"> Pickup and drop-off will be at the designated airport, 
-                                                such as NAIA (Manila), Mactan–Cebu International Airport, or Davao 
-                                                International Airport, depending on the tour.</li>
-                                        </ul>
+                                    <ul>
+                                        <li class="mb-2"> Pickup and drop-off will be at the designated airport,
+                                            such as NAIA (Manila), Mactan–Cebu International Airport, or Davao
+                                            International Airport, depending on the tour.</li>
+                                    </ul>
                                     <li class="mb-2"><strong>Tours Requiring AirTravels</strong></li>
-                                        <ul>
-                                            <li class="mb-2"> Pickup and drop-off will be at the designated 
-                                                airport, such as NAIA (Manila), Mactan–Cebu International 
-                                                Airport, or Davao International Airport, depending on the tour.</li>
-                                        </ul>
+                                    <ul>
+                                        <li class="mb-2"> Pickup and drop-off will be at the designated
+                                            airport, such as NAIA (Manila), Mactan–Cebu International
+                                            Airport, or Davao International Airport, depending on the tour.</li>
+                                    </ul>
                                 </ul>
                             </div>
                         </div>
@@ -276,11 +304,13 @@ $count = $ratingData['total_reviews'] ?? 0;
 
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="headingThree">
-                            <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                            <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
                                 <i class="bi bi-check-circle-fill me-2 text-success"></i> Inclusions & Exclusions
                             </button>
                         </h2>
-                        <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                        <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree"
+                            data-bs-parent="#accordionExample">
                             <div class="accordion-body">
                                 <div class="row">
                                     <div class="col-md-6">
@@ -308,46 +338,56 @@ $count = $ratingData['total_reviews'] ?? 0;
 
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="headingFour">
-                            <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                            <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
                                 <i class="bi bi-backpack-fill me-2 text-success"></i> Things to Bring
                             </button>
                         </h2>
-                        <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionExample">
+                        <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour"
+                            data-bs-parent="#accordionExample">
                             <div class="accordion-body">
                                 <div class="d-flex flex-wrap gap-3">
                                     <ul class="list-unstyled">
-                                        <li class="mb-2"><strong>Pack smart for city strolls and mountain adventures—comfort and safety first!</strong></li>
-                                            <ul>
-                                                <li class="mb-2">Valid ID</li>
-                                                <li class="mb-2">Booking confirmation / voucher</li>
-                                                <li class="mb-2">Comfortable clothes (light for city, warm layers for Sagada) Walking / hiking shoes</li>
-                                                <li class="mb-2">Jacket / raincoat</li>
-                                                <li class="mb-2">Water bottle / hydration pack</li>
-                                                <li class="mb-2">Snacks / trail food</li>
-                                                <li class="mb-2">Sunscreen & insect repellent</li>
-                                                <li class="mb-2">Cap / hat</li>
-                                                <li class="mb-2">Personal medications & toiletries</li>
-                                            </ul>
+                                        <li class="mb-2"><strong>Pack smart for city strolls and mountain
+                                                adventures—comfort and safety first!</strong></li>
+                                        <ul>
+                                            <li class="mb-2">Valid ID</li>
+                                            <li class="mb-2">Booking confirmation / voucher</li>
+                                            <li class="mb-2">Comfortable clothes (light for city, warm layers for
+                                                Sagada) Walking / hiking shoes</li>
+                                            <li class="mb-2">Jacket / raincoat</li>
+                                            <li class="mb-2">Water bottle / hydration pack</li>
+                                            <li class="mb-2">Snacks / trail food</li>
+                                            <li class="mb-2">Sunscreen & insect repellent</li>
+                                            <li class="mb-2">Cap / hat</li>
+                                            <li class="mb-2">Personal medications & toiletries</li>
+                                        </ul>
                                     </ul>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                     <div class="accordion-item">
+                    <div class="accordion-item">
                         <h2 class="accordion-header" id="headingFive">
-                            <button class="accordion-button fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="true" aria-controls="collapseFive">
+                            <button class="accordion-button fw-bold" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapseFive" aria-expanded="true" aria-controls="collapseFive">
                                 <i class="bi bi-info-circle-fill me-2 text-success"></i> About the Tour
                             </button>
                         </h2>
-                        <div id="collapseFive" class="accordion-collapse collapse show" aria-labelledby="headingFive" data-bs-parent="#accordionExample">
+                        <div id="collapseFive" class="accordion-collapse collapse show" aria-labelledby="headingFive"
+                            data-bs-parent="#accordionExample">
                             <div class="accordion-body">
                                 <ul class="list-unstyled">
-                                        <li class="mb-2"><strong><?php echo htmlspecialchars($tour['tour_name']); ?></strong></li>
-                                            <ul>
-                                                <li class="mb-2"><?php echo htmlspecialchars($about['description']); ?></li>
-                                            </ul>
+                                    <li class="mb-2"><strong>
+                                            <?php echo htmlspecialchars($tour['tour_name']); ?>
+                                        </strong></li>
+                                    <ul>
+                                        <li class="mb-2">
+                                            <?php echo htmlspecialchars($about['description']); ?>
+                                        </li>
                                     </ul>
+                                </ul>
                             </div>
                         </div>
                     </div>
@@ -363,11 +403,12 @@ $count = $ratingData['total_reviews'] ?? 0;
                         <button class="btn btn-success px-5 btn-lg py-3 fw-bold rounded-pill">Book This Trip</button>
                     </div>
                     <div class="col-6">
-                        <button class="btn btn-outline-secondary px-5 btn-lg py-3 fw-bold rounded-pill">Add to Wishlist</button>
+                        <button class="btn btn-outline-secondary px-5 btn-lg py-3 fw-bold rounded-pill">Add to
+                            Wishlist</button>
                     </div>
                 </div>
             </div>
-            
+
         </div>
     </div>
 
