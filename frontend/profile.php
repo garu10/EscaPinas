@@ -37,6 +37,9 @@ $page = $_GET['page'] ?? 'personal';
                         <a href="profile.php?page=voucher" class="<?= $page == 'voucher' ? 'fw-bold text-success' : '' ?>">
                             <i class="bi bi-ticket-perforated"></i> Vouchers
                         </a>
+                        <a href="profile.php?page=wishlist" class="<?= $page == 'wishlist' ? 'fw-bold text-success' : '' ?>">
+                            <i class="bi bi-heart"></i> Wishlists
+                        </a>
                         <a href="profile.php?page=booking" class="<?= $page == 'booking' ? 'fw-bold text-success' : '' ?>">
                             <i class="bi bi-wallet2"></i> Bookings
                         </a>
@@ -60,6 +63,9 @@ $page = $_GET['page'] ?? 'personal';
                     switch ($page) {
                         case 'voucher':
                             include "profile/voucher.php";
+                            break;
+                        case 'wishlist':
+                            include "profile/wishlist.php";
                             break;
                         case 'booking':
                             include "profile/booking.php";
