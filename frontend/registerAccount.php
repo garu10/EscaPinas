@@ -38,7 +38,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </script>";
     } else {
         // 5. Build the Query for your executeQuery function
-        // Note: Make sure the column order matches your table schema
         $insertUser = "INSERT INTO users (first_name, last_name, middle_initial, contact_num, province, city, email, password, role) 
                    VALUES ('$fname', '$last_name', '$middle_initial', '$contact_num', '$province', '$city', '$email', '$hashed_password', '$role')";
 
