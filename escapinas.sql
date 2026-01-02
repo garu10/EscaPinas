@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1:3307
--- Generation Time: Jan 01, 2026 at 07:29 PM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- Host: localhost
+-- Generation Time: Jan 02, 2026 at 08:05 AM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -67,7 +67,29 @@ INSERT INTO `destinations` (`destination_id`, `island_id`, `destination_name`, `
 (9, 3, 'Davao', 'City tour with parks, wildlife, and nature', 'Active'),
 (10, 3, 'Siargao', 'Surfing paradise with lagoons and island hopping', 'Active'),
 (11, 3, 'Cagayan de Oro', 'Adventure and thrill-seeker activities', 'Active'),
-(12, 1, 'Palawan', 'Enjoy cold breeze and view of beaches', 'Active');
+(12, 1, 'Baguio-Sagada', 'Cool mountains, culture, scenic views', 'Active'),
+(13, 1, 'Ilocos', 'Spanish-era heritage and northern coast', 'Active'),
+(14, 1, 'La Union', 'Surfing and relaxation', 'Active'),
+(15, 1, 'Bicol', 'Volcanoes, island hopping', 'Active'),
+(16, 1, 'Batangas-Tagaytay', 'Scenic lake and cool weather', 'Active'),
+(17, 2, 'Cebu', 'History, waterfalls, marine adventures', 'Active'),
+(18, 2, 'Bohol', 'Countryside tour highlighting natural wonders', 'Active'),
+(19, 2, 'Boracay', 'World-famous beach destination with powdery sand', 'Active'),
+(20, 3, 'Davao', 'City tour with parks, wildlife, and nature', 'Active'),
+(21, 3, 'Siargao', 'Surfing paradise with lagoons and island hopping', 'Active'),
+(22, 3, 'Cagayan de Oro', 'Adventure and thrill-seeker activities', 'Active'),
+(23, 1, 'Baguio-Sagada', 'Cool mountains, culture, scenic views', 'Active'),
+(24, 1, 'Ilocos', 'Spanish-era heritage and northern coast', 'Active'),
+(25, 1, 'La Union', 'Surfing and relaxation', 'Active'),
+(26, 1, 'Bicol', 'Volcanoes, island hopping', 'Active'),
+(27, 1, 'Batangas-Tagaytay', 'Scenic lake and cool weather', 'Active'),
+(28, 2, 'Cebu', 'History, waterfalls, marine adventures', 'Active'),
+(29, 2, 'Bohol', 'Countryside tour highlighting natural wonders', 'Active'),
+(30, 2, 'Boracay', 'World-famous beach destination with powdery sand', 'Active'),
+(31, 3, 'Davao', 'City tour with parks, wildlife, and nature', 'Active'),
+(32, 3, 'Siargao', 'Surfing paradise with lagoons and island hopping', 'Active'),
+(33, 3, 'Cagayan de Oro', 'Adventure and thrill-seeker activities', 'Active'),
+(34, 1, 'Palawan', 'Enjoy cold breeze and view of beaches', 'Active');
 
 -- --------------------------------------------------------
 
@@ -95,8 +117,7 @@ CREATE TABLE `ratings` (
   `review_id` int(11) NOT NULL,
   `user_id` int(11) DEFAULT NULL,
   `tour_id` int(11) DEFAULT NULL,
-  `review_text` varchar(255) DEFAULT NULL,
-  `rating` int(11) DEFAULT NULL CHECK (`rating` between 1 and 5)
+  `review_text` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -118,35 +139,10 @@ CREATE TABLE `regions` (
 INSERT INTO `regions` (`island_id`, `island_name`, `description`) VALUES
 (1, 'Luzon', 'Northern and central islands of the Philippines'),
 (2, 'Visayas', 'Central islands of the Philippines'),
-(3, 'Mindanao', 'Southern islands of the Philippines');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `region_fees`
---
-
-CREATE TABLE `region_fees` (
-  `fee_id` int(11) NOT NULL,
-  `origin_island` enum('Luzon','Visayas','Mindanao') DEFAULT NULL,
-  `destination_island` enum('Luzon','Visayas','Mindanao') DEFAULT NULL,
-  `additional_fee` decimal(10,2) DEFAULT 0.00
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `region_fees`
---
-
-INSERT INTO `region_fees` (`fee_id`, `origin_island`, `destination_island`, `additional_fee`) VALUES
-(1, 'Luzon', 'Luzon', 0.00),
-(2, 'Luzon', 'Visayas', 2800.00),
-(3, 'Luzon', 'Mindanao', 3500.00),
-(4, 'Visayas', 'Visayas', 0.00),
-(5, 'Visayas', 'Luzon', 2800.00),
-(6, 'Visayas', 'Mindanao', 2200.00),
-(7, 'Mindanao', 'Mindanao', 0.00),
-(8, 'Mindanao', 'Luzon', 3500.00),
-(9, 'Mindanao', 'Visayas', 2200.00);
+(3, 'Mindanao', 'Southern islands of the Philippines'),
+(4, 'Luzon', 'Northern and central islands of the Philippines'),
+(5, 'Visayas', 'Central islands of the Philippines'),
+(6, 'Mindanao', 'Southern islands of the Philippines');
 
 -- --------------------------------------------------------
 
@@ -338,9 +334,9 @@ INSERT INTO `tour_itinerary` (`itinerary_id`, `tour_id`, `day_number`, `short_de
 (8, 1, 1, 'Enjoy and Shop at the Baguio Public Night Market.'),
 (9, 1, 2, 'Travel to Sagada and visit the Hanging Coffins.'),
 (10, 1, 2, 'Explore the Sumaguing Cave with a guided spelunking tour.'),
-(11, 1, 2, 'Lunch at a local Sagada restaurant. (Lunch at your own account)'),
+(11, 1, 2, 'Luck lunch at a local Sagada restaurant. (Lunch at your own account)'),
 (12, 1, 2, 'Hike to Echo Valley and enjoy the scenic views.'),
-(13, 1, 2, 'Travel back to Manila'),
+(13, 1, 2, 'Travel back to Manila.'),
 (14, 2, 1, 'Arrival at Ilocos and visit the Bangui Windmills.'),
 (15, 2, 1, 'Explore the historic Cape Bojeador Lighthouse.'),
 (16, 2, 1, 'Visit the beautiful Patapat Viaduct along the coast.'),
@@ -361,7 +357,7 @@ INSERT INTO `tour_itinerary` (`itinerary_id`, `tour_id`, `day_number`, `short_de
 (31, 2, 3, 'Enjoy shopping for souvenirs at the Ilocos Norte Capitol.'),
 (32, 2, 4, 'Breakfast at the hotel. (Breakfast included)'),
 (33, 2, 4, 'Relax at the pristine beaches of Pagudpud.'),
-(34, 2, 4, 'Departure to Manila'),
+(34, 2, 4, 'Departure to Manila.'),
 (35, 3, 1, 'Arrive in La Union and check-in at the hotel. (Breakfast included)'),
 (36, 3, 1, 'Relax and unwind at the San Juan Surf Beach.'),
 (37, 3, 2, 'Breakfast at the hotel. (Breakfast included)'),
@@ -372,7 +368,7 @@ INSERT INTO `tour_itinerary` (`itinerary_id`, `tour_id`, `day_number`, `short_de
 (42, 3, 3, 'Breakfast at the resort. (Breakfast included)'),
 (43, 3, 3, 'Relax and unwind at the resort or explore nearby cafes.'),
 (44, 3, 3, 'Enjoy the luxurious amenities and ocean views.'),
-(45, 3, 3, 'Departure to Manila'),
+(45, 3, 3, 'Departure to Manila.'),
 (46, 4, 1, 'Arrival at Legazpi City and check-in at the hotel.'),
 (47, 4, 1, 'Enjoy free lunch at a local restaurant. (Lunch included)'),
 (48, 4, 1, 'Visit the Mayon Volcano View and Photo Stop.'),
@@ -388,7 +384,7 @@ INSERT INTO `tour_itinerary` (`itinerary_id`, `tour_id`, `day_number`, `short_de
 (58, 4, 4, 'Breakfast at the hotel. (Breakfast included)'),
 (59, 4, 4, 'Island hopping tour in Caramoan Islands.'),
 (60, 4, 4, 'Enjoy lunch on one of the islands. (Lunch at your own account)'),
-(61, 4, 4, 'Departure to Manila'),
+(61, 4, 4, 'Departure to Manila.'),
 (62, 5, 1, 'Arrival at Tagaytay and visit the Taal Volcano Viewpoint.'),
 (63, 5, 1, 'Breakfast at the buffet restaurant with a view. (Breakfast included)'),
 (64, 5, 1, 'Enjoy rides and leisure activities at Sky Ranch.'),
@@ -400,11 +396,11 @@ INSERT INTO `tour_itinerary` (`itinerary_id`, `tour_id`, `day_number`, `short_de
 (70, 5, 3, 'Enjoy a relaxing morning by the beach.'),
 (71, 5, 3, 'Have lunch at the resort. (Lunch included)'),
 (72, 5, 3, 'Dive or snorkel in Anilao with clear waters.'),
-(73, 5, 3, 'Departure to Manila'),
+(73, 5, 3, 'Departure to Manila.'),
 (74, 6, 1, 'Arrival at Cebu City and check-in at the hotel. (Breakfast included)'),
 (75, 6, 1, 'See the historical cross planted by Magellan.'),
 (76, 6, 1, 'Enjoy local Cebuano cuisine for lunch. (Lunch at your own account)'),
-(77, 6, 1, 'Visit the Magellan Basilica Minore del Santo Niño.'),
+(77, 6, 1, 'Visit the Magelan Basilica Minore del Santo Niño.'),
 (78, 6, 1, 'Visit the vibrant Carbon Market for local goods.'),
 (79, 6, 2, 'Breakfast at the hotel. (Breakfast included)'),
 (80, 6, 2, 'Explore the stunning beaches of Mactan Island.'),
@@ -415,7 +411,7 @@ INSERT INTO `tour_itinerary` (`itinerary_id`, `tour_id`, `day_number`, `short_de
 (85, 6, 3, 'Enjoy the Oslob Whale Shark Watching experience.'),
 (86, 6, 3, 'Have lunch at a local restaurant. (Lunch at your own account)'),
 (87, 6, 3, 'Shop for souvenirs at local markets.'),
-(88, 6, 3, 'Departure to Manila'),
+(88, 6, 3, 'Departure to Manila.'),
 (89, 7, 1, 'Arrival at Bohol and check-in at the hotel. (Breakfast included)'),
 (90, 7, 1, 'See the iconic Chocolate Hills and take photos.'),
 (91, 7, 1, 'Visit the Tarsier Sanctuary to see the tiny primates.'),
@@ -428,10 +424,10 @@ INSERT INTO `tour_itinerary` (`itinerary_id`, `tour_id`, `day_number`, `short_de
 (98, 7, 3, 'Enjoy amenities at the hotel or explore nearby cafes.'),
 (99, 7, 3, 'Visit the Baclayon Church, one of the oldest churches in the Philippines.'),
 (100, 7, 3, 'Have lunch at a local restaurant. (Lunch at your own account)'),
-(101, 7, 3, 'Departure to Manila'),
+(101, 7, 3, 'Departure to Manila.'),
 (102, 8, 1, 'Arrival at Boracay and check-in at the hotel. (Lunch included)'),
 (103, 8, 1, 'Relax and sunbathe on Boracay that is famous for White Beach.'),
-(104, 8, 1, 'Enjoy amenities of the hotel (pool, spa, beach).'),
+(104, 8, 1, 'Enjoy amneties of the hotel (pool, spa, beach).'),
 (105, 8, 2, 'Breakfast at the hotel. (Breakfast included)'),
 (106, 8, 2, 'Go island hopping in Puka Shell Beach, Crocodile Island, and Crystal Cove.'),
 (107, 8, 2, 'Have lunch on one of the islands. (Lunch included)'),
@@ -444,7 +440,7 @@ INSERT INTO `tour_itinerary` (`itinerary_id`, `tour_id`, `day_number`, `short_de
 (114, 8, 4, 'Relax and enjoy the beautiful beach scenery.'),
 (115, 8, 4, 'Shop for souvenirs at D Mall Boracay.'),
 (116, 8, 4, 'Sail along the coast and watch a breathtaking sunset.'),
-(117, 8, 4, 'Departure to Manila'),
+(117, 8, 4, 'Departure to Manila.'),
 (118, 9, 1, 'Arrival at Davao City and check-in at the hotel. (Breakfast included)'),
 (119, 9, 1, 'Visit the Philippine Eagle Center to see the national bird.'),
 (120, 9, 1, 'Enjoy local Davao cuisine for lunch. (Lunch at your own account)'),
@@ -462,7 +458,7 @@ INSERT INTO `tour_itinerary` (`itinerary_id`, `tour_id`, `day_number`, `short_de
 (132, 9, 4, 'Take a boat tour to Samal Island and visit Hagimit Falls.'),
 (133, 9, 4, 'Enjoy lunch on Samal Island. (Lunch at your own account)'),
 (134, 9, 4, 'Relax on the pristine beaches of Samal Island.'),
-(135, 9, 4, 'Departure to Manila'),
+(135, 9, 4, 'Departure to Manila.'),
 (136, 10, 1, 'Arrival in Siargao, transfer to hotel, check-in, and settle in.'),
 (137, 10, 1, 'Breakfast at the hotel.'),
 (138, 10, 1, 'Surfing session at Cloud 9 for beginners and enthusiasts.'),
@@ -565,7 +561,18 @@ INSERT INTO `tour_packages` (`tour_id`, `destination_id`, `tour_name`, `duration
 (9, 9, 'Davao City Tour', 3, 2, 'A nature-filled city tour featuring wildlife, parks, and island escapes.', 6998.00, 'Available', 'assets/images/davao.jpg'),
 (10, 10, 'Siargao Island Tour', 4, 3, 'A tropical paradise famous for surfing, lagoons, and island hopping.', 7998.00, 'Available', 'assets/images/siargao.jpg'),
 (11, 11, 'Cagayan de Oro Tour', 3, 2, 'An action-packed adventure tour perfect for thrill-seekers.', 6998.00, 'Available', 'assets/images/cagayan.jpg'),
-(12, 5, 'Palawan Island Adventure', 5, 3, 'A breathtaking tour of Palawan including Puerto Princesa, El Nido, and Coron. Explore beaches, lagoons, and vibrant culture.', 12000.00, 'Available', 'assets/images/palawan_tour.jpg');
+(12, 1, 'Baguio-Sagada Tour', 4, 3, 'A cool-climate adventure...', 7998.00, 'Available', 'assets/images/baguio_sagada.jpg'),
+(13, 2, 'Ilocos-Laoag Tour', 4, 3, 'A heritage and coastal tour...', 8998.00, 'Available', 'assets/images/ilocos_laoag.jpg'),
+(14, 3, 'La Union Tour', 3, 2, 'A laid-back beach escape.', 6998.00, 'Available', 'assets/images/la_union.jpg'),
+(15, 4, 'Bicol Tour', 5, 4, 'An adventure-filled tour...', 8998.00, 'Available', 'assets/images/bicol.jpg'),
+(16, 5, 'Batangas-Tagaytay Tour', 2, 1, 'A relaxing getaway...', 5498.00, 'Available', 'assets/images/batangas_tagaytay.jpg'),
+(17, 6, 'Cebu City Tour', 4, 3, 'A mix of history...', 7998.00, 'Available', 'assets/images/cebu.jpg'),
+(18, 7, 'Bohol Countryside Tour', 3, 2, 'A scenic countryside tour...', 6998.00, 'Available', 'assets/images/bohol.jpg'),
+(19, 8, 'Boracay Island Tour', 4, 3, 'A world-famous beach...', 7998.00, 'Available', 'assets/images/boracay.jpg'),
+(20, 9, 'Davao City Tour', 3, 2, 'A nature-filled city tour...', 6998.00, 'Available', 'assets/images/davao.jpg'),
+(21, 10, 'Siargao Island Tour', 4, 3, 'A tropical paradise...', 7998.00, 'Available', 'assets/images/siargao.jpg'),
+(22, 11, 'Cagayan de Oro Tour', 3, 2, 'An action-packed adventure...', 6998.00, 'Available', 'assets/images/cagayan.jpg'),
+(23, 12, 'Palawan Island Adventure', 5, 3, 'A breathtaking tour of Palawan...', 12000.00, 'Available', 'frontend/assets/images/palawan_tour.jpg');
 
 -- --------------------------------------------------------
 
@@ -632,12 +639,58 @@ INSERT INTO `tour_place` (`place_id`, `tour_id`, `place_name`, `day_number`, `im
 (44, 11, 'White Water Rafting', 1, 'assets/images/white_rafting.jpg'),
 (45, 11, 'Mapawa Nature Park', 2, 'assets/images/mapawa_park.jpg'),
 (46, 11, 'Seven Seas Waterpark', 3, 'assets/images/seven_seas.jpg'),
-(47, 12, 'Puerto Princesa Underground River', 1, 'frontend/assets/images/puerto_princesa.jpg'),
-(48, 12, 'Honda Bay Island Hopping', 2, 'frontend/assets/images/honda_bay.jpg'),
-(49, 12, 'El Nido Beaches and Lagoons', 3, 'frontend/assets/images/el_nido.jpg'),
-(50, 12, 'Kayangan Lake, Coron', 4, 'frontend/assets/images/kayangan_lake.jpg'),
-(51, 12, 'Snorkeling at Coron Reef', 5, 'frontend/assets/images/coron_reef.jpg'),
-(52, 12, 'Relax at Palawan Beach Resort', 6, 'frontend/assets/images/palawan_resort.jpg');
+(47, 1, 'Burnham Park', 1, 'assets/images/burnham_park.jpg'),
+(48, 1, 'Mines View Park', 1, 'assets/images/mines_view.jpg'),
+(49, 1, 'The Mansion', 1, 'assets/images/the_mansion.jpg'),
+(50, 1, 'Hanging Coffins', 2, 'assets/images/hanging_coffins.jpg'),
+(51, 1, 'Sumaguing Cave', 2, 'assets/images/sumaguing_cave.jpg'),
+(52, 1, 'Echo Valley', 2, 'assets/images/echo_valley.jpg'),
+(53, 2, 'Vigan Calle Crisologo', 1, 'assets/images/vigan_calle.jpg'),
+(54, 2, 'Laoag Sand Dunes', 2, 'assets/images/laoag_dunes.jpg'),
+(55, 2, 'Paoay Church', 2, 'assets/images/paoay_church.jpg'),
+(56, 2, 'Kapurpurawan Rock Formation', 3, 'assets/images/kapurpurawan_rock.jpg'),
+(57, 2, 'Pagudpud Beach', 4, 'assets/images/pagudpud_beach.jpg'),
+(58, 3, 'San Juan Surf Beach', 1, 'assets/images/san_juan.jpg'),
+(59, 3, 'Ma-Cho Temple', 2, 'assets/images/macho_temple.jpg'),
+(60, 3, 'Tangadan Falls', 2, 'assets/images/tangadan_falls.jpg'),
+(61, 3, 'Thunderbird Resort', 3, 'assets/images/thunderbird_resort.jpg'),
+(62, 4, 'Mayon Volcano', 1, 'assets/images/mayon_volcano.jpg'),
+(63, 4, 'Cagsawa Ruins', 2, 'assets/images/cagsawa_ruins.jpg'),
+(64, 4, 'Donsol Whale Shark Interaction', 3, 'assets/images/donsol_whale.jpg'),
+(65, 4, 'Caramoan Islands', 4, 'assets/images/caramoan_islands.jpg'),
+(66, 5, 'Taal Volcano View Deck', 1, 'assets/images/taal_volcano.jpg'),
+(67, 5, 'Sky Ranch', 1, 'assets/images/sky_ranch.jpg'),
+(68, 5, 'Picnic Grove', 2, 'assets/images/picnic_grove.jpg'),
+(69, 5, 'Anilao Diving Sites', 3, 'assets/images/anilao_diving.jpg'),
+(70, 6, 'Magellan\'s Cross', 1, 'assets/images/magellans_cross.jpg'),
+(71, 6, 'Basilica del Santo Niño', 1, 'assets/images/santo_nino.jpg'),
+(72, 6, 'Kawasan Falls', 2, 'assets/images/kawasan_falls.jpg'),
+(73, 6, 'Oslob Whale Sharks', 3, 'assets/images/oslob_whale.jpg'),
+(74, 7, 'Chocolate Hills', 1, 'assets/images/chocolate_hills.jpg'),
+(75, 7, 'Tarsier Sanctuary', 1, 'assets/images/tarsier_sanctuary.jpg'),
+(76, 7, 'Loboc River Cruise', 2, 'assets/images/loboc_river.jpg'),
+(77, 7, 'Baclayon Church', 3, 'assets/images/baclayon_church.jpg'),
+(78, 8, 'White Beach', 1, 'assets/images/white_beach.jpg'),
+(79, 8, 'Puka Shell Beach', 2, 'assets/images/puka_shell.jpg'),
+(80, 8, 'Bulabog Beach', 3, 'assets/images/bulabog_beach.jpg'),
+(81, 8, 'Sunset Sailing', 4, 'assets/images/sunset_sailing.jpg'),
+(82, 9, 'Philippine Eagle Center', 1, 'assets/images/eagle_center.jpg'),
+(83, 9, 'Eden Nature Park', 2, 'assets/images/eden_park.jpg'),
+(84, 9, 'People\'s Park', 3, 'assets/images/peoples_park.jpg'),
+(85, 9, 'Samal Island', 4, 'assets/images/samal_island.jpg'),
+(86, 10, 'Cloud 9', 1, 'assets/images/cloud_nine.jpg'),
+(87, 10, 'Magpupungko Rock Pools', 2, 'assets/images/magpupungko_pools.jpg'),
+(88, 10, 'Sugba Lagoon', 3, 'assets/images/sugba_lagoon.jpg'),
+(89, 10, 'Naked Island', 4, 'assets/images/naked_island.jpg'),
+(90, 11, 'White Water Rafting', 1, 'assets/images/white_rafting.jpg'),
+(91, 11, 'Mapawa Nature Park', 2, 'assets/images/mapawa_park.jpg'),
+(92, 11, 'Seven Seas Waterpark', 3, 'assets/images/seven_seas.jpg'),
+(93, 12, 'Puerto Princesa Underground River', 1, 'frontend/assets/images/puerto_princesa.jpg'),
+(94, 12, 'Honda Bay Island Hopping', 2, 'frontend/assets/images/honda_bay.jpg'),
+(95, 12, 'El Nido Beaches and Lagoons', 3, 'frontend/assets/images/el_nido.jpg'),
+(96, 12, 'Kayangan Lake, Coron', 4, 'frontend/assets/images/kayangan_lake.jpg'),
+(97, 12, 'Snorkeling at Coron Reef', 5, 'frontend/assets/images/coron_reef.jpg'),
+(98, 12, 'Relax at Palawan Beach Resort', 6, 'frontend/assets/images/palawan_resort.jpg');
 
 -- --------------------------------------------------------
 
@@ -704,9 +757,55 @@ INSERT INTO `tour_schedules` (`schedule_id`, `tour_id`, `start_date`, `end_date`
 (44, 11, '2026-01-07', '2026-01-09', 30),
 (45, 11, '2026-05-27', '2026-05-29', 30),
 (46, 11, '2026-10-14', '2026-10-16', 30),
-(47, 12, '2026-01-10', '2026-01-15', 20),
-(48, 12, '2026-02-05', '2026-02-10', 20),
-(49, 12, '2026-03-12', '2026-03-17', 20);
+(47, 1, '2026-01-15', '2026-01-18', 30),
+(48, 1, '2026-03-12', '2026-03-15', 30),
+(49, 1, '2026-06-10', '2026-06-13', 30),
+(50, 1, '2026-10-07', '2026-10-10', 30),
+(51, 2, '2026-02-05', '2026-02-08', 30),
+(52, 2, '2026-04-16', '2026-04-19', 30),
+(53, 2, '2026-07-22', '2026-07-25', 30),
+(54, 2, '2026-11-11', '2026-11-14', 30),
+(55, 3, '2026-01-23', '2026-01-25', 30),
+(56, 3, '2026-05-08', '2026-05-10', 30),
+(57, 3, '2026-08-14', '2026-08-16', 30),
+(58, 3, '2026-12-04', '2026-12-06', 30),
+(59, 4, '2026-02-18', '2026-02-22', 30),
+(60, 4, '2026-04-22', '2026-04-26', 30),
+(61, 4, '2026-09-09', '2026-09-13', 30),
+(62, 5, '2026-01-03', '2026-01-04', 30),
+(63, 5, '2026-02-07', '2026-02-08', 30),
+(64, 5, '2026-03-07', '2026-03-08', 30),
+(65, 5, '2026-04-04', '2026-04-05', 30),
+(66, 5, '2026-05-02', '2026-05-03', 30),
+(67, 5, '2026-06-06', '2026-06-07', 30),
+(68, 5, '2026-07-04', '2026-07-05', 30),
+(69, 5, '2026-08-01', '2026-08-02', 30),
+(70, 5, '2026-09-05', '2026-09-06', 30),
+(71, 5, '2026-10-03', '2026-10-04', 30),
+(72, 5, '2026-11-07', '2026-11-08', 30),
+(73, 5, '2026-12-05', '2026-12-06', 30),
+(74, 6, '2026-03-04', '2026-03-07', 30),
+(75, 6, '2026-06-17', '2026-06-20', 30),
+(76, 6, '2026-09-23', '2026-09-26', 30),
+(77, 7, '2026-02-11', '2026-02-13', 30),
+(78, 7, '2026-05-20', '2026-05-22', 30),
+(79, 7, '2026-10-21', '2026-10-23', 30),
+(80, 8, '2026-01-28', '2026-01-31', 30),
+(81, 8, '2026-04-08', '2026-04-11', 30),
+(82, 8, '2026-07-01', '2026-07-04', 30),
+(83, 8, '2026-12-09', '2026-12-12', 30),
+(84, 9, '2026-03-18', '2026-03-20', 30),
+(85, 9, '2026-08-19', '2026-08-21', 30),
+(86, 9, '2026-11-25', '2026-11-27', 30),
+(87, 10, '2026-02-25', '2026-02-28', 30),
+(88, 10, '2026-06-03', '2026-06-06', 30),
+(89, 10, '2026-09-30', '2026-10-03', 30),
+(90, 11, '2026-01-07', '2026-01-09', 30),
+(91, 11, '2026-05-27', '2026-05-29', 30),
+(92, 11, '2026-10-14', '2026-10-16', 30),
+(93, 12, '2026-01-10', '2026-01-15', 20),
+(94, 12, '2026-02-05', '2026-02-10', 20),
+(95, 12, '2026-03-12', '2026-03-17', 20);
 
 -- --------------------------------------------------------
 
@@ -727,6 +826,13 @@ CREATE TABLE `users` (
   `password` varchar(255) DEFAULT NULL,
   `role` enum('user','admin') DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`user_id`, `first_name`, `last_name`, `middle_initial`, `contact_num`, `region`, `province`, `city`, `email`, `password`, `role`) VALUES
+(1, 'John', 'Doe', 'M', '09666435929', NULL, 'Laguna', 'Tanauan', 'alcantarajohnralph@gmail.com', '$2y$10$AP4pLdmQ2RFJpugCE7eMy.fbG9CjUrTLJVps5J76bppsORciQUJSm', 'user');
 
 -- --------------------------------------------------------
 
@@ -786,12 +892,6 @@ ALTER TABLE `ratings`
 --
 ALTER TABLE `regions`
   ADD PRIMARY KEY (`island_id`);
-
---
--- Indexes for table `region_fees`
---
-ALTER TABLE `region_fees`
-  ADD PRIMARY KEY (`fee_id`);
 
 --
 -- Indexes for table `tour_about`
@@ -870,7 +970,7 @@ ALTER TABLE `bookings`
 -- AUTO_INCREMENT for table `destinations`
 --
 ALTER TABLE `destinations`
-  MODIFY `destination_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `destination_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- AUTO_INCREMENT for table `pickup_dropoff`
@@ -888,13 +988,7 @@ ALTER TABLE `ratings`
 -- AUTO_INCREMENT for table `regions`
 --
 ALTER TABLE `regions`
-  MODIFY `island_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
--- AUTO_INCREMENT for table `region_fees`
---
-ALTER TABLE `region_fees`
-  MODIFY `fee_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `island_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `tour_about`
@@ -924,25 +1018,25 @@ ALTER TABLE `tour_itinerary`
 -- AUTO_INCREMENT for table `tour_packages`
 --
 ALTER TABLE `tour_packages`
-  MODIFY `tour_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `tour_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `tour_place`
 --
 ALTER TABLE `tour_place`
-  MODIFY `place_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
+  MODIFY `place_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=99;
 
 --
 -- AUTO_INCREMENT for table `tour_schedules`
 --
 ALTER TABLE `tour_schedules`
-  MODIFY `schedule_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
+  MODIFY `schedule_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=96;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `vouchers`
