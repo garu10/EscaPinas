@@ -149,17 +149,23 @@ $count = $ratingData['total_reviews'] ?? 0;
         <div class="container position-absolute top-50 start-50 translate-middle">
             <div class="row">
                 <div class="col">
-                    <h1 class="text-center mb-5 text-dark">Places to Visit</h1>
+                    <div class="text-center mb-5">
+                        <h1 class="fw-bold text-success display-5 mb-2" style="font-family: 'Poppins', sans-serif;">
+                            Places to Visit</h1>
+                        <p class="text-success fw-bold " style="font-size:1rem; font-family: 'Poppins', sans-serif;">
+                            Discover breathtaking destinations handpicked by Escapinas.From iconic tourist spots to hidden gems.</p>
+                    </div>
+
                     <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
                         <div class="carousel-indicators" style="bottom: -50px;">
                             <button type="button" data-bs-target="#carouselExample" data-bs-slide-to="0"
-                                class="active bg-dark rounded-circle" style="width: 12px; height: 12px;"
+                                class="active bg-success rounded-circle" style="width: 12px; height: 12px;"
                                 aria-current="true" aria-label="Slide 1"></button>
                             <button type="button" data-bs-target="#carouselExample" data-bs-slide-to="1"
-                                class="bg-dark rounded-circle" style="width: 12px; height: 12px;" aria-label="Slide 2">
+                                class="bg-success rounded-circle" style="width: 12px; height: 12px;" aria-label="Slide 2">
                             </button>
                         </div>
-                        <!-- hindi pa toh gagana kasi wala pa yung mga images, pero para toh dun sa carousel na may tatlong images -->
+
                         <div class="carousel-inner">
                             <?php
                             $count = 0;
@@ -168,23 +174,16 @@ $count = $ratingData['total_reviews'] ?? 0;
                                 while ($place = mysqli_fetch_assoc($placesResult)):
                                     if ($count % 3 == 0): ?>
                                         <div class="carousel-item <?php echo $isActive ? 'active' : ''; ?>">
-                                            <div class="row g-4">
+                                            <div class="row g-4 px-2">
                                                 <?php
                                                 $isActive = false;
                                     endif;
                                     ?>
-
                                             <div class="col-4">
-                                                <div class="card destination-card border-0 shadow-lg">
+                                                <div class="card destination-card border-0 bg-transparent">
                                                     <img src="<?php echo htmlspecialchars($place['image']); ?>"
-                                                        class="card-img rounded-3" style="height: 300px; object-fit: cover;">
-                                                    <div class="card-img-overlay d-flex align-items-end p-3">
-                                                        <div class="card-img-overlay d-flex align-items-end p-3">
-                                                            <h5 class="text-white fw-bold m-0">
-                                                                <?php echo htmlspecialchars($place['place_name']); ?>
-                                                            </h5>
-                                                        </div>
-                                                    </div>
+                                                        class="img-fluid rounded-4"
+                                                        style="height: 300px; width: 100%; object-fit: cover;">
                                                 </div>
                                             </div>
 
@@ -201,19 +200,24 @@ $count = $ratingData['total_reviews'] ?? 0;
                                 </div>
                             <?php endif; ?>
                         </div>
+
                         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample"
-                            data-bs-slide="prev" style="left: 0; width: 5%;"> <span
-                                class="carousel-control-prev-icon bg-dark rounded-circle" aria-hidden="true"></span>
+                            data-bs-slide="prev" style="left: -5%; width: 5%;">
+                            <span class="carousel-control-prev-icon bg-success rounded-circle p-2" aria-hidden="true"
+                                style="filter: invert(1);"></span>
                             <span class="visually-hidden">Previous</span>
                         </button>
 
                         <button class="carousel-control-next" type="button" data-bs-target="#carouselExample"
-                            data-bs-slide="next" style="right: 0; width: 5%;">
-                            <span class="carousel-control-next-icon bg-dark rounded-circle" aria-hidden="true"></span>
+                            data-bs-slide="next" style="right: -5%; width: 5%;">
+                            <span class="carousel-control-next-icon bg-success rounded-circle p-2" aria-hidden="true"
+                                style="filter: invert(1);"></span>
                             <span class="visually-hidden">Next</span>
                         </button>
-                        <p class="text-center text-dark">Discover breathtaking destinations handpicked by Escapinas.
-                            From iconic tourist spots to hidden gems,</p>
+                    </div>
+
+                    <div class="mt-3 pt-4 text-center">
+                        <p class="fw-bold mb-0 text-muted">Destinations may vary based on weather and site availability. </p>
                     </div>
                 </div>
             </div>
@@ -222,7 +226,8 @@ $count = $ratingData['total_reviews'] ?? 0;
     <div class="container my-5">
         <div class="row">
             <div class="col-12">
-                <h3 class="fw-bold text-success mb-4">Tour Details & Information</h3>
+                <h3 class="fw-bold text-success pt-4">Tour Details & Information</h3>
+                <p class="text-muted mt-3">Everything you need to know about your trip, from itineraries to travel essentials.</p>
                 <div class="accordion shadow-sm" id="accordionExample">
 
                     <div class="accordion-item">
@@ -395,23 +400,27 @@ $count = $ratingData['total_reviews'] ?? 0;
             </div>
         </div>
     </div>
-    <div class="container">
-        <div class="row text-center justify-content-center mb-5">
-            <div class="col-10">
-                <div class="row">
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-md-10">
+                <div class="row g-3 text-center">
                     <div class="col-6">
-                        <button class="btn btn-success px-5 btn-lg py-3 fw-bold rounded-pill">Book This Trip</button>
+                        <a href="bookingForm.php?tour_id=<?= $tour_id ?>" class="text-decoration-none">
+                            <button class="btn btn-success w-100 btn-lg py-3 fw-bold rounded-pill shadow-sm">
+                                Book Now
+                            </button>
+                        </a>
                     </div>
+
                     <div class="col-6">
-                        <button class="btn btn-outline-secondary px-5 btn-lg py-3 fw-bold rounded-pill">Add to
-                            Wishlist</button>
+                        <button class="btn btn-outline-secondary w-100 btn-lg py-3 fw-bold rounded-pill shadow-sm">
+                            Add to Wishlist
+                        </button>
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
-
     <?php include "components/footer.php"; ?>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
 </body>
