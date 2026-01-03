@@ -397,7 +397,7 @@ $inclusions = executeQuery("SELECT * FROM tour_inclusions WHERE tour_id = $tour_
                             return actions.reject(); 
                         }
 
-                        return fetch('paypal/createOrder.php', {
+                        return fetch('integs/paypal/createOrder.php', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/x-www-form-urlencoded'
@@ -431,7 +431,7 @@ $inclusions = executeQuery("SELECT * FROM tour_inclusions WHERE tour_id = $tour_
 
                         const locNameValue = selectedLoc ? selectedLoc.value : "";
 
-                        return fetch('paypal/captureOrder.php', {
+                        return fetch('integs/paypal/captureOrder.php', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/x-www-form-urlencoded'
@@ -471,7 +471,7 @@ $inclusions = executeQuery("SELECT * FROM tour_inclusions WHERE tour_id = $tour_
                         alert("Payment was cancelled.");
                     },
 
-                    onError: function(err) {
+                        onError: function(err) {
                         console.error("PayPal Error:", err);
                         alert("An error occurred with the PayPal integration. Please try again.");
                     }

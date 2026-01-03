@@ -797,10 +797,31 @@ REFERENCES tour_packages(tour_id);
 
 
 CREATE TABLE `location_points` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `region_name` varchar(100) NOT NULL,
-  `pickup_points` text NOT NULL,
-  `dropoff_points` text NOT NULL,
-  `remarks` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `locpoints_id` int NOT NULL AUTO_INCREMENT,
+  `origin_island` enum('Luzon','Visayas','Mindanao','Tours Requiring AirTravel') NOT NULL,
+  `pickup_points` varchar(255) NOT NULL,
+  `dropoff_points` varchar(255) NOT NULL,
+  PRIMARY KEY (`locpoints_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
+-- Luzon
+INSERT INTO `location_points` (`origin_island`, `pickup_points`, `dropoff_points`) VALUES
+('Luzon', 'Cubao', 'Cubao'),
+('Luzon', 'Makati', 'Makati');
+
+-- Visayas
+INSERT INTO `location_points` (`origin_island`, `pickup_points`, `dropoff_points`) VALUES
+('Visayas', 'Cebu City', 'Cebu City'),
+('Visayas', 'Iloilo City', 'Iloilo City');
+
+-- Mindanao
+INSERT INTO `location_points` (`origin_island`, `pickup_points`, `dropoff_points`) VALUES
+('Mindanao', 'Davao City', 'Davao City'),
+('Mindanao', 'Cagayan de Oro', 'Cagayan de Oro');
+
+-- Tours Requiring AirTravel
+INSERT INTO `location_points` (`origin_island`, `pickup_points`, `dropoff_points`) VALUES
+('Tours Requiring AirTravel', 'NAIA (Manila)', 'NAIA (Manila)'),
+('Tours Requiring AirTravel', 'Mactan–Cebu International Airport', 'Mactan–Cebu International Airport'),
+('Tours Requiring AirTravel', 'Davao International Airport', 'Davao International Airport');
