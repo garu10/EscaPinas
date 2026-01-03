@@ -5,9 +5,7 @@ include_once "../php/connect.php";
 header('Content-Type: application/json');
 ob_clean();
 
-/* =========================
-   1. PAYPAL ACCESS TOKEN
-========================= */
+/* 1. PAYPAL ACCESS TOKEN*/
 $clientId = "AZXarGlWci9EF_NV33Uzb79jiNCHrRaA9WCLLFRpl0Tuzul7OIh5Pgc1Frl114bn2MNsUgR1kphO2D1z";
 $secret   = "EMwRDIR7WXs5yZ2-iRGvfe1U5ltmmlRhWk5YhTaRqlv4Et-ragrwo7YEMRkblCuz4fGitoV47iUp23Su";
 
@@ -30,9 +28,8 @@ if (!isset($tokenResult['access_token'])) {
 }
 $token = $tokenResult['access_token'];
 
-/* =========================
-   2. CAPTURE ORDER
-========================= */
+// 2. CAPTURE ORDER
+
 $orderID = $_POST['orderID'] ?? '';
 
 $ch = curl_init();
@@ -51,9 +48,7 @@ if (!isset($response['status']) || $response['status'] !== 'COMPLETED') {
     exit;
 }
 
-/* =========================
-   3. SAVE BOOKING
-========================= */
+// 3. SAVE BOOKING
 $user_id    = $_SESSION['user_id'] ?? 1;
 $schedule   = intval($_POST['schedule_id']);
 $pax        = intval($_POST['pax']);
