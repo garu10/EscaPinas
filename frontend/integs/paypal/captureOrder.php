@@ -4,8 +4,6 @@ include_once "../../php/connect.php";
 
 header('Content-Type: application/json');
 
-error_reporting(0); 
-
 $clientId = "AZXarGlWci9EF_NV33Uzb79jiNCHrRaA9WCLLFRpl0Tuzul7OIh5Pgc1Frl114bn2MNsUgR1kphO2D1z";
 $secret   = "EMwRDIR7WXs5yZ2-iRGvfe1U5ltmmlRhWk5YhTaRqlv4Et-ragrwo7YEMRkblCuz4fGitoV47iUp23Su";
 
@@ -48,25 +46,49 @@ $schedule_id  = intval($_POST['schedule_id'] ?? 0);
 $locpoints_id = intval($_POST['locpoints_id'] ?? 0);
 $pax          = intval($_POST['pax'] ?? 1);
 $total        = floatval($_POST['total_amount'] ?? 0);
-$paypal_id    = $response['purchase_units'][0]['payments']['captures'][0]['id'] ?? '';
+
+$paypal_order_id   = $orderID;
+$paypal_capture_id = $response['purchase_units'][0]['payments']['captures'][0]['id'] ?? '';
 
 $booking_ref = "ESC-" . date("Y") . "-" . strtoupper(substr(uniqid(), -6));
 
-$sql = "INSERT INTO bookings 
-        (user_id, tour_id, schedule_id, locpoints_id, number_of_persons, total_amount, booking_status, booking_reference)
-        VALUES
-        ($user_id, $tour_id, $schedule_id, $locpoints_id, $pax, $total, 'Confirmed', '$booking_ref')";
+mysqli_begin_transaction($conn);
 
-if (mysqli_query($conn, $sql)) {
+try {
+    $sql_booking = "INSERT INTO bookings 
+            (user_id, tour_id, schedule_id, locpoints_id, number_of_persons, total_amount, booking_status, booking_reference)
+            VALUES
+            ($user_id, $tour_id, $schedule_id, $locpoints_id, $pax, $total, 'Confirmed', '$booking_ref')";
+
+    if (!mysqli_query($conn, $sql_booking)) {
+        throw new Exception("Error saving booking: " . mysqli_error($conn));
+    }
+
+    $new_booking_id = mysqli_insert_id($conn);
+
+    $sql_payment = "INSERT INTO payments 
+            (booking_id, user_id, paypal_order_id, paypal_capture_id, amount, payment_status)
+            VALUES 
+            ($new_booking_id, $user_id, '$paypal_order_id', '$paypal_capture_id', $total, 'COMPLETED')";
+
+    if (!mysqli_query($conn, $sql_payment)) {
+        throw new Exception("Error saving payment record: " . mysqli_error($conn));
+    }
+
+    mysqli_commit($conn);
+
     echo json_encode([
         'success' => true,
         'ref' => $booking_ref
     ]);
-} else {
-    error_log("DB Error: " . mysqli_error($conn));
+
+} catch (Exception $e) {
+    mysqli_rollback($conn);
+    
+    error_log($e->getMessage());
     echo json_encode([
         'success' => false,
-        'message' => 'Database error, but payment was successful. Please contact support with ID: ' . $paypal_id
+        'message' => 'Database error: ' . $e->getMessage() . '. Payment ID: ' . $paypal_capture_id
     ]);
 }
 ?>

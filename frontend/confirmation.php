@@ -58,8 +58,8 @@ include "components/navbar.php";
             <hr>
             
             <div class="d-grid gap-2">
-                <a href="profile.php" class="btn btn-success rounded-pill">View My Bookings</a>
-                <a href="index.php" class="btn btn-outline-secondary rounded-pill">Back to Home</a>
+                <a href="bookings.php" class="btn btn-success rounded-pill">View My Bookings</a>
+                <a href="/EscaPinas/index.php" class="btn btn-outline-secondary rounded-pill">Back to Home</a>
             </div>
         </div>
     <?php else: ?>
@@ -67,7 +67,7 @@ include "components/navbar.php";
             <i class="fas fa-exclamation-triangle fa-3x mb-3"></i>
             <h4>Booking Not Found</h4>
             <p>We couldn't find any record for reference: <strong><?php echo htmlspecialchars($ref); ?></strong></p>
-            <a href="index.php" class="btn btn-danger rounded-pill">Go Back to Home</a>
+            <a href="/EscaPinas/index.php" class="btn btn-danger rounded-pill">Go Back to Home</a>
         </div>
     <?php endif; ?>
 </div>

@@ -825,3 +825,16 @@ INSERT INTO `location_points` (`origin_island`, `pickup_points`, `dropoff_points
 ('Tours Requiring AirTravel', 'NAIA (Manila)', 'NAIA (Manila)'),
 ('Tours Requiring AirTravel', 'Mactan–Cebu International Airport', 'Mactan–Cebu International Airport'),
 ('Tours Requiring AirTravel', 'Davao International Airport', 'Davao International Airport');
+
+CREATE TABLE payments (
+    payment_id INT AUTO_INCREMENT PRIMARY KEY,
+    booking_id INT NOT NULL,            
+    user_id INT NOT NULL,               
+    paypal_order_id VARCHAR(100),     
+    paypal_capture_id VARCHAR(100),     
+    amount DECIMAL(10, 2) NOT NULL,    
+    currency VARCHAR(10) DEFAULT 'PHP',
+    payment_status VARCHAR(50),        
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (booking_id) REFERENCES bookings(booking_id) ON DELETE CASCADE
+);
