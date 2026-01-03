@@ -18,10 +18,10 @@
             <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mt-5 align-items-center">
                 <h6 class="text-uppercase mb-4 fw-bold text-light">Company</h6>
                 <ul class="list-unstyled small lh-lg">
-                    <li><a href="/EscaPinas/frontend/about.php" class="text-light text-decoration-none hover-link">About Us</a></li>
-                    <li><a href="/EscaPinas/frontend/faq.php" class="text-light text-decoration-none hover-link">Travel FAQs</a></li>
-                    <li><a href="/EscaPinas/frontend/privacy.php" class="text-light text-decoration-none hover-link">Privacy Policy</a></li>
-                    <li><a href="/EscaPinas/frontend/terms.php" class="text-light text-decoration-none hover-link">Terms & Conditions</a></li>
+                    <li><a href="/EscaPinas/frontend/components/infoLinks/about.php" class="text-light text-decoration-none hover-link">About Us</a></li>
+                    <li><a href="/EscaPinas/frontend/components/infoLinks/faq.php" class="text-light text-decoration-none hover-link">Travel FAQs</a></li>
+                    <li><a href="/EscaPinas/frontend/components/infoLinks/privacy.php" class="text-light text-decoration-none hover-link">Privacy Policy</a></li>
+                    <li><a href="/EscaPinas/frontend/components/infoLinks/terms.php" class="text-light text-decoration-none hover-link">Terms & Conditions</a></li>
                 </ul>
             </div>
 

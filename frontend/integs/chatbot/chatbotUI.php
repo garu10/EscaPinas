@@ -6,7 +6,7 @@
     <title>Chatbot - EscaPinas</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/chatbot.css">
+    <link rel="stylesheet" href="../../assets/css/chatbot.css">
 </head>
 <body class="vh-100 d-flex flex-column overflow-hidden">
 
@@ -15,7 +15,7 @@
             <div class="row align-items-center">
                 <div class="col">
                      <a class="navbar-brand fw-bold" href="/EscaPinas/index.php">
-                    <img src="assets/images/logo2.jpg" height="90" class="d-inline-block align-text-top"> </a>
+                    <img src="../../assets/images/logo2.jpg" height="90" class="d-inline-block align-text-top"> </a>
                 </div>
                 <div class="col text-center">
                     <h1 class="m-0 fw-bold header-title">CHATBOT</h1>
@@ -29,7 +29,7 @@
         <div class="container-fluid px-4 py-3">
             <div class="row">
                 <div class="col-12">
-                    <a href="../index.php" class="back-link fw-bold text-decoration-none">BACK</a>
+                    <a href="../../../index.php" class="back-link fw-bold text-decoration-none">BACK</a>
                 </div>
             </div>
         </div>

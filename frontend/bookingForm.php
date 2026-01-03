@@ -373,8 +373,8 @@ $inclusions = executeQuery("SELECT * FROM tour_inclusions WHERE tour_id = $tour_
                     createOrder: function(data, actions) {
                         const scheduleInput = document.querySelector('select[name="schedule_id"]');
                         const schedule_id = scheduleInput ? scheduleInput.value : 1;
-
-                        return fetch('paypal/createOrder.php', {
+                        // binago ko yung path gawa nilipat ko sa integs na folder yung paypal
+                        return fetch('integs/paypal/createOrder.php', {
                                 method: 'POST',
                                 headers: {
                                     'Content-Type': 'application/x-www-form-urlencoded'
@@ -403,8 +403,8 @@ $inclusions = executeQuery("SELECT * FROM tour_inclusions WHERE tour_id = $tour_
                             alert("Please fill in your Pickup Location Name and Address first.");
                             return;
                         }
-
-                        return fetch('paypal/captureOrder.php', {
+                        // binago ko yung path gawa nilipat ko sa integs na folder yung paypal
+                        return fetch('integs/paypal/captureOrder.php', {
                                 method: 'POST',
                                 headers: {
                                     'Content-Type': 'application/x-www-form-urlencoded'

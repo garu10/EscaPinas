@@ -1,6 +1,7 @@
 <?php
 session_start();
-include_once "../php/connect.php"; 
+// binago ko yung path gawa nilipat ko sa integs na folder yung paypal
+include_once "../../php/connect.php"; 
 
 header('Content-Type: application/json');
 

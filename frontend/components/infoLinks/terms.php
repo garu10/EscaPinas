@@ -10,10 +10,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     
-    <link rel="stylesheet" href="assets/css/terms.css">
+    <link rel="stylesheet" href="../../assets/css/terms.css">
 </head>
 <body>
-    <?php include "components/navbar.php"; ?>
+    <?php include "../navbar.php"; ?>
 
     <main class="container">
         
@@ -104,7 +104,7 @@
                     <i class="bi bi-info-circle-fill fs-2 text-success me-4"></i>
                     <p class="mb-0 text-muted">
                         If you have questions regarding these terms, please contact our support team or use our 
-                        <a href="chatbot.php" class="chatbot-btn-link"><strong>Chatbot</strong></a> for immediate assistance.
+                        <a href="/EscaPinas/frontend/integs/chatbot/chatbotUI.php" class="chatbot-btn-link"><strong>Chatbot</strong></a> for immediate assistance.
                     </p>
                 </div>
             </div>
@@ -112,6 +112,6 @@
 
     </main>
 
-    <?php include "components/footer.php"; ?>
+    <?php include "../footer.php"; ?>
 </body>
 </html>

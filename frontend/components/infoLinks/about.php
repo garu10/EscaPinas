@@ -13,10 +13,10 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="assets/css/about.css">
+    <link rel="stylesheet" href="../../assets/css/about.css">
 </head>
 <body>
-    <?php include "components/navbar.php"; ?>
+    <?php include "../navbar.php"; ?>
 
     <header class="about-header">
         <div class="container">
@@ -134,7 +134,7 @@
                 <div class="container">
                     <h2 class="display-5 fw-bold mb-3">Dito sa EscaPinas, bawat biyahe ay may kwento.</h2>
                     <p class="mb-5 fs-5 opacity-90">Experience the magic of Pilipinas today.</p>
-                    <a href="packages.php" class="btn btn-light btn-lg rounded-pill px-5 py-3 fw-bold text-success shadow">Explore Packages</a>
+                    <a href="../../packages.php" class="btn btn-light btn-lg rounded-pill px-5 py-3 fw-bold text-success shadow">Explore Packages</a>
                 </div>
             </section>
         </div>
@@ -142,6 +142,6 @@
 
     <div class="footer-spacer"></div>
 
-    <?php include "components/footer.php"; ?>
+    <?php include "../footer.php"; ?>
 </body>
 </html>
