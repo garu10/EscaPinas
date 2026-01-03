@@ -9,9 +9,9 @@ if ($ref) {
     $sql = "SELECT b.*, t.tour_name, t.price 
             FROM bookings b 
             JOIN tour_packages t ON b.tour_id = t.tour_id 
-            WHERE b.reference_no = '$ref'";
+            WHERE b.booking_reference = '$ref'";
     $result = mysqli_query($conn, $sql);
-    $booking = mysqli_fetch_assoc($result);
+    $booking = mysqli_fetch_assoc($result); 
 }
 ?>
 
@@ -30,7 +30,7 @@ if ($ref) {
                 <p><strong>Reference No:</strong> <span class="text-success"><?php echo $booking['reference_no']; ?></span></p>
                 <p><strong>Tour:</strong> <?php echo $booking['tour_name']; ?></p>
                 <p><strong>Pax:</strong> <?php echo $booking['pax_count']; ?></p>
-                <p><strong>Pickup:</strong> <?php echo $booking['pickup_location']; ?></p>
+                <p><strong>Pickup:</strong> <?php echo $booking['pickup_location']; ?></p> <!--hindi ito nagaan kasi sa bookingForm di naounta sa db ang mga pickup info-->
                 <p><strong>Status:</strong> <span class="badge bg-success">PAID</span></p>
             </div>
             

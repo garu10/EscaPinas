@@ -4,8 +4,8 @@ include_once "../php/connect.php";
 
 header('Content-Type: application/json');
 
-$clientId = "AUFm83PF0D4DzFwlx6OfKVsry3C5e1gyFgN3rATp7lGjNRVhxVrdcRLAqTy7ZXbuLiP5d0O769_gFu2H";
-$secret = "EPPCj52zDcZjVYDfv3vrEkvchOMXyXYNHjQbg73XhQvIOYFOY6nIE_qhOwAtkmZut5nq5U_Gr6Wrm9q9"; 
+$clientId = "AZXarGlWci9EF_NV33Uzb79jiNCHrRaA9WCLLFRpl0Tuzul7OIh5Pgc1Frl114bn2MNsUgR1kphO2D1z";
+$secret   = "EMwRDIR7WXs5yZ2-iRGvfe1U5ltmmlRhWk5YhTaRqlv4Et-ragrwo7YEMRkblCuz4fGitoV47iUp23Su";
 $baseUrl = "https://api-m.sandbox.paypal.com";
 
 $ch = curl_init();
