@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Jan 03, 2026 at 06:55 AM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- Host: localhost
+-- Generation Time: Jan 03, 2026 at 07:59 AM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -108,8 +108,25 @@ CREATE TABLE `ratings` (
   `user_id` int(11) DEFAULT NULL,
   `tour_id` int(11) DEFAULT NULL,
   `review_text` varchar(255) DEFAULT NULL,
-  `rating` int(11) DEFAULT NULL CHECK (`rating` between 1 and 5)
+  `rating_score` int(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `ratings`
+--
+
+INSERT INTO `ratings` (`review_id`, `user_id`, `tour_id`, `review_text`, `rating_score`) VALUES
+(12, 1, 1, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 5),
+(13, 1, 1, 'Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', 4),
+(14, 1, 2, 'Ut enim ad minim veniam, quis nostrud exercitation ullamco.', 5),
+(15, 1, 2, 'Laboris nisi ut aliquip ex ea commodo consequat.', 5),
+(16, 1, 3, 'Duis aute irure dolor in reprehenderit in voluptate velit.', 3),
+(17, 1, 3, 'Esse cillum dolore eu fugiat nulla pariatur.', 4),
+(18, 1, 4, 'Excepteur sint occaecat cupidatat non proident.', 4),
+(19, 1, 10, 'Sunt in culpa qui officia deserunt mollit anim id est laborum.', 5),
+(20, 1, 10, 'Lorem ipsum fresh surf vibes!', 5),
+(21, 1, 10, 'Bit rainy but still good.', 4),
+(22, 1, 23, 'Best experience ever! Highly recommended.', 5);
 
 -- --------------------------------------------------------
 
@@ -558,26 +575,27 @@ CREATE TABLE `tour_packages` (
   `description` text DEFAULT NULL,
   `price` decimal(10,2) DEFAULT NULL,
   `status` enum('Available','Unavailable') DEFAULT NULL,
-  `image` varchar(255) DEFAULT NULL
+  `image` varchar(255) DEFAULT NULL,
+  `banner_image` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `tour_packages`
 --
 
-INSERT INTO `tour_packages` (`tour_id`, `destination_id`, `tour_name`, `duration_days`, `duration_nights`, `description`, `price`, `status`, `image`) VALUES
-(1, 1, 'Baguio-Sagada Tour', 4, 3, 'A cool-climate adventure combining Baguio city charm and Sagada culture.', 7998.00, 'Available', 'assets/images/baguio_sagada.jpg'),
-(2, 2, 'Ilocos-Laoag Tour', 4, 3, 'A heritage and coastal tour showcasing Spanish-era landmarks.', 8998.00, 'Available', 'assets/images/ilocos_laoag.jpg'),
-(3, 3, 'La Union Tour', 3, 2, 'A laid-back beach and nature escape.', 6998.00, 'Available', 'assets/images/la_union.jpg'),
-(4, 4, 'Bicol Tour', 5, 4, 'An adventure-filled tour featuring volcano views and island hopping.', 8998.00, 'Available', 'assets/images/bicol.jpg'),
-(5, 5, 'Batangas-Tagaytay Tour', 2, 1, 'A relaxing getaway with cool weather and scenic views.', 5498.00, 'Available', 'assets/images/batangas_tagaytay.jpg'),
-(6, 6, 'Cebu City Tour', 4, 3, 'A mix of history, waterfalls, and marine adventures.', 7998.00, 'Available', 'assets/images/cebu.jpg'),
-(7, 7, 'Bohol Countryside Tour', 3, 2, 'A scenic countryside tour highlighting natural wonders.', 6998.00, 'Available', 'assets/images/bohol.jpg'),
-(8, 8, 'Boracay Island Tour', 4, 3, 'A world-famous beach destination with powdery sand and stunning sunsets.', 7998.00, 'Available', 'assets/images/boracay.jpg'),
-(9, 9, 'Davao City Tour', 3, 2, 'A nature-filled city tour featuring wildlife, parks, and island escapes.', 6998.00, 'Available', 'assets/images/davao.jpg'),
-(10, 10, 'Siargao Island Tour', 4, 3, 'A tropical paradise famous for surfing, lagoons, and island hopping.', 7998.00, 'Available', 'assets/images/siargao.jpg'),
-(11, 11, 'Cagayan de Oro Tour', 3, 2, 'An action-packed adventure tour perfect for thrill-seekers.', 6998.00, 'Available', 'assets/images/cagayan.jpg'),
-(12, 5, 'Palawan Island Adventure', 5, 3, 'A breathtaking tour of Palawan including Puerto Princesa, El Nido, and Coron. Explore beaches, lagoons, and vibrant culture.', 12000.00, 'Available', 'assets/images/palawan_tour.jpg');
+INSERT INTO `tour_packages` (`tour_id`, `destination_id`, `tour_name`, `duration_days`, `duration_nights`, `description`, `price`, `status`, `image`, `banner_image`) VALUES
+(1, 1, 'Baguio-Sagada Tour', 4, 3, 'A cool-climate adventure combining Baguio city charm and Sagada culture.', 7998.00, 'Available', 'assets/images/baguio_sagada.jpg', NULL),
+(2, 2, 'Ilocos-Laoag Tour', 4, 3, 'A heritage and coastal tour showcasing Spanish-era landmarks.', 8998.00, 'Available', 'assets/images/ilocos_laoag.jpg', NULL),
+(3, 3, 'La Union Tour', 3, 2, 'A laid-back beach and nature escape.', 6998.00, 'Available', 'assets/images/la_union.jpg', NULL),
+(4, 4, 'Bicol Tour', 5, 4, 'An adventure-filled tour featuring volcano views and island hopping.', 8998.00, 'Available', 'assets/images/bicol.jpg', NULL),
+(5, 5, 'Batangas-Tagaytay Tour', 2, 1, 'A relaxing getaway with cool weather and scenic views.', 5498.00, 'Available', 'assets/images/batangas_tagaytay.jpg', NULL),
+(6, 6, 'Cebu City Tour', 4, 3, 'A mix of history, waterfalls, and marine adventures.', 7998.00, 'Available', 'assets/images/cebu.jpg', NULL),
+(7, 7, 'Bohol Countryside Tour', 3, 2, 'A scenic countryside tour highlighting natural wonders.', 6998.00, 'Available', 'assets/images/bohol.jpg', NULL),
+(8, 8, 'Boracay Island Tour', 4, 3, 'A world-famous beach destination with powdery sand and stunning sunsets.', 7998.00, 'Available', 'assets/images/boracay.jpg', NULL),
+(9, 9, 'Davao City Tour', 3, 2, 'A nature-filled city tour featuring wildlife, parks, and island escapes.', 6998.00, 'Available', 'assets/images/davao.jpg', NULL),
+(10, 10, 'Siargao Island Tour', 4, 3, 'A tropical paradise famous for surfing, lagoons, and island hopping.', 7998.00, 'Available', 'assets/images/siargao.jpg', NULL),
+(11, 11, 'Cagayan de Oro Tour', 3, 2, 'An action-packed adventure tour perfect for thrill-seekers.', 6998.00, 'Available', 'assets/images/cagayan.jpg', NULL),
+(12, 5, 'Palawan Island Adventure', 5, 3, 'A breathtaking tour of Palawan including Puerto Princesa, El Nido, and Coron. Explore beaches, lagoons, and vibrant culture.', 12000.00, 'Available', 'assets/images/palawan_tour.jpg', NULL);
 
 -- --------------------------------------------------------
 
@@ -765,6 +783,19 @@ CREATE TABLE `vouchers` (
   `redeemed_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `wishlist`
+--
+
+CREATE TABLE `wishlist` (
+  `wishlist_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `tour_id` int(11) NOT NULL,
+  `added_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 --
 -- Indexes for dumped tables
 --
@@ -876,6 +907,14 @@ ALTER TABLE `vouchers`
   ADD KEY `user_id` (`user_id`);
 
 --
+-- Indexes for table `wishlist`
+--
+ALTER TABLE `wishlist`
+  ADD PRIMARY KEY (`wishlist_id`),
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `tour_id` (`tour_id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -901,7 +940,7 @@ ALTER TABLE `pickup_dropoff`
 -- AUTO_INCREMENT for table `ratings`
 --
 ALTER TABLE `ratings`
-  MODIFY `review_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `review_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `regions`
@@ -970,6 +1009,12 @@ ALTER TABLE `vouchers`
   MODIFY `voucher_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `wishlist`
+--
+ALTER TABLE `wishlist`
+  MODIFY `wishlist_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+
+--
 -- Constraints for dumped tables
 --
 
@@ -992,13 +1037,6 @@ ALTER TABLE `destinations`
 ALTER TABLE `pickup_dropoff`
   ADD CONSTRAINT `pickup_dropoff_ibfk_1` FOREIGN KEY (`tour_id`) REFERENCES `tour_packages` (`tour_id`),
   ADD CONSTRAINT `pickup_dropoff_ibfk_2` FOREIGN KEY (`booking_id`) REFERENCES `bookings` (`booking_id`);
-
---
--- Constraints for table `ratings`
---
-ALTER TABLE `ratings`
-  ADD CONSTRAINT `ratings_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
-  ADD CONSTRAINT `ratings_ibfk_2` FOREIGN KEY (`tour_id`) REFERENCES `tour_packages` (`tour_id`);
 
 --
 -- Constraints for table `tour_about`
@@ -1047,6 +1085,13 @@ ALTER TABLE `tour_schedules`
 --
 ALTER TABLE `vouchers`
   ADD CONSTRAINT `vouchers_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `wishlist`
+--
+ALTER TABLE `wishlist`
+  ADD CONSTRAINT `wishlist_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
+  ADD CONSTRAINT `wishlist_ibfk_2` FOREIGN KEY (`tour_id`) REFERENCES `tour_packages` (`tour_id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
