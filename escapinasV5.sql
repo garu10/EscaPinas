@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3307
--- Generation Time: Jan 03, 2026 at 06:35 PM
+-- Generation Time: Jan 03, 2026 at 07:07 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -44,7 +44,9 @@ CREATE TABLE `bookings` (
 --
 
 INSERT INTO `bookings` (`booking_id`, `user_id`, `schedule_id`, `number_of_persons`, `total_amount`, `booking_status`, `booking_reference`, `tour_id`, `locpoints_id`) VALUES
-(14, 2, 1, 1, 11757.76, 'Confirmed', 'ESC-2026-5320CF', 1, 7);
+(14, 2, 1, 1, 11757.76, 'Confirmed', 'ESC-2026-5320CF', 1, 7),
+(15, 2, 1, 1, 12093.76, 'Confirmed', 'ESC-2026-495D62', 1, 7),
+(16, 2, 1, 1, 12877.76, 'Confirmed', 'ESC-2026-4138CD', 1, 7);
 
 -- --------------------------------------------------------
 
@@ -105,6 +107,32 @@ INSERT INTO `location_points` (`locpoints_id`, `origin_island`, `pickup_points`,
 (7, 'Tours Requiring AirTravel', 'NAIA (Manila)', 'NAIA (Manila)'),
 (8, 'Tours Requiring AirTravel', 'Mactan–Cebu International Airport', 'Mactan–Cebu International Airport'),
 (9, 'Tours Requiring AirTravel', 'Davao International Airport', 'Davao International Airport');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `payments`
+--
+
+CREATE TABLE `payments` (
+  `payment_id` int(11) NOT NULL,
+  `booking_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `paypal_order_id` varchar(100) DEFAULT NULL,
+  `paypal_capture_id` varchar(100) DEFAULT NULL,
+  `amount` decimal(10,2) NOT NULL,
+  `currency` varchar(10) DEFAULT 'PHP',
+  `payment_status` varchar(50) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `payments`
+--
+
+INSERT INTO `payments` (`payment_id`, `booking_id`, `user_id`, `paypal_order_id`, `paypal_capture_id`, `amount`, `currency`, `payment_status`, `created_at`) VALUES
+(1, 15, 2, '570938822N054872N', '67445019GT426520M', 12093.76, 'PHP', 'COMPLETED', '2026-01-03 17:56:36'),
+(2, 16, 2, '6Y015898EE628501L', '8LS31742H2964741Y', 12877.76, 'PHP', 'COMPLETED', '2026-01-03 18:00:04');
 
 -- --------------------------------------------------------
 
@@ -849,6 +877,13 @@ ALTER TABLE `location_points`
   ADD PRIMARY KEY (`locpoints_id`);
 
 --
+-- Indexes for table `payments`
+--
+ALTER TABLE `payments`
+  ADD PRIMARY KEY (`payment_id`),
+  ADD KEY `booking_id` (`booking_id`);
+
+--
 -- Indexes for table `pickup_dropoff`
 --
 ALTER TABLE `pickup_dropoff`
@@ -955,7 +990,7 @@ ALTER TABLE `wishlist`
 -- AUTO_INCREMENT for table `bookings`
 --
 ALTER TABLE `bookings`
-  MODIFY `booking_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `booking_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `destinations`
@@ -968,6 +1003,12 @@ ALTER TABLE `destinations`
 --
 ALTER TABLE `location_points`
   MODIFY `locpoints_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT for table `payments`
+--
+ALTER TABLE `payments`
+  MODIFY `payment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `pickup_dropoff`
@@ -1071,6 +1112,12 @@ ALTER TABLE `bookings`
 --
 ALTER TABLE `destinations`
   ADD CONSTRAINT `destinations_ibfk_1` FOREIGN KEY (`island_id`) REFERENCES `regions` (`island_id`);
+
+--
+-- Constraints for table `payments`
+--
+ALTER TABLE `payments`
+  ADD CONSTRAINT `payments_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `bookings` (`booking_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `pickup_dropoff`
