@@ -1,6 +1,13 @@
 <?php
 session_start();
 include_once "php/connect.php";
+// Require login
+if (!isset($_SESSION['user_id'])) {
+    // You can optionally pass the tour_id so user can continue after login
+    $redirect = isset($_GET['tour_id']) ? '?tour_id=' . intval($_GET['tour_id']) : '';
+    header("Location: login.php$redirect");
+    exit;
+}
 
 $user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : 1;
 $user    = null;
@@ -177,8 +184,8 @@ $inclusions = executeQuery("SELECT * FROM tour_inclusions WHERE tour_id = $tour_
                         </div>
                         <div class="col-6">
                             <div class="text-muted small mb-1">Booking Status</div>
-                            <span class="badge<?php echo $badge_class; ?> border fw-bold rounded-pill px-3 shadow-sm">
-                                <i class="fas<?php echo $icon; ?> me-1"></i><?php echo $status; ?>
+                            <span class="badge                                           <?php echo $badge_class; ?> border fw-bold rounded-pill px-3 shadow-sm">
+                                <i class="fas                                          <?php echo $icon; ?> me-1"></i><?php echo $status; ?>
                             </span>
                         </div>
                     </div>
@@ -209,57 +216,61 @@ $inclusions = executeQuery("SELECT * FROM tour_inclusions WHERE tour_id = $tour_
                             </div>
                         </div>
 
-                <div class="col-md-12">
-                    <label class="form-label small fw-bold">Pickup/Dropoff Location</label>
-                    <div class="border rounded-3 p-3 bg-light">
-                        <?php
-                        if (!empty($client_region)) {
-                            $feeQuery  = "SELECT additional_fee FROM region_fees WHERE origin_island='$client_region' AND destination_island='{$tour_island}'";
-                            $feeResult = executeQuery($feeQuery);
-                            $feeRow    = ($feeResult) ? $feeResult->fetch_assoc() : null;
-                            $airfare   = ($feeRow['additional_fee'] ?? 0) > 0;
+<div class="col-md-12">
+    <label class="form-label small fw-bold">Pickup/Dropoff Location</label>
+    <div class="border rounded-3 p-3 bg-light">
+        <?php
+        if (!empty($client_region)) {
+            // Check if airfare fee applies
+            $feeQuery  = "SELECT additional_fee FROM region_fees WHERE origin_island='$client_region' AND destination_island='{$tour_island}'";
+            $feeResult = executeQuery($feeQuery);
+            $feeRow    = ($feeResult) ? $feeResult->fetch_assoc() : null;
+            $airfare   = ($feeRow['additional_fee'] ?? 0) > 0;
 
-                            if ($airfare) {
-                                $locQuery  = "SELECT * FROM location_points WHERE origin_island='Tours Requiring AirTravel' LIMIT 1";
-                                $locResult = executeQuery($locQuery);
-                                if ($locResult && $loc = $locResult->fetch_assoc()) {
-                                    ?>
-                                    <div class="form-check mb-2">
-                                        <input class="form-check-input" type="radio" name="loc_name" id="loc_<?php echo $loc['locpoints_id']; ?>" 
-                                            value="<?php echo htmlspecialchars($loc['pickup_points']); ?>" checked required>
-                                        <label class="form-check-label small" for="loc_<?php echo $loc['locpoints_id']; ?>">
-                                            <?php echo htmlspecialchars($loc['pickup_points']); ?>
-                                        </label>
-                                    </div>
-                                    <?php
-                                } else {
-                                    echo '<div class="small text-muted">No air travel location available.</div>';
-                                }
-                            } else {
-                                $locQuery  = "SELECT * FROM location_points WHERE origin_island='$client_region'";
-                                $locResult = executeQuery($locQuery);
-                                if ($locResult && $locResult->num_rows > 0) {
-                                    while ($loc = $locResult->fetch_assoc()) {
-                                        ?>
-                                        <div class="form-check mb-2">
-                                            <input class="form-check-input" type="radio" name="loc_name" id="loc_<?php echo $loc['locpoints_id']; ?>" 
-                                                value="<?php echo htmlspecialchars($loc['pickup_points']); ?>" required>
-                                            <label class="form-check-label small" for="loc_<?php echo $loc['locpoints_id']; ?>">
-                                                <?php echo htmlspecialchars($loc['pickup_points']); ?>
-                                            </label>
-                                        </div>
-                                        <?php
-                                    }
-                                } else {
-                                    echo '<div class="small text-muted">No locations available for this region.</div>';
-                                }
-                            }
-                        } else {
-                            echo '<div class="small text-muted">Select your origin island first.</div>';
-                        }
-                        ?>
+            if ($airfare) {
+                // Airfare required → show single Tours Requiring AirTravel location
+                $locQuery  = "SELECT * FROM location_points WHERE origin_island='Tours Requiring AirTravel' LIMIT 1";
+                $locResult = executeQuery($locQuery);
+                if ($locResult && $loc = $locResult->fetch_assoc()) {
+                    ?>
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="radio" name="loc_name" id="loc_<?php echo $loc['locpoints_id']; ?>" 
+                               value="<?php echo htmlspecialchars($loc['pickup_points']); ?>" checked required>
+                        <label class="form-check-label small" for="loc_<?php echo $loc['locpoints_id']; ?>">
+                            <?php echo htmlspecialchars($loc['pickup_points']); ?>
+                        </label>
                     </div>
-                </div>
+                    <?php
+                } else {
+                    echo '<div class="small text-muted">No air travel location available.</div>';
+                }
+            } else {
+                // No airfare → show normal island locations
+                $locQuery  = "SELECT * FROM location_points WHERE origin_island='$client_region'";
+                $locResult = executeQuery($locQuery);
+                if ($locResult && $locResult->num_rows > 0) {
+                    while ($loc = $locResult->fetch_assoc()) {
+                        ?>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="radio" name="loc_name" id="loc_<?php echo $loc['locpoints_id']; ?>" 
+                                   value="<?php echo htmlspecialchars($loc['pickup_points']); ?>" required>
+                            <label class="form-check-label small" for="loc_<?php echo $loc['locpoints_id']; ?>">
+                                <?php echo htmlspecialchars($loc['pickup_points']); ?>
+                            </label>
+                        </div>
+                        <?php
+                    }
+                } else {
+                    echo '<div class="small text-muted">No locations available for this region.</div>';
+                }
+            }
+        } else {
+            echo '<div class="small text-muted">Select your origin island first.</div>';
+        }
+        ?>
+    </div>
+</div>
+
 
                         <div class="row g-3 mb-3">
                             <div class="col-md-5">
@@ -358,9 +369,15 @@ $inclusions = executeQuery("SELECT * FROM tour_inclusions WHERE tour_id = $tour_
             </div>
         </div>
         <script src="https://www.paypal.com/sdk/js?client-id=AZXarGlWci9EF_NV33Uzb79jiNCHrRaA9WCLLFRpl0Tuzul7OIh5Pgc1Frl114bn2MNsUgR1kphO2D1z&currency=PHP"></script>
+
         <script>
             document.addEventListener("DOMContentLoaded", function() {
-                const form = document.getElementById('bookingForm');
+                const paypalContainer = document.querySelector('#paypal-button-container');
+
+                if (!paypalContainer) {
+                    console.error("PayPal container not found!");
+                    return;
+                }
 
                 paypal.Buttons({
                     style: {
@@ -373,86 +390,96 @@ $inclusions = executeQuery("SELECT * FROM tour_inclusions WHERE tour_id = $tour_
                     createOrder: function(data, actions) {
                         const scheduleInput = document.querySelector('select[name="schedule_id"]');
                         const schedule_id = scheduleInput ? scheduleInput.value : 1;
-                        // binago ko yung path gawa nilipat ko sa integs na folder yung paypal
-                        return fetch('integs/paypal/createOrder.php', {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/x-www-form-urlencoded'
-                                },
-                                body: new URLSearchParams({
-                                    tour_id: '<?php echo $tour_id ?>',
-                                    pax: '<?php echo $pax ?>',
-                                    client_region: '<?php echo $client_region ?>',
-                                    voucher_code: '<?php echo $voucher_code ?>',
-                                    schedule_id: schedule_id
-                                })
+
+                        const selectedLoc = document.querySelector('input[name="loc_name"]:checked');
+                        if (!selectedLoc) {
+                            alert("Please select a Pickup Location first.");
+                            return actions.reject(); 
+                        }
+
+                        return fetch('paypal/createOrder.php', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded'
+                            },
+                            body: new URLSearchParams({
+                                tour_id: '<?php echo $tour_id ?>',
+                                pax: '<?php echo $pax ?>',
+                                client_region: '<?php echo $client_region ?>',
+                                voucher_code: '<?php echo $voucher_code ?>',
+                                schedule_id: schedule_id
                             })
-                            .then(res => res.json())
-                            .then(orderData => {
-                                if (orderData.id) return orderData.id;
-                                else throw new Error('Order creation failed');
-                            });
+                        })
+                        .then(res => res.json())
+                        .then(orderData => {
+                            if (orderData.id) {
+                                return orderData.id;
+                            } else {
+                                throw new Error('Order creation failed: ' + (orderData.error || 'Unknown error'));
+                            }
+                        })
+                        .catch(err => {
+                            console.error(err);
+                            alert("Error creating PayPal order.");
+                        });
                     },
 
                     onApprove: function(data, actions) {
-                        const locName = document.querySelector('input[name="loc_name"]').value;
-                        const locAddr = document.querySelector('textarea[name="loc_addr"]').value;
-                        const schedId = document.querySelector('select[name="schedule_id"]').value;
+                        const selectedLoc = document.querySelector('input[name="loc_name"]:checked');
+                        const scheduleInput = document.querySelector('select[name="schedule_id"]');
+                        const schedId = scheduleInput ? scheduleInput.value : 1;
 
-                        if (!locName.trim() || !locAddr.trim()) {
-                            alert("Please fill in your Pickup Location Name and Address first.");
-                            return;
-                        }
-                        // binago ko yung path gawa nilipat ko sa integs na folder yung paypal
-                        return fetch('integs/paypal/captureOrder.php', {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/x-www-form-urlencoded'
-                                },
-                                body: new URLSearchParams({
-                                    orderID: data.orderID,
-                                    tour_id: '<?php echo $tour_id; ?>',
-                                    pax: '<?php echo $pax; ?>',
-                                    schedule_id: schedId,
-                                    total_amount: '<?php echo $total; ?>'
-                                })
+                        const locNameValue = selectedLoc ? selectedLoc.value : "";
+
+                        return fetch('paypal/captureOrder.php', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded'
+                            },
+                            body: new URLSearchParams({
+                                orderID: data.orderID,
+                                tour_id: '<?php echo $tour_id; ?>',
+                                pax: '<?php echo $pax; ?>',
+                                schedule_id: schedId,
+                                total_amount: '<?php echo $total; ?>',
+                                loc_name: locNameValue 
                             })
-                            .then(res => res.text())
-                            .then(text => {
-                                try {
-                                    const details = JSON.parse(text);
-                                    console.log("Server Response:", details);
+                        })
+                        .then(res => res.text()) 
+                        .then(text => {
+                            try {
+                                const details = JSON.parse(text);
+                                console.log("Server Response:", details);
 
-                                    if (details.success) {
-                                        //ayaw gumana n2 idk why huhu
-                                        window.location.href = "confirmation.php?ref=" + details.ref;
-                                    } else {
-                                        alert('Booking Error: ' + details.message);
-                                    }
-                                } catch (e) {
-                                    console.error("Non-JSON response received:", text);
-                                    alert("Fatal Error: Check your Network Tab for the PHP error message.");
+                                if (details.success) {
+                                    window.location.href = "confirmation.php?ref=" + details.ref;
+                                } else {
+                                    alert('Booking Error: ' + (details.message || 'Payment successful but database update failed.'));
                                 }
-                            })
-                            .catch(err => {
-                                console.error('Fetch Error:', err);
-                                alert("Cannot connect to server.");
-                            });
+                            } catch (e) {
+                                console.error("Non-JSON response received:", text);
+                                alert("Fatal Error: Check the Network Tab (F12) for PHP error messages.");
+                            }
+                        })
+                        .catch(err => {
+                            console.error('Fetch Error:', err);
+                            alert("Cannot connect to server for payment capture.");
+                        });
                     },
 
                     onCancel: function(data) {
-                        alert("Payment cancelled.");
+                        alert("Payment was cancelled.");
                     },
 
                     onError: function(err) {
                         console.error("PayPal Error:", err);
-                        alert("An error occurred with the PayPal integration.");
+                        alert("An error occurred with the PayPal integration. Please try again.");
                     }
 
                 }).render('#paypal-button-container');
             });
         </script>
-    </div>
+     </div>
     <?php include "components/footer.php"; ?>
 </body>
 
