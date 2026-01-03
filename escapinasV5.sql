@@ -2,8 +2,8 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Jan 03, 2026 at 06:55 AM
+-- Host: 127.0.0.1:3307
+-- Generation Time: Jan 03, 2026 at 07:07 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -34,20 +34,19 @@ CREATE TABLE `bookings` (
   `number_of_persons` int(11) DEFAULT NULL,
   `total_amount` decimal(10,2) DEFAULT NULL,
   `booking_status` enum('Pending','Confirmed','Cancelled') DEFAULT NULL,
-  `booking_reference` varchar(50) DEFAULT NULL
+  `booking_reference` varchar(50) DEFAULT NULL,
+  `tour_id` int(11) NOT NULL,
+  `locpoints_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `bookings`
 --
 
-INSERT INTO `bookings` (`booking_id`, `user_id`, `schedule_id`, `number_of_persons`, `total_amount`, `booking_status`, `booking_reference`) VALUES
-(1, 1, 1, 2, 0.00, 'Confirmed', 'ESC-2026-6958A12B7EC0A'),
-(2, 1, 1, 1, 0.00, 'Confirmed', 'ESC-2026-6958A7F087926'),
-(3, 1, 1, 1, 0.00, 'Confirmed', 'ESC-2026-6958A8784FFB6'),
-(4, 1, 1, 1, 0.00, 'Confirmed', 'ESC-2026-6958A9CC8C56D'),
-(5, 1, 1, 1, 0.00, 'Confirmed', 'ESC-2026-6958AB43BDBD0'),
-(6, 1, 1, 1, 8957.76, 'Confirmed', 'ESC-2026-6958ABA31587F');
+INSERT INTO `bookings` (`booking_id`, `user_id`, `schedule_id`, `number_of_persons`, `total_amount`, `booking_status`, `booking_reference`, `tour_id`, `locpoints_id`) VALUES
+(14, 2, 1, 1, 11757.76, 'Confirmed', 'ESC-2026-5320CF', 1, 7),
+(15, 2, 1, 1, 12093.76, 'Confirmed', 'ESC-2026-495D62', 1, 7),
+(16, 2, 1, 1, 12877.76, 'Confirmed', 'ESC-2026-4138CD', 1, 7);
 
 -- --------------------------------------------------------
 
@@ -84,6 +83,60 @@ INSERT INTO `destinations` (`destination_id`, `island_id`, `destination_name`, `
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `location_points`
+--
+
+CREATE TABLE `location_points` (
+  `locpoints_id` int(11) NOT NULL,
+  `origin_island` enum('Luzon','Visayas','Mindanao','Tours Requiring AirTravel') NOT NULL,
+  `pickup_points` varchar(255) NOT NULL,
+  `dropoff_points` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `location_points`
+--
+
+INSERT INTO `location_points` (`locpoints_id`, `origin_island`, `pickup_points`, `dropoff_points`) VALUES
+(1, 'Luzon', 'Cubao', 'Cubao'),
+(2, 'Luzon', 'Makati', 'Makati'),
+(3, 'Visayas', 'Cebu City', 'Cebu City'),
+(4, 'Visayas', 'Iloilo City', 'Iloilo City'),
+(5, 'Mindanao', 'Davao City', 'Davao City'),
+(6, 'Mindanao', 'Cagayan de Oro', 'Cagayan de Oro'),
+(7, 'Tours Requiring AirTravel', 'NAIA (Manila)', 'NAIA (Manila)'),
+(8, 'Tours Requiring AirTravel', 'Mactan–Cebu International Airport', 'Mactan–Cebu International Airport'),
+(9, 'Tours Requiring AirTravel', 'Davao International Airport', 'Davao International Airport');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `payments`
+--
+
+CREATE TABLE `payments` (
+  `payment_id` int(11) NOT NULL,
+  `booking_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `paypal_order_id` varchar(100) DEFAULT NULL,
+  `paypal_capture_id` varchar(100) DEFAULT NULL,
+  `amount` decimal(10,2) NOT NULL,
+  `currency` varchar(10) DEFAULT 'PHP',
+  `payment_status` varchar(50) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `payments`
+--
+
+INSERT INTO `payments` (`payment_id`, `booking_id`, `user_id`, `paypal_order_id`, `paypal_capture_id`, `amount`, `currency`, `payment_status`, `created_at`) VALUES
+(1, 15, 2, '570938822N054872N', '67445019GT426520M', 12093.76, 'PHP', 'COMPLETED', '2026-01-03 17:56:36'),
+(2, 16, 2, '6Y015898EE628501L', '8LS31742H2964741Y', 12877.76, 'PHP', 'COMPLETED', '2026-01-03 18:00:04');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `pickup_dropoff`
 --
 
@@ -108,8 +161,24 @@ CREATE TABLE `ratings` (
   `user_id` int(11) DEFAULT NULL,
   `tour_id` int(11) DEFAULT NULL,
   `review_text` varchar(255) DEFAULT NULL,
-  `rating` int(11) DEFAULT NULL CHECK (`rating` between 1 and 5)
+  `rating_score` int(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `ratings`
+--
+
+INSERT INTO `ratings` (`review_id`, `user_id`, `tour_id`, `review_text`, `rating_score`) VALUES
+(12, 1, 1, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 5),
+(13, 1, 1, 'Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', 4),
+(14, 1, 2, 'Ut enim ad minim veniam, quis nostrud exercitation ullamco.', 5),
+(15, 1, 2, 'Laboris nisi ut aliquip ex ea commodo consequat.', 5),
+(16, 1, 3, 'Duis aute irure dolor in reprehenderit in voluptate velit.', 3),
+(17, 1, 3, 'Esse cillum dolore eu fugiat nulla pariatur.', 4),
+(18, 1, 4, 'Excepteur sint occaecat cupidatat non proident.', 4),
+(19, 1, 10, 'Sunt in culpa qui officia deserunt mollit anim id est laborum.', 5),
+(20, 1, 10, 'Lorem ipsum fresh surf vibes!', 5),
+(21, 1, 10, 'Bit rainy but still good.', 4);
 
 -- --------------------------------------------------------
 
@@ -558,26 +627,27 @@ CREATE TABLE `tour_packages` (
   `description` text DEFAULT NULL,
   `price` decimal(10,2) DEFAULT NULL,
   `status` enum('Available','Unavailable') DEFAULT NULL,
-  `image` varchar(255) DEFAULT NULL
+  `image` varchar(255) DEFAULT NULL,
+  `banner_image` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `tour_packages`
 --
 
-INSERT INTO `tour_packages` (`tour_id`, `destination_id`, `tour_name`, `duration_days`, `duration_nights`, `description`, `price`, `status`, `image`) VALUES
-(1, 1, 'Baguio-Sagada Tour', 4, 3, 'A cool-climate adventure combining Baguio city charm and Sagada culture.', 7998.00, 'Available', 'assets/images/baguio_sagada.jpg'),
-(2, 2, 'Ilocos-Laoag Tour', 4, 3, 'A heritage and coastal tour showcasing Spanish-era landmarks.', 8998.00, 'Available', 'assets/images/ilocos_laoag.jpg'),
-(3, 3, 'La Union Tour', 3, 2, 'A laid-back beach and nature escape.', 6998.00, 'Available', 'assets/images/la_union.jpg'),
-(4, 4, 'Bicol Tour', 5, 4, 'An adventure-filled tour featuring volcano views and island hopping.', 8998.00, 'Available', 'assets/images/bicol.jpg'),
-(5, 5, 'Batangas-Tagaytay Tour', 2, 1, 'A relaxing getaway with cool weather and scenic views.', 5498.00, 'Available', 'assets/images/batangas_tagaytay.jpg'),
-(6, 6, 'Cebu City Tour', 4, 3, 'A mix of history, waterfalls, and marine adventures.', 7998.00, 'Available', 'assets/images/cebu.jpg'),
-(7, 7, 'Bohol Countryside Tour', 3, 2, 'A scenic countryside tour highlighting natural wonders.', 6998.00, 'Available', 'assets/images/bohol.jpg'),
-(8, 8, 'Boracay Island Tour', 4, 3, 'A world-famous beach destination with powdery sand and stunning sunsets.', 7998.00, 'Available', 'assets/images/boracay.jpg'),
-(9, 9, 'Davao City Tour', 3, 2, 'A nature-filled city tour featuring wildlife, parks, and island escapes.', 6998.00, 'Available', 'assets/images/davao.jpg'),
-(10, 10, 'Siargao Island Tour', 4, 3, 'A tropical paradise famous for surfing, lagoons, and island hopping.', 7998.00, 'Available', 'assets/images/siargao.jpg'),
-(11, 11, 'Cagayan de Oro Tour', 3, 2, 'An action-packed adventure tour perfect for thrill-seekers.', 6998.00, 'Available', 'assets/images/cagayan.jpg'),
-(12, 5, 'Palawan Island Adventure', 5, 3, 'A breathtaking tour of Palawan including Puerto Princesa, El Nido, and Coron. Explore beaches, lagoons, and vibrant culture.', 12000.00, 'Available', 'assets/images/palawan_tour.jpg');
+INSERT INTO `tour_packages` (`tour_id`, `destination_id`, `tour_name`, `duration_days`, `duration_nights`, `description`, `price`, `status`, `image`, `banner_image`) VALUES
+(1, 1, 'Baguio-Sagada Tour', 4, 3, 'A cool-climate adventure combining Baguio city charm and Sagada culture.', 7998.00, 'Available', 'assets/images/baguio_sagada.jpg', NULL),
+(2, 2, 'Ilocos-Laoag Tour', 4, 3, 'A heritage and coastal tour showcasing Spanish-era landmarks.', 8998.00, 'Available', 'assets/images/ilocos_laoag.jpg', NULL),
+(3, 3, 'La Union Tour', 3, 2, 'A laid-back beach and nature escape.', 6998.00, 'Available', 'assets/images/la_union.jpg', NULL),
+(4, 4, 'Bicol Tour', 5, 4, 'An adventure-filled tour featuring volcano views and island hopping.', 8998.00, 'Available', 'assets/images/bicol.jpg', NULL),
+(5, 5, 'Batangas-Tagaytay Tour', 2, 1, 'A relaxing getaway with cool weather and scenic views.', 5498.00, 'Available', 'assets/images/batangas_tagaytay.jpg', NULL),
+(6, 6, 'Cebu City Tour', 4, 3, 'A mix of history, waterfalls, and marine adventures.', 7998.00, 'Available', 'assets/images/cebu.jpg', NULL),
+(7, 7, 'Bohol Countryside Tour', 3, 2, 'A scenic countryside tour highlighting natural wonders.', 6998.00, 'Available', 'assets/images/bohol.jpg', NULL),
+(8, 8, 'Boracay Island Tour', 4, 3, 'A world-famous beach destination with powdery sand and stunning sunsets.', 7998.00, 'Available', 'assets/images/boracay.jpg', NULL),
+(9, 9, 'Davao City Tour', 3, 2, 'A nature-filled city tour featuring wildlife, parks, and island escapes.', 6998.00, 'Available', 'assets/images/davao.jpg', NULL),
+(10, 10, 'Siargao Island Tour', 4, 3, 'A tropical paradise famous for surfing, lagoons, and island hopping.', 7998.00, 'Available', 'assets/images/siargao.jpg', NULL),
+(11, 11, 'Cagayan de Oro Tour', 3, 2, 'An action-packed adventure tour perfect for thrill-seekers.', 6998.00, 'Available', 'assets/images/cagayan.jpg', NULL),
+(12, 5, 'Palawan Island Adventure', 5, 3, 'A breathtaking tour of Palawan including Puerto Princesa, El Nido, and Coron. Explore beaches, lagoons, and vibrant culture.', 12000.00, 'Available', 'assets/images/palawan_tour.jpg', NULL);
 
 -- --------------------------------------------------------
 
@@ -745,7 +815,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`user_id`, `first_name`, `last_name`, `middle_initial`, `contact_num`, `region`, `province`, `city`, `email`, `password`, `role`) VALUES
-(1, 'Jhon', 'Mackay', 'S', '09995635443', NULL, 'Batangas', 'Tanauan CIty', 'test1@gmail.com', '$2y$10$ig78VJKaY6kVmJlvP9iG3ep3zHQbq3eOxedqWOUqBrASURIMQloFS', 'user');
+(1, 'Jhon', 'Mackay', 'S', '09995635443', NULL, 'Batangas', 'Tanauan CIty', 'test1@gmail.com', '$2y$10$ig78VJKaY6kVmJlvP9iG3ep3zHQbq3eOxedqWOUqBrASURIMQloFS', 'user'),
+(2, 'Joyce Anne', 'Remo', 'P', '09912676928', NULL, 'Batangas', 'City', 'joyceanneremo05@gmail.com', '$2y$10$NNArr6zfvMjbHIlTQ5b9F.i7aQAQGFJ6VuJtE2rEK4upDlqknFFdG', 'user');
 
 -- --------------------------------------------------------
 
@@ -765,6 +836,19 @@ CREATE TABLE `vouchers` (
   `redeemed_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `wishlist`
+--
+
+CREATE TABLE `wishlist` (
+  `wishlist_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `tour_id` int(11) NOT NULL,
+  `added_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 --
 -- Indexes for dumped tables
 --
@@ -775,7 +859,9 @@ CREATE TABLE `vouchers` (
 ALTER TABLE `bookings`
   ADD PRIMARY KEY (`booking_id`),
   ADD KEY `user_id` (`user_id`),
-  ADD KEY `schedule_id` (`schedule_id`);
+  ADD KEY `schedule_id` (`schedule_id`),
+  ADD KEY `fk_booking_tour` (`tour_id`),
+  ADD KEY `fk_booking_location` (`locpoints_id`);
 
 --
 -- Indexes for table `destinations`
@@ -783,6 +869,19 @@ ALTER TABLE `bookings`
 ALTER TABLE `destinations`
   ADD PRIMARY KEY (`destination_id`),
   ADD KEY `island_id` (`island_id`);
+
+--
+-- Indexes for table `location_points`
+--
+ALTER TABLE `location_points`
+  ADD PRIMARY KEY (`locpoints_id`);
+
+--
+-- Indexes for table `payments`
+--
+ALTER TABLE `payments`
+  ADD PRIMARY KEY (`payment_id`),
+  ADD KEY `booking_id` (`booking_id`);
 
 --
 -- Indexes for table `pickup_dropoff`
@@ -876,6 +975,14 @@ ALTER TABLE `vouchers`
   ADD KEY `user_id` (`user_id`);
 
 --
+-- Indexes for table `wishlist`
+--
+ALTER TABLE `wishlist`
+  ADD PRIMARY KEY (`wishlist_id`),
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `tour_id` (`tour_id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -883,13 +990,25 @@ ALTER TABLE `vouchers`
 -- AUTO_INCREMENT for table `bookings`
 --
 ALTER TABLE `bookings`
-  MODIFY `booking_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `booking_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `destinations`
 --
 ALTER TABLE `destinations`
   MODIFY `destination_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
+-- AUTO_INCREMENT for table `location_points`
+--
+ALTER TABLE `location_points`
+  MODIFY `locpoints_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT for table `payments`
+--
+ALTER TABLE `payments`
+  MODIFY `payment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `pickup_dropoff`
@@ -901,7 +1020,7 @@ ALTER TABLE `pickup_dropoff`
 -- AUTO_INCREMENT for table `ratings`
 --
 ALTER TABLE `ratings`
-  MODIFY `review_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `review_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `regions`
@@ -961,13 +1080,19 @@ ALTER TABLE `tour_schedules`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `vouchers`
 --
 ALTER TABLE `vouchers`
   MODIFY `voucher_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `wishlist`
+--
+ALTER TABLE `wishlist`
+  MODIFY `wishlist_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- Constraints for dumped tables
@@ -978,13 +1103,21 @@ ALTER TABLE `vouchers`
 --
 ALTER TABLE `bookings`
   ADD CONSTRAINT `bookings_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
-  ADD CONSTRAINT `bookings_ibfk_2` FOREIGN KEY (`schedule_id`) REFERENCES `tour_schedules` (`schedule_id`);
+  ADD CONSTRAINT `bookings_ibfk_2` FOREIGN KEY (`schedule_id`) REFERENCES `tour_schedules` (`schedule_id`),
+  ADD CONSTRAINT `fk_booking_location` FOREIGN KEY (`locpoints_id`) REFERENCES `location_points` (`locpoints_id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_booking_tour` FOREIGN KEY (`tour_id`) REFERENCES `tour_packages` (`tour_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `destinations`
 --
 ALTER TABLE `destinations`
   ADD CONSTRAINT `destinations_ibfk_1` FOREIGN KEY (`island_id`) REFERENCES `regions` (`island_id`);
+
+--
+-- Constraints for table `payments`
+--
+ALTER TABLE `payments`
+  ADD CONSTRAINT `payments_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `bookings` (`booking_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `pickup_dropoff`
@@ -997,8 +1130,7 @@ ALTER TABLE `pickup_dropoff`
 -- Constraints for table `ratings`
 --
 ALTER TABLE `ratings`
-  ADD CONSTRAINT `ratings_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
-  ADD CONSTRAINT `ratings_ibfk_2` FOREIGN KEY (`tour_id`) REFERENCES `tour_packages` (`tour_id`);
+  ADD CONSTRAINT `fk_ratings_tour` FOREIGN KEY (`tour_id`) REFERENCES `tour_packages` (`tour_id`);
 
 --
 -- Constraints for table `tour_about`
@@ -1047,6 +1179,13 @@ ALTER TABLE `tour_schedules`
 --
 ALTER TABLE `vouchers`
   ADD CONSTRAINT `vouchers_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `wishlist`
+--
+ALTER TABLE `wishlist`
+  ADD CONSTRAINT `wishlist_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
+  ADD CONSTRAINT `wishlist_ibfk_2` FOREIGN KEY (`tour_id`) REFERENCES `tour_packages` (`tour_id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

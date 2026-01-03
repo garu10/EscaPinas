@@ -787,3 +787,54 @@ INSERT INTO region_fees (origin_island, destination_island, additional_fee) VALU
 ('Mindanao', 'Mindanao', 0.00),
 ('Mindanao', 'Luzon', 3500.00),
 ('Mindanao', 'Visayas', 2200.00);
+
+--------- 01/03/2026
+
+ALTER TABLE ratings
+ADD CONSTRAINT fk_ratings_tour
+FOREIGN KEY (tour_id)
+REFERENCES tour_packages(tour_id);
+
+
+CREATE TABLE `location_points` (
+  `locpoints_id` int NOT NULL AUTO_INCREMENT,
+  `origin_island` enum('Luzon','Visayas','Mindanao','Tours Requiring AirTravel') NOT NULL,
+  `pickup_points` varchar(255) NOT NULL,
+  `dropoff_points` varchar(255) NOT NULL,
+  PRIMARY KEY (`locpoints_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
+-- Luzon
+INSERT INTO `location_points` (`origin_island`, `pickup_points`, `dropoff_points`) VALUES
+('Luzon', 'Cubao', 'Cubao'),
+('Luzon', 'Makati', 'Makati');
+
+-- Visayas
+INSERT INTO `location_points` (`origin_island`, `pickup_points`, `dropoff_points`) VALUES
+('Visayas', 'Cebu City', 'Cebu City'),
+('Visayas', 'Iloilo City', 'Iloilo City');
+
+-- Mindanao
+INSERT INTO `location_points` (`origin_island`, `pickup_points`, `dropoff_points`) VALUES
+('Mindanao', 'Davao City', 'Davao City'),
+('Mindanao', 'Cagayan de Oro', 'Cagayan de Oro');
+
+-- Tours Requiring AirTravel
+INSERT INTO `location_points` (`origin_island`, `pickup_points`, `dropoff_points`) VALUES
+('Tours Requiring AirTravel', 'NAIA (Manila)', 'NAIA (Manila)'),
+('Tours Requiring AirTravel', 'Mactan–Cebu International Airport', 'Mactan–Cebu International Airport'),
+('Tours Requiring AirTravel', 'Davao International Airport', 'Davao International Airport');
+
+CREATE TABLE payments (
+    payment_id INT AUTO_INCREMENT PRIMARY KEY,
+    booking_id INT NOT NULL,            
+    user_id INT NOT NULL,               
+    paypal_order_id VARCHAR(100),     
+    paypal_capture_id VARCHAR(100),     
+    amount DECIMAL(10, 2) NOT NULL,    
+    currency VARCHAR(10) DEFAULT 'PHP',
+    payment_status VARCHAR(50),        
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (booking_id) REFERENCES bookings(booking_id) ON DELETE CASCADE
+);

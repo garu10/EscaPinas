@@ -39,13 +39,13 @@ if ($isLoggedIn) {
                     <a class="nav-link fw-semibold text-dark" href="/EscaPinas/frontend/booking.php">Bookings</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link fw-semibold text-dark" href="/EscaPinas/frontend/about.php">About</a>
+                    <a class="nav-link fw-semibold text-dark" href="/EscaPinas/frontend/components/infoLinks/about.php">About</a>
                 </li>
             </ul>
         </div>
 
         <div class="col-lg-2 d-none d-lg-flex justify-content-end align-items-center gap-3">
-            <a href="/EscaPinas/frontend/chatbot.php" class="text-dark fs-4">
+            <a href="/EscaPinas/frontend/integs/chatbot/chatbotUI.php" class="text-dark fs-4">
                 <i class="bi bi-chat-dots"></i>
             </a>
             
