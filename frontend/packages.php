@@ -1,38 +1,34 @@
 <?php 
-session_start();
-include 'php/connect.php';
+    session_start();
+    include 'php/connect.php';
 
-$getQuery = "SELECT tour_packages.*, destinations.destination_name, regions.island_name 
-             FROM tour_packages 
-             LEFT JOIN destinations ON tour_packages.destination_id = destinations.destination_id 
-             LEFT JOIN regions ON destinations.island_id = regions.island_id 
-             ORDER BY tour_packages.tour_name ASC";
+    $getQuery = "SELECT tour_packages.*, destinations.destination_name, regions.island_name 
+                FROM tour_packages 
+                LEFT JOIN destinations ON tour_packages.destination_id = destinations.destination_id 
+                LEFT JOIN regions ON destinations.island_id = regions.island_id 
+                ORDER BY tour_packages.tour_name ASC";
 
-$result = executeQuery($getQuery);
+    $result = executeQuery($getQuery);
 
-// sa filters sa popular 
-if (!$result) {
-    die("Query failed: " . $conn->error);
-}
+    if (!$result) {
+        die("Query failed: " . $conn->error);
+    }
 
-$allTours = [];
-while ($row = $result->fetch_assoc()) {
-    $allTours[] = $row; 
-} 
+    $allTours = [];
+    while ($row = $result->fetch_assoc()) {
+        $allTours[] = $row; 
+    } 
 
-// dun sa last section
-$randomTours = $allTours; 
-shuffle($randomTours); 
-$discoverTours = array_slice($randomTours, 0, 4);
+    $randomTours = $allTours; 
+    shuffle($randomTours); 
+    $discoverTours = array_slice($randomTours, 0, 4);
 
+    $randomTours = $allTours; 
+    shuffle($randomTours); 
+    $discoverTours = array_slice($randomTours, 0, 4);
 
-// Para sa ito dun sa dropdown nung search
-$randomTours = $allTours; 
-shuffle($randomTours); 
-$discoverTours = array_slice($randomTours, 0, 4);
-
-$islands_query = "SELECT * FROM regions ORDER BY island_name ASC";
-$islands_result = executeQuery($islands_query);
+    $islands_query = "SELECT * FROM regions ORDER BY island_name ASC";
+    $islands_result = executeQuery($islands_query);
 ?>
 
 <!doctype html>
@@ -61,7 +57,7 @@ $islands_result = executeQuery($islands_query);
 
     <div class="container-fluid p-0">
         <div style="height: 400px; width: 100%; position: relative;">
-            <img id="bannerImage" src="/EscaPinas/frontend/assets/images/banner.png" class="w-100 h-100" style="object-fit: cover;">
+            <img id="bannerImage" src="/EscaPinas/frontend/assets/images/banner_package.jpg" style="background-size:cover; object-fit:cover; background-position:center; width:100%; height:400px; position:relative;">
             <div class="position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-50"></div>
             <div class="position-absolute top-50 start-50 translate-middle text-center w-100">
                 <h1 class="text-white fw-bold display-4">Find Your Next Adventure</h1>
