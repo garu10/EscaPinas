@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3307
--- Generation Time: Jan 03, 2026 at 05:20 PM
+-- Generation Time: Jan 03, 2026 at 06:35 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -34,25 +34,17 @@ CREATE TABLE `bookings` (
   `number_of_persons` int(11) DEFAULT NULL,
   `total_amount` decimal(10,2) DEFAULT NULL,
   `booking_status` enum('Pending','Confirmed','Cancelled') DEFAULT NULL,
-  `booking_reference` varchar(50) DEFAULT NULL
+  `booking_reference` varchar(50) DEFAULT NULL,
+  `tour_id` int(11) NOT NULL,
+  `locpoints_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `bookings`
 --
 
-INSERT INTO `bookings` (`booking_id`, `user_id`, `schedule_id`, `number_of_persons`, `total_amount`, `booking_status`, `booking_reference`) VALUES
-(1, 1, 1, 2, 0.00, 'Confirmed', 'ESC-2026-6958A12B7EC0A'),
-(2, 1, 1, 1, 0.00, 'Confirmed', 'ESC-2026-6958A7F087926'),
-(3, 1, 1, 1, 0.00, 'Confirmed', 'ESC-2026-6958A8784FFB6'),
-(4, 1, 1, 1, 0.00, 'Confirmed', 'ESC-2026-6958A9CC8C56D'),
-(5, 1, 1, 1, 0.00, 'Confirmed', 'ESC-2026-6958AB43BDBD0'),
-(6, 1, 1, 1, 8957.76, 'Confirmed', 'ESC-2026-6958ABA31587F'),
-(7, 1, 41, 1, 8957.76, 'Confirmed', 'ESC-2026-695916C442E87'),
-(8, 2, 16, 1, 6157.76, 'Confirmed', 'ESC-2026-6959388FD98EC'),
-(9, 2, 16, 1, 6157.76, 'Confirmed', 'ESC-2026-695938E327FAA'),
-(10, 2, 1, 1, 11757.76, 'Confirmed', 'ESC-2026-69593D4B78589'),
-(11, 2, 28, 1, 8957.76, 'Confirmed', 'ESC-2026-695941B84CF8E');
+INSERT INTO `bookings` (`booking_id`, `user_id`, `schedule_id`, `number_of_persons`, `total_amount`, `booking_status`, `booking_reference`, `tour_id`, `locpoints_id`) VALUES
+(14, 2, 1, 1, 11757.76, 'Confirmed', 'ESC-2026-5320CF', 1, 7);
 
 -- --------------------------------------------------------
 
@@ -839,7 +831,9 @@ CREATE TABLE `wishlist` (
 ALTER TABLE `bookings`
   ADD PRIMARY KEY (`booking_id`),
   ADD KEY `user_id` (`user_id`),
-  ADD KEY `schedule_id` (`schedule_id`);
+  ADD KEY `schedule_id` (`schedule_id`),
+  ADD KEY `fk_booking_tour` (`tour_id`),
+  ADD KEY `fk_booking_location` (`locpoints_id`);
 
 --
 -- Indexes for table `destinations`
@@ -961,7 +955,7 @@ ALTER TABLE `wishlist`
 -- AUTO_INCREMENT for table `bookings`
 --
 ALTER TABLE `bookings`
-  MODIFY `booking_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `booking_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `destinations`
@@ -1068,7 +1062,9 @@ ALTER TABLE `wishlist`
 --
 ALTER TABLE `bookings`
   ADD CONSTRAINT `bookings_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
-  ADD CONSTRAINT `bookings_ibfk_2` FOREIGN KEY (`schedule_id`) REFERENCES `tour_schedules` (`schedule_id`);
+  ADD CONSTRAINT `bookings_ibfk_2` FOREIGN KEY (`schedule_id`) REFERENCES `tour_schedules` (`schedule_id`),
+  ADD CONSTRAINT `fk_booking_location` FOREIGN KEY (`locpoints_id`) REFERENCES `location_points` (`locpoints_id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_booking_tour` FOREIGN KEY (`tour_id`) REFERENCES `tour_packages` (`tour_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `destinations`
