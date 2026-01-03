@@ -787,3 +787,9 @@ INSERT INTO region_fees (origin_island, destination_island, additional_fee) VALU
 ('Mindanao', 'Mindanao', 0.00),
 ('Mindanao', 'Luzon', 3500.00),
 ('Mindanao', 'Visayas', 2200.00);
+
+
+ALTER TABLE ratings
+ADD CONSTRAINT fk_ratings_tour
+FOREIGN KEY (tour_id)
+REFERENCES tour_packages(tour_id);
