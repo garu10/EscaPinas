@@ -177,8 +177,8 @@ $inclusions = executeQuery("SELECT * FROM tour_inclusions WHERE tour_id = $tour_
                         </div>
                         <div class="col-6">
                             <div class="text-muted small mb-1">Booking Status</div>
-                            <span class="badge                                           <?php echo $badge_class; ?> border fw-bold rounded-pill px-3 shadow-sm">
-                                <i class="fas                                          <?php echo $icon; ?> me-1"></i><?php echo $status; ?>
+                            <span class="badge<?php echo $badge_class; ?> border fw-bold rounded-pill px-3 shadow-sm">
+                                <i class="fas<?php echo $icon; ?> me-1"></i><?php echo $status; ?>
                             </span>
                         </div>
                     </div>
@@ -209,16 +209,57 @@ $inclusions = executeQuery("SELECT * FROM tour_inclusions WHERE tour_id = $tour_
                             </div>
                         </div>
 
-                        <div class="row g-3 mb-4">
-                            <div class="col-md-12">
-                                <label class="form-label small fw-bold">Pickup Location Name (e.g. NAIA T3)</label>
-                                <input type="text" name="loc_name" class="form-control rounded-3 shadow-sm border-light" required>
-                            </div>
-                            <div class="col-md-12">
-                                <label class="form-label small fw-bold">Detailed Pickup Address</label>
-                                <textarea name="loc_addr" class="form-control rounded-3 shadow-sm border-light" rows="2" required></textarea>
-                            </div>
-                        </div>
+                <div class="col-md-12">
+                    <label class="form-label small fw-bold">Pickup/Dropoff Location</label>
+                    <div class="border rounded-3 p-3 bg-light">
+                        <?php
+                        if (!empty($client_region)) {
+                            $feeQuery  = "SELECT additional_fee FROM region_fees WHERE origin_island='$client_region' AND destination_island='{$tour_island}'";
+                            $feeResult = executeQuery($feeQuery);
+                            $feeRow    = ($feeResult) ? $feeResult->fetch_assoc() : null;
+                            $airfare   = ($feeRow['additional_fee'] ?? 0) > 0;
+
+                            if ($airfare) {
+                                $locQuery  = "SELECT * FROM location_points WHERE origin_island='Tours Requiring AirTravel' LIMIT 1";
+                                $locResult = executeQuery($locQuery);
+                                if ($locResult && $loc = $locResult->fetch_assoc()) {
+                                    ?>
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="radio" name="loc_name" id="loc_<?php echo $loc['locpoints_id']; ?>" 
+                                            value="<?php echo htmlspecialchars($loc['pickup_points']); ?>" checked required>
+                                        <label class="form-check-label small" for="loc_<?php echo $loc['locpoints_id']; ?>">
+                                            <?php echo htmlspecialchars($loc['pickup_points']); ?>
+                                        </label>
+                                    </div>
+                                    <?php
+                                } else {
+                                    echo '<div class="small text-muted">No air travel location available.</div>';
+                                }
+                            } else {
+                                $locQuery  = "SELECT * FROM location_points WHERE origin_island='$client_region'";
+                                $locResult = executeQuery($locQuery);
+                                if ($locResult && $locResult->num_rows > 0) {
+                                    while ($loc = $locResult->fetch_assoc()) {
+                                        ?>
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="radio" name="loc_name" id="loc_<?php echo $loc['locpoints_id']; ?>" 
+                                                value="<?php echo htmlspecialchars($loc['pickup_points']); ?>" required>
+                                            <label class="form-check-label small" for="loc_<?php echo $loc['locpoints_id']; ?>">
+                                                <?php echo htmlspecialchars($loc['pickup_points']); ?>
+                                            </label>
+                                        </div>
+                                        <?php
+                                    }
+                                } else {
+                                    echo '<div class="small text-muted">No locations available for this region.</div>';
+                                }
+                            }
+                        } else {
+                            echo '<div class="small text-muted">Select your origin island first.</div>';
+                        }
+                        ?>
+                    </div>
+                </div>
 
                         <div class="row g-3 mb-3">
                             <div class="col-md-5">

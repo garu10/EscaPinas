@@ -788,8 +788,19 @@ INSERT INTO region_fees (origin_island, destination_island, additional_fee) VALU
 ('Mindanao', 'Luzon', 3500.00),
 ('Mindanao', 'Visayas', 2200.00);
 
+--------- 01/03/2026
 
 ALTER TABLE ratings
 ADD CONSTRAINT fk_ratings_tour
 FOREIGN KEY (tour_id)
 REFERENCES tour_packages(tour_id);
+
+
+CREATE TABLE `location_points` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `region_name` varchar(100) NOT NULL,
+  `pickup_points` text NOT NULL,
+  `dropoff_points` text NOT NULL,
+  `remarks` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
