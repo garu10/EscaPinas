@@ -30,9 +30,7 @@ $bookingResult = executeQuery($bookingQuery);
 
 <div class="mt-4">
     <?php 
-    // Check if the user has any bookings
     if (mysqli_num_rows($bookingResult) > 0): 
-        // Loop through each booking record found in the database
         while ($booking = mysqli_fetch_assoc($bookingResult)): 
     ?>
         <div class="payment-item mb-4">

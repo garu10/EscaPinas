@@ -47,7 +47,7 @@ $page = $_GET['page'] ?? 'personal';
                             <i class="bi bi-wallet2"></i> Payment
                         </a>
                         <a href="profile.php?page=review" class="<?= $page == 'review' ? 'fw-bold text-success' : '' ?>">
-                            <i class="bi bi-wallet2"></i> Reviews
+                            <i class="bi bi-wallet2"></i> My Ratings
                         </a>
                         <a href="about.php">
                             <i class="bi bi-info-circle"></i> About Us
@@ -74,7 +74,7 @@ $page = $_GET['page'] ?? 'personal';
                             include "profile/payment.php";
                             break;
                         case 'review':
-                            include "profile/review.php";
+                            include "profile/myRating.php";
                             break;
                         case 'personal':
                         default:
