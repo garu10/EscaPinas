@@ -1,62 +1,53 @@
 <?php
-session_start();
-include("php/connect.php");
+    session_start();
+    include("php/connect.php");
 
-// test lang itoo
-// dito gineget yung tour id after maclick yung view details sa packages.php
-$tour_id = isset($_GET['tour_id']) ? $_GET['tour_id'] : die("Tour ID not found.");
+    $tour_id = isset($_GET['tour_id']) ? $_GET['tour_id'] : die("Tour ID not found.");
 
-$tourQuery = "SELECT tp.*, d.destination_name, r.island_name 
-              FROM tour_packages tp
-              JOIN destinations d ON tp.destination_id = d.destination_id
-              JOIN regions r ON d.island_id = r.island_id
-              WHERE tp.tour_id = $tour_id";
+    $tourQuery = "SELECT tp.*, d.destination_name, r.island_name 
+                FROM tour_packages tp
+                JOIN destinations d ON tp.destination_id = d.destination_id
+                JOIN regions r ON d.island_id = r.island_id
+                WHERE tp.tour_id = $tour_id";
 
-$tourResult = executeQuery($tourQuery);
-$tour = mysqli_fetch_assoc($tourResult);
+    $tourResult = executeQuery($tourQuery);
+    $tour = mysqli_fetch_assoc($tourResult);
 
-// query sa pagselect ng mga images and other info dun sa places to visit
-$placesQuery = "SELECT * FROM tour_place WHERE tour_id = $tour_id";
-$placesResult = executeQuery($placesQuery);
+    $placesQuery = "SELECT * FROM tour_place WHERE tour_id = $tour_id";
+    $placesResult = executeQuery($placesQuery);
 
-// query sa pagselect ng mga info para sa itenerary from db
-$itineraryQuery = "SELECT * FROM tour_itinerary WHERE tour_id = $tour_id ORDER BY day_number ASC, itinerary_id ASC";
-$itineraryResult = executeQuery($itineraryQuery);
+    $itineraryQuery = "SELECT * FROM tour_itinerary WHERE tour_id = $tour_id ORDER BY day_number ASC, itinerary_id ASC";
+    $itineraryResult = executeQuery($itineraryQuery);
 
-$itineraryData = [];
-while ($row = mysqli_fetch_assoc($itineraryResult)) {
-    $itineraryData[$row['day_number']][] = $row['short_desc'];
-}
+    $itineraryData = [];
+    while ($row = mysqli_fetch_assoc($itineraryResult)) {
+        $itineraryData[$row['day_number']][] = $row['short_desc'];
+    }
 
-// query sa pagselect ng info para sa about
-$aboutQuery = "SELECT * FROM tour_about WHERE tour_id = $tour_id";
-$aboutResult = executeQuery($aboutQuery);
-$about = mysqli_fetch_assoc($aboutResult);
+    $aboutQuery = "SELECT * FROM tour_about WHERE tour_id = $tour_id";
+    $aboutResult = executeQuery($aboutQuery);
+    $about = mysqli_fetch_assoc($aboutResult);
 
+    $tour_id = isset($_GET['tour_id']) ? (int) $_GET['tour_id'] : 0;
 
-// Get the tour_id from the URL
-$tour_id = isset($_GET['tour_id']) ? (int) $_GET['tour_id'] : 0;
+    $ratingQuery = "SELECT AVG(rating_score) as avg_rating, COUNT(review_id) as total_reviews 
+                    FROM ratings 
+                    WHERE tour_id = $tour_id";
+    $ratingResult = executeQuery($ratingQuery);
+    $ratingData = mysqli_fetch_assoc($ratingResult);
 
-// Fetch Average Rating
-$ratingQuery = "SELECT AVG(rating_score) as avg_rating, COUNT(review_id) as total_reviews 
-                FROM ratings 
-                WHERE tour_id = $tour_id";
-$ratingResult = executeQuery($ratingQuery);
-$ratingData = mysqli_fetch_assoc($ratingResult);
+    $average = $ratingData['avg_rating'] ? round($ratingData['avg_rating'], 1) : 0;
+    $count = $ratingData['total_reviews'] ?? 0;
 
-$average = $ratingData['avg_rating'] ? round($ratingData['avg_rating'], 1) : 0;
-$count = $ratingData['total_reviews'] ?? 0;
+    $isLoggedIn = isset($_SESSION['user_id']);
+    $uid = $_SESSION['user_id'] ?? 0;
+    $isWishlisted = false;
 
-// para sa wishlist function
-$isLoggedIn = isset($_SESSION['user_id']);
-$uid = $_SESSION['user_id'] ?? 0;
-$isWishlisted = false;
-
-if ($isLoggedIn) {
-    $wishCheckQuery = "SELECT * FROM wishlist WHERE user_id = $uid AND tour_id = $tour_id";
-    $wishCheckResult = executeQuery($wishCheckQuery);
-    $isWishlisted = mysqli_num_rows($wishCheckResult) > 0;
-}
+    if ($isLoggedIn) {
+        $wishCheckQuery = "SELECT * FROM wishlist WHERE user_id = $uid AND tour_id = $tour_id";
+        $wishCheckResult = executeQuery($wishCheckQuery);
+        $isWishlisted = mysqli_num_rows($wishCheckResult) > 0;
+    }
 ?>
 
 <!doctype html>
@@ -77,22 +68,25 @@ if ($isLoggedIn) {
     <?php include "components/navbar.php"; ?>
     <div class="row g-0">
         <div class="col">
-
-            <div style="height: 50vh; min-height: 350px; overflow: hidden;">
+            <div class="position-relative" style="height: 50vh; min-height: 350px; overflow: hidden;">
+                
                 <a href="javascript:history.back()"
-                    class="btn btn-success btn-sm position-absolute rounded-pill shadow-sm px-3 py-2"
-                    style="left: 20px; z-index: 10;">
+                class="btn btn-success btn-sm position-absolute rounded-pill shadow-sm px-3 py-2"
+                style="top: 20px; left: 20px; z-index: 10;">
                     <i class="bi bi-chevron-left"></i> Back
                 </a>
+
                 <?php
-                // need mag dagdag ng column sa database ng tour_packages para sa banner "banner_image"
-                $banner_src = !empty($tour['banner_image']) ? "assets/images/" . $tour['banner_image'] : "";
+                    $banner_src = !empty($tour['banner_image']) ? $tour['banner_image'] : "assets/images/default-banner.jpg";
                 ?>
-                <img src="<?php echo $banner_src; ?>" class="w-100 h-100" style="object-fit: cover;">
+                
+                <img src="<?php echo $banner_src; ?>" 
+                    class="w-100 h-100" 
+                    style="object-fit: cover;" 
+                    alt="Tour Banner">
             </div>
         </div>
-    </div>
-    </div>
+    </div>    
     <div class="container my-5 mb-5">
         <div class="row">
             <div class="col-12">
@@ -108,14 +102,13 @@ if ($isLoggedIn) {
                                 <?= $count ?> Reviews)
                             </span>
                             <?php
-                            // then ito yung logic ng ratings 
                             for ($i = 1; $i <= 5; $i++) {
                                 if ($i <= $average) {
-                                    echo '<i class="bi bi-star-fill"></i>'; // Full Star
+                                    echo '<i class="bi bi-star-fill"></i>'; 
                                 } elseif ($i - 0.5 <= $average) {
-                                    echo '<i class="bi bi-star-half"></i>'; // Half Star
+                                    echo '<i class="bi bi-star-half"></i>'; 
                                 } else {
-                                    echo '<i class="bi bi-star"></i>';      // Empty Star
+                                    echo '<i class="bi bi-star"></i>';  
                                 }
                             }
                             ?>
@@ -140,7 +133,7 @@ if ($isLoggedIn) {
                         </div>
                         <div class="col-auto d-flex align-items-center gap-2 px-3 border-start">
                             <i class="bi bi-calendar-range text-success fs-6"></i>
-                            <span class="fw-bold">JAN 1 - 2</span>
+                            <span class="fw-bold"></span>
                         </div>
                         <div class="col-auto d-flex align-items-center gap-2 px-3 border-start">
                             <i class="bi bi-bus-front text-success fs-6"></i>
@@ -197,10 +190,7 @@ if ($isLoggedIn) {
                                         <div class="card destination-card border-0 shadow-lg">
                                             <img src="<?php echo htmlspecialchars($place['image']); ?>" class="card-img rounded-3" style="height: 300px; object-fit: cover;">
                                             <div class="card-img-overlay d-flex align-items-end p-3">
-                                                <!-- dq alam ano trip niyo dito, may name na sa code may name pa sa pic -->
-                                                <!-- <div class="card-img-overlay d-flex align-items-end p-3">
-                                                    <h5 class="text-white fw-bold m-0"><?php echo htmlspecialchars($place['place_name']); ?></h5>
-                                                </div> -->
+
                                             </div>
                                         </div>
                                     </div>
