@@ -1,5 +1,5 @@
 <?php
-include_once(__DIR__ . "/../../php/connect.php");
+include_once( "/../../php/connect.php");
 
 $uid = $_SESSION['user_id'] ?? null;
 
