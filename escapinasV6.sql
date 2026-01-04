@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3307
--- Generation Time: Jan 03, 2026 at 07:07 PM
+-- Generation Time: Jan 04, 2026 at 02:16 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -46,7 +46,8 @@ CREATE TABLE `bookings` (
 INSERT INTO `bookings` (`booking_id`, `user_id`, `schedule_id`, `number_of_persons`, `total_amount`, `booking_status`, `booking_reference`, `tour_id`, `locpoints_id`) VALUES
 (14, 2, 1, 1, 11757.76, 'Confirmed', 'ESC-2026-5320CF', 1, 7),
 (15, 2, 1, 1, 12093.76, 'Confirmed', 'ESC-2026-495D62', 1, 7),
-(16, 2, 1, 1, 12877.76, 'Confirmed', 'ESC-2026-4138CD', 1, 7);
+(16, 2, 1, 1, 12877.76, 'Confirmed', 'ESC-2026-4138CD', 1, 7),
+(17, 2, 1, 1, 12877.76, 'Confirmed', 'ESC-2026-2CDA22', 1, 7);
 
 -- --------------------------------------------------------
 
@@ -132,7 +133,8 @@ CREATE TABLE `payments` (
 
 INSERT INTO `payments` (`payment_id`, `booking_id`, `user_id`, `paypal_order_id`, `paypal_capture_id`, `amount`, `currency`, `payment_status`, `created_at`) VALUES
 (1, 15, 2, '570938822N054872N', '67445019GT426520M', 12093.76, 'PHP', 'COMPLETED', '2026-01-03 17:56:36'),
-(2, 16, 2, '6Y015898EE628501L', '8LS31742H2964741Y', 12877.76, 'PHP', 'COMPLETED', '2026-01-03 18:00:04');
+(2, 16, 2, '6Y015898EE628501L', '8LS31742H2964741Y', 12877.76, 'PHP', 'COMPLETED', '2026-01-03 18:00:04'),
+(3, 17, 2, '75C13504EW488981W', '0ES39912US562402T', 12877.76, 'PHP', 'COMPLETED', '2026-01-04 06:41:54');
 
 -- --------------------------------------------------------
 
@@ -636,18 +638,18 @@ CREATE TABLE `tour_packages` (
 --
 
 INSERT INTO `tour_packages` (`tour_id`, `destination_id`, `tour_name`, `duration_days`, `duration_nights`, `description`, `price`, `status`, `image`, `banner_image`) VALUES
-(1, 1, 'Baguio-Sagada Tour', 4, 3, 'A cool-climate adventure combining Baguio city charm and Sagada culture.', 7998.00, 'Available', 'assets/images/baguio_sagada.jpg', NULL),
-(2, 2, 'Ilocos-Laoag Tour', 4, 3, 'A heritage and coastal tour showcasing Spanish-era landmarks.', 8998.00, 'Available', 'assets/images/ilocos_laoag.jpg', NULL),
-(3, 3, 'La Union Tour', 3, 2, 'A laid-back beach and nature escape.', 6998.00, 'Available', 'assets/images/la_union.jpg', NULL),
-(4, 4, 'Bicol Tour', 5, 4, 'An adventure-filled tour featuring volcano views and island hopping.', 8998.00, 'Available', 'assets/images/bicol.jpg', NULL),
-(5, 5, 'Batangas-Tagaytay Tour', 2, 1, 'A relaxing getaway with cool weather and scenic views.', 5498.00, 'Available', 'assets/images/batangas_tagaytay.jpg', NULL),
-(6, 6, 'Cebu City Tour', 4, 3, 'A mix of history, waterfalls, and marine adventures.', 7998.00, 'Available', 'assets/images/cebu.jpg', NULL),
-(7, 7, 'Bohol Countryside Tour', 3, 2, 'A scenic countryside tour highlighting natural wonders.', 6998.00, 'Available', 'assets/images/bohol.jpg', NULL),
-(8, 8, 'Boracay Island Tour', 4, 3, 'A world-famous beach destination with powdery sand and stunning sunsets.', 7998.00, 'Available', 'assets/images/boracay.jpg', NULL),
-(9, 9, 'Davao City Tour', 3, 2, 'A nature-filled city tour featuring wildlife, parks, and island escapes.', 6998.00, 'Available', 'assets/images/davao.jpg', NULL),
-(10, 10, 'Siargao Island Tour', 4, 3, 'A tropical paradise famous for surfing, lagoons, and island hopping.', 7998.00, 'Available', 'assets/images/siargao.jpg', NULL),
-(11, 11, 'Cagayan de Oro Tour', 3, 2, 'An action-packed adventure tour perfect for thrill-seekers.', 6998.00, 'Available', 'assets/images/cagayan.jpg', NULL),
-(12, 5, 'Palawan Island Adventure', 5, 3, 'A breathtaking tour of Palawan including Puerto Princesa, El Nido, and Coron. Explore beaches, lagoons, and vibrant culture.', 12000.00, 'Available', 'assets/images/palawan_tour.jpg', NULL);
+(1, 1, 'Baguio-Sagada Tour', 4, 3, 'A cool-climate adventure combining Baguio city charm and Sagada culture.', 7998.00, 'Available', 'assets/images/baguio_sagada.jpg', 'assets/images/banners/baguio_sagada_bg.jpg'),
+(2, 2, 'Ilocos-Laoag Tour', 4, 3, 'A heritage and coastal tour showcasing Spanish-era landmarks.', 8998.00, 'Available', 'assets/images/ilocos_laoag.jpg', 'assets/images/banners/ilocos_laoag_bg.jpg'),
+(3, 3, 'La Union Tour', 3, 2, 'A laid-back beach and nature escape.', 6998.00, 'Available', 'assets/images/la_union.jpg', 'assets/images/banners/la_union_bg.jpg'),
+(4, 4, 'Bicol Tour', 5, 4, 'An adventure-filled tour featuring volcano views and island hopping.', 8998.00, 'Available', 'assets/images/bicol.jpg', 'assets/images/banners/bicol_bg.jpg'),
+(5, 5, 'Batangas-Tagaytay Tour', 2, 1, 'A relaxing getaway with cool weather and scenic views.', 5498.00, 'Available', 'assets/images/batangas_tagaytay.jpg', 'assets/images/banners/batangas_tagaytay_bg.jpg'),
+(6, 6, 'Cebu City Tour', 4, 3, 'A mix of history, waterfalls, and marine adventures.', 7998.00, 'Available', 'assets/images/cebu.jpg', 'assets/images/banners/cebu_bg.jpg'),
+(7, 7, 'Bohol Countryside Tour', 3, 2, 'A scenic countryside tour highlighting natural wonders.', 6998.00, 'Available', 'assets/images/bohol.jpg', 'assets/images/banners/bohol_bg.jpg'),
+(8, 8, 'Boracay Island Tour', 4, 3, 'A world-famous beach destination with powdery sand and stunning sunsets.', 7998.00, 'Available', 'assets/images/boracay.jpg', 'assets/images/banners/boracay_bg.jpg'),
+(9, 9, 'Davao City Tour', 3, 2, 'A nature-filled city tour featuring wildlife, parks, and island escapes.', 6998.00, 'Available', 'assets/images/davao.jpg', 'assets/images/banners/davao_bg.jpg'),
+(10, 10, 'Siargao Island Tour', 4, 3, 'A tropical paradise famous for surfing, lagoons, and island hopping.', 7998.00, 'Available', 'assets/images/siargao.jpg', 'assets/images/banners/siargao_bg.jpg'),
+(11, 11, 'Cagayan de Oro Tour', 3, 2, 'An action-packed adventure tour perfect for thrill-seekers.', 6998.00, 'Available', 'assets/images/cagayan.jpg', 'assets/images/banners/cagayan_bg.jpg'),
+(12, 5, 'Palawan Island Adventure', 5, 3, 'A breathtaking tour of Palawan including Puerto Princesa, El Nido, and Coron. Explore beaches, lagoons, and vibrant culture.', 12000.00, 'Available', 'assets/images/palawan_tour.jpg', 'assets/images/banners/palawan_bg.jpg');
 
 -- --------------------------------------------------------
 
@@ -990,7 +992,7 @@ ALTER TABLE `wishlist`
 -- AUTO_INCREMENT for table `bookings`
 --
 ALTER TABLE `bookings`
-  MODIFY `booking_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `booking_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `destinations`
@@ -1008,7 +1010,7 @@ ALTER TABLE `location_points`
 -- AUTO_INCREMENT for table `payments`
 --
 ALTER TABLE `payments`
-  MODIFY `payment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `payment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `pickup_dropoff`
