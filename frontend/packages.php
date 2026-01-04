@@ -33,35 +33,31 @@
 
 <!doctype html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EscaPinas | Packages</title>
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-    
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-
-    <style>
-        body { font-family: 'Poppins', sans-serif; }
-        .bi { 
-            display: inline-block;
-            vertical-align: middle;
-        }
-    </style>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>EscaPinas</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
 </head>
+
 <body>
     <?php include "components/navbar.php"; ?>
 
     <div class="container-fluid p-0">
-        <div style="height: 400px; width: 100%; position: relative;">
-            <img id="bannerImage" src="/EscaPinas/frontend/assets/images/banner_package.jpg" style="background-size:cover; object-fit:cover; background-position:center; width:100%; height:400px; position:relative;">
-            <div class="position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-50"></div>
-            <div class="position-absolute top-50 start-50 translate-middle text-center w-100">
-                <h1 class="text-white fw-bold display-4">Find Your Next Adventure</h1>
-                <p class="text-white-50 fs-5">Explore the beauty of the Philippines with us</p>
+        <div class="d-flex align-items-center justify-content-center"
+            style="background: linear-gradient(#053207bf, #0ca458a6), url('/EscaPinas/frontend/assets/images/banner_package.jpg'); 
+                background-size:cover; background-position:center top; background-attachment: fixed; height:400px; position:relative;">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 text-center text-white">
+                        <h1 class="display-2 fw-bold mb-3 text-uppercase">FIND YOUR PERFECT ESCAPE</h1>
+                        <div style="width: 80px; height: 3px; background-color: white; margin: 0 auto 1.5rem;"></div>
+                        <p class="lead fs-3 fw-light">Tailored adventures for every traveler</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -216,8 +212,10 @@
     </div>
     <?php include "components/footer.php"; ?>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
     <script src="assets/js/packages.js"></script>
-
 </body>
+
 </html>
