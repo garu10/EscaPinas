@@ -49,7 +49,7 @@ $islands_result = executeQuery($islands_query);
     <div class="container-fluid p-0">
         <div class="d-flex align-items-center justify-content-center"
             style="background: linear-gradient(#053207bf, #0ca458a6), url('/EscaPinas/frontend/assets/images/banner_package.jpg'); 
-                background-size:cover; background-position:center top; background-attachment: fixed; height:400px; position:relative;">
+                background-size: 100%; background-position: center top; background-attachment: fixed; height: 450px; position: relative;">
             <div class="container">
                 <div class="row">
                     <div class="col-12 text-center text-white">
@@ -62,13 +62,12 @@ $islands_result = executeQuery($islands_query);
         </div>
     </div>
 
-    <div class="container" style="margin-top: -45px; position: relative; z-index: 10;">
+    <div class="container" style="margin-top: -45px; position: relative; z-index: 10; width: 74%;">
         <div class="card shadow-lg border-0" style="border-radius: 15px;">
             <div class="card-body p-4">
                 <div class="row g-3 align-items-center">
                     <div class="col-md-5 border-end pe-3">
                         <div class="d-flex align-items-center px-2">
-
                             <div class="w-100">
                                 <label class="form-label fw-bold text-success small mb-0">
                                     <i class="bi bi-geo-alt-fill text-success fs-6 me-1"></i> WHERE TO GO?</label>
@@ -111,12 +110,12 @@ $islands_result = executeQuery($islands_query);
         <?php endforeach; ?>
     </div>
 
-    <div id="searchResultWrapper" style="display: none;" class="container my-5">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2 class="fw-bold text-success">Search Results</h2>
-            <button class="btn btn-sm btn-outline-success" onclick="window.location.reload()">Clear Search</button>
+    <div id="searchResultWrapper" style="display: none; scroll-margin-top: 50px;" class="container my-5 pt-5">
+        <div class="d-flex align-items-center justify-content-center mb-4 position-relative">
+            <h2 class="fw-bold text-success mb-0">Search Results</h2>
+            <button class="btn btn-sm btn-outline-success position-absolute end-0" onclick="window.location.reload()">Clear Search</button>
         </div>
-        <div class="row g-4" id="searchResultsGrid">
+        <div class="row g-4 justify-content-center" id="searchResultsGrid">
             <?php foreach ($allTours as $row): ?>
                 <div class="col-md-4 search-result-card"
                     data-island="<?php echo strtolower($row['island_name']); ?>"
@@ -127,7 +126,7 @@ $islands_result = executeQuery($islands_query);
                             <h5 class="fw-bold mb-1"><?php echo htmlspecialchars($row['tour_name']); ?></h5>
                             <p class="text-muted small mb-2"><i class="bi bi-geo-alt-fill text-danger"></i> <?php echo htmlspecialchars($row['island_name'] . " | " . $row['destination_name']); ?></p>
                             <div class="border-top pt-3">
-                                <div class="row align-items-center">
+                                <div class="row justify-content-center align-items-center">
                                     <div class="col-7">
                                         <span class="text-muted d-block" style="font-size: 0.7rem;">Starting at:</span>
                                         <span class="fw-bold text-success fs-5">₱<?php echo number_format($row['price'], 2); ?></span>
@@ -180,7 +179,6 @@ $islands_result = executeQuery($islands_query);
                                             </span>
                                         </div>
                                     </div>
-
                                     <p class="text-muted small mt-1 mb-0">
                                         <i class="bi bi-geo-alt-fill text-danger"></i>
                                         <?php echo htmlspecialchars($tour['island_name'] . " | " . $tour['destination_name']); ?>
@@ -217,7 +215,7 @@ $islands_result = executeQuery($islands_query);
             <?php foreach ($discoverTours as $row): ?>
                 <div class="col-6 col-md-3">
                     <div class="card border-0 shadow-sm h-100 tour-card position-relative">
-                        <span class="position-absolute top-0 end-0 m-2 badge rounded-pill bg-success opacity-75" style="font-size:15px;">
+                        <span class="position-absolute top-0 end-0 m-2 badge rounded-pill bg-success opacity-75" style="font-size: 15px;">
                             <?php echo htmlspecialchars($row['status']); ?>
                         </span>
 
@@ -229,12 +227,10 @@ $islands_result = executeQuery($islands_query);
                                 <p class="fw-bold mb-0 small text-truncate">
                                     <?php echo htmlspecialchars($row['tour_name']); ?>
                                 </p>
-
                                 <p class="text-muted mb-1" style="font-size: 0.7rem;">
                                     <i class="bi bi-geo-alt-fill text-danger"></i>
                                     <?php echo htmlspecialchars($row['island_name'] . " | " . $row['destination_name']); ?>
                                 </p>
-
                                 <p class="mb-2 text-dark" style="font-size: 0.7rem;">
                                     <i class="bi bi-clock-history text-success"></i>
                                     <?php echo htmlspecialchars($row['duration_days']); ?>D / <?php echo htmlspecialchars($row['duration_nights']); ?>N
