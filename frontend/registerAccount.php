@@ -1,29 +1,62 @@
 <?php
-include 'php/connect.php';
+include 'php/connect.php'; 
+
+$showVerificationModal = false;
+$registeredEmail = ""; 
+
+function sendSMS($to, $msg) {
+    $to = preg_replace('/[^0-9+]/', '', $to);
+
+    if(substr($to, 0, 1) == "0") {
+        $to = "+63" . substr($to, 1);
+    }
+
+    $url = "https://api.sms-gate.app/3rdparty/v1/messages";
+    
+    $payload = [
+        "phoneNumbers" => [$to],
+        "textMessage" => [
+            "text" => $msg
+        ]
+    ];
+
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_USERPWD, "ADUWE4:6o7hu2uyguo7do"); 
+    curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
+    
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    
+    $result = curl_exec($ch);
+    curl_close($ch);
+    return $result;
+}
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $fname = $_POST['first_name'];
-    $last_name = $_POST['last_name'];
-    $middle_initial = $_POST['middle_initial'];
-    $contact_num = $_POST['contact_num'];
-    $province = $_POST['province'];
-    $city = $_POST['city'];
-    $email = $_POST['email'];
+    $fname = mysqli_real_escape_string($conn, $_POST['first_name']);
+    $last_name = mysqli_real_escape_string($conn, $_POST['last_name']);
+    $middle_initial = mysqli_real_escape_string($conn, $_POST['middle_initial']);
+    $contact_num = mysqli_real_escape_string($conn, $_POST['contact_num']);
+    $province = mysqli_real_escape_string($conn, $_POST['province']);
+    $city = mysqli_real_escape_string($conn, $_POST['city']);
+    $email = mysqli_real_escape_string($conn, $_POST['email']);
     $password = $_POST['password'];
     $confirm_password = $_POST['confirm_password'];
     $role = 'user';
 
     if ($password !== $confirm_password) {
-        die("Error: Passwords do not match.");
+        echo "<script>alert('Error: Passwords do not match.'); window.history.back();</script>";
+        exit();
     }
 
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-    $role = 'user';
 
-    $checkEmail = "SELECT email FROM users WHERE email = '$email'";
-    $result = executeQuery($checkEmail);
+    $checkEmail = "SELECT email FROM users WHERE email = '$email' LIMIT 1";
+    $result = mysqli_query($conn, $checkEmail);
 
-    if ($result->num_rows > 0) {
+    if ($result && mysqli_num_rows($result) > 0) {
         echo "
         <script>
             document.addEventListener('DOMContentLoaded', function() {
@@ -32,32 +65,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             });
         </script>";
     } else {
-        $insertUser = "INSERT INTO users (first_name, last_name, middle_initial, contact_num, province, city, email, password, role) 
-                   VALUES ('$fname', '$last_name', '$middle_initial', '$contact_num', '$province', '$city', '$email', '$hashed_password', '$role')";
+        $insertUser = "INSERT INTO users (first_name, last_name, middle_initial, contact_num, province, city, email, password, role, is_verified) 
+                       VALUES ('$fname', '$last_name', '$middle_initial', '$contact_num', '$province', '$city', '$email', '$hashed_password', '$role', 0)";
 
-        if (executeQuery($insertUser)) {
-            echo "
-            <script>
-                document.addEventListener('DOMContentLoaded', function() {
-                    var myModal = new bootstrap.Modal(document.getElementById('successModal'), {
-                        backdrop: 'static',
-                        keyboard: false
-                    });
-                    myModal.show();
-                    
-                    // Redirect when the green button is clicked
-                    document.getElementById('btnRedirect').addEventListener('click', function() {
-                        window.location.href = 'login.php';
-                    });
-                });
-            </script>";
-        } else {
-            echo "<script>alert('Error: " . mysqli_error($conn) . "');</script>";
+        if (mysqli_query($conn, $insertUser)) {
+            $showVerificationModal = true;
+            $registeredEmail = $email; 
+
+$initial_msg = "EscaPinas: Salamat sa pag-register! Para ma-verify ang account, mag-reply lamang ng: YES";
+sendSMS($contact_num, $initial_msg);   
+     } else {
+            echo "<script>alert('Database Error: " . mysqli_error($conn) . "');</script>";
         }
     }
 }
 ?>
-
 <!doctype html>
 <html lang="en">
 
@@ -66,6 +88,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Register - EscaPinas</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/register.css">
 </head>
@@ -130,9 +153,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                                 <div class="mb-3 form-check">
                                     <input type="checkbox" class="form-check-input" id="terms" required>
-                                    <div class="form-check-label small text-white" for="terms">
+                                    <label class="form-check-label small text-white" for="terms">
                                         I agree to the <a href="#" class="text-white fw-bold">Terms & Conditions</a>
-                                    </div>
+                                    </label>
                                 </div>
 
                                 <button type="submit" class="btn btn-primary btn-login w-100">Register</button>
@@ -147,6 +170,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
         </div>
     </div>
+
     <div class="modal fade" id="successModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content border-0 shadow-lg">
@@ -160,7 +184,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <i class="fas fa-user-check text-success" style="font-size: 3rem;"></i>
                     </div>
                     <div class="h4 fw-bold">Welcome to EscaPinas!</div>
-                    <p class="text-muted">Your account has been created successfully. You can now start exploring Philippine tour packages.</p>
+                    <p class="text-muted">Kailangan mo munang i-verify ang iyong account via SMS:</p>
+                    
+                    <div class="bg-light p-3 border rounded mb-3">
+                        <span class="small text-muted d-block">I-TEXT ANG:</span>
+                        <strong class="h5">VERIFY <?php echo $registeredEmail; ?></strong>
+                        <hr class="my-2">
+                        <span class="small text-muted d-block">I-SEND SA:</span>
+                        <strong class="h5 text-primary">09XXXXXXXXX</strong> </div>
                 </div>
                 <div class="modal-footer border-0 justify-content-center pb-4">
                     <button type="button" class="btn btn-success px-5 rounded-pill" id="btnRedirect">
@@ -170,6 +201,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
         </div>
     </div>
+
     <div class="modal fade" id="errorModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content border-0 shadow-lg">
@@ -184,16 +216,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <i class="fas fa-envelope-open-text text-danger" style="font-size: 3rem;"></i>
                     </div>
                     <div class="h4 fw-bold">Email Already Exists!</div>
-                    <div class="text-muted">The email address you entered is already associated with an account. Please use a different email or try logging in.</div>
+                    <div class="text-muted">The email address you entered is already associated with an account.</div>
                 </div>
                 <div class="modal-footer border-0 justify-content-center pb-4">
                     <button type="button" class="btn btn-secondary px-4 rounded-pill" data-bs-dismiss="modal">Try Again</button>
-                    <a href="login.php" class="btn btn-danger px-4 rounded-pill">Go to Login</a>
                 </div>
             </div>
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById('btnRedirect').addEventListener('click', function() {
+            window.location.href = 'login.php';
+        });
+    </script>
+    <?php if ($showVerificationModal): ?>
+    <script>
+        var myModal = new bootstrap.Modal(document.getElementById('successModal'), {
+            backdrop: 'static',
+            keyboard: false
+        });
+        myModal.show();
+    </script>
+    <?php endif; ?>
+</body>
 </html>

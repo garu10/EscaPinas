@@ -1,0 +1,4 @@
+[2026-01-05 19:08:29] RECEIVED: {"deviceId":"qfuElwaK9CHatp0ps3UBN","event":"sms:received","id":"aDd-iEH03XYedn2VEWDU0","payload":{"message":"heheh","receivedAt":"2026-01-06T02:08:27.000+08:00","messageId":"24ce377a","phoneNumber":"+639912676928","simNumber":1},"webhookId":"6vioE69ZwXAIfE2bgGwBe"}
+[2026-01-05 19:13:03] RECEIVED: {"deviceId":"qfuElwaK9CHatp0ps3UBN","event":"sms:received","id":"Wi3OvF0fHc354RjjWHJK2","payload":{"message":"YES","receivedAt":"2026-01-06T02:13:02.000+08:00","messageId":"2ea3849b","phoneNumber":"+639912676928","simNumber":1},"webhookId":"6vioE69ZwXAIfE2bgGwBe"}
+[2026-01-05 19:13:04] SEND RESPONSE: {"id":"xIII2mxIacAo6vKPwWecr","deviceId":"qfuElwaK9CHatp0ps3UBN","state":"Pending","isHashed":false,"isEncrypted":false,"recipients":[{"phoneNumber":"+639912676928","state":"Pending"}],"states":{}}
+[2026-01-05 19:13:03] DB SUCCESS: Verified number ending in 9912676928
