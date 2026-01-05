@@ -28,7 +28,7 @@ $slides = array_chunk($promoPackages, 3);
                             <?php foreach ($group as $key => $tour): ?>
                                 <div class="col-12 col-md-6 col-lg-4 <?php echo $key > 0 ? 'd-none d-md-block' : ''; ?>">
                                     <div class="card h-100 shadow-sm border-0 rounded-4 overflow-hidden">
-                                        <img src="<?php echo htmlspecialchars($tour['image']); ?>" class="card-img-top" style="height: 250px; object-fit: cover;">
+                                        <img src="<?php echo htmlspecialchars($tour['image']); ?>" class="card-img-top" style="height: 350px; object-fit: cover;">
                                         <div class="card-body bg-light text-start">
                                             <h6 class="fw-bold mb-1"><?php echo htmlspecialchars($tour['tour_name']); ?></h6>
                                             <p class="small text-muted mb-0">Exclusive Deal</p>
