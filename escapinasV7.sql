@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3307
--- Generation Time: Jan 04, 2026 at 03:11 PM
+-- Generation Time: Jan 05, 2026 at 07:37 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -814,16 +814,18 @@ CREATE TABLE `users` (
   `city` varchar(30) DEFAULT NULL,
   `email` varchar(100) DEFAULT NULL,
   `password` varchar(255) DEFAULT NULL,
-  `role` enum('user','admin') DEFAULT NULL
+  `role` enum('user','admin') DEFAULT NULL,
+  `is_verified` int(11) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`user_id`, `first_name`, `last_name`, `middle_initial`, `contact_num`, `region`, `province`, `city`, `email`, `password`, `role`) VALUES
-(1, 'Jhon', 'Mackay', 'S', '09995635443', NULL, 'Batangas', 'Tanauan CIty', 'test1@gmail.com', '$2y$10$ig78VJKaY6kVmJlvP9iG3ep3zHQbq3eOxedqWOUqBrASURIMQloFS', 'user'),
-(2, 'Joyce Anne', 'Remo', 'P', '09912676928', NULL, 'Batangas', 'City', 'joyceanneremo05@gmail.com', '$2y$10$NNArr6zfvMjbHIlTQ5b9F.i7aQAQGFJ6VuJtE2rEK4upDlqknFFdG', 'user');
+INSERT INTO `users` (`user_id`, `first_name`, `last_name`, `middle_initial`, `contact_num`, `region`, `province`, `city`, `email`, `password`, `role`, `is_verified`) VALUES
+(1, 'Jhon', 'Mackay', 'S', '09995635443', NULL, 'Batangas', 'Tanauan CIty', 'test1@gmail.com', '$2y$10$ig78VJKaY6kVmJlvP9iG3ep3zHQbq3eOxedqWOUqBrASURIMQloFS', 'user', 0),
+(2, 'Joyce Anne', 'Remo', 'P', '09912676928', NULL, 'Batangas', 'City', 'joyceanneremo05@gmail.com', '$2y$10$NNArr6zfvMjbHIlTQ5b9F.i7aQAQGFJ6VuJtE2rEK4upDlqknFFdG', 'user', 1),
+(14, 'Lee Seokmin', 'Salvador', 's', '09912676928', NULL, 'Batangas', 'City', 'amucasconstruction3@gmail.com', '$2y$10$N6BHHHQ5Tm7BlzkzoEmM2O/YAgLTUkcT9zQ78rWZUr5PasvnTKVmi', 'user', 1);
 
 -- --------------------------------------------------------
 
@@ -1087,7 +1089,7 @@ ALTER TABLE `tour_schedules`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `vouchers`
