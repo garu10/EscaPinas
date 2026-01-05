@@ -66,7 +66,7 @@ include "components/navbar.php";
                 <hr>
 
                 <div class="d-grid gap-2">
-                    <a href="booking.php" class="btn btn-success rounded-pill">View My Bookings</a>
+                    <a href="profile/booking.php" class="btn btn-success rounded-pill">View My Bookings</a> <!--saan ito mag connect? sa booking.php or booking sa profile?? pag sa profile ayaw gumana -->
                     <a href="/EscaPinas/index.php" class="btn btn-outline-secondary rounded-pill">Back to Home</a>
                 </div>
             </div>
