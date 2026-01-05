@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3307
--- Generation Time: Jan 04, 2026 at 02:16 PM
+-- Generation Time: Jan 04, 2026 at 03:11 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -36,18 +36,21 @@ CREATE TABLE `bookings` (
   `booking_status` enum('Pending','Confirmed','Cancelled') DEFAULT NULL,
   `booking_reference` varchar(50) DEFAULT NULL,
   `tour_id` int(11) NOT NULL,
-  `locpoints_id` int(11) DEFAULT NULL
+  `locpoints_id` int(11) DEFAULT NULL,
+  `is_email_sent` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `bookings`
 --
 
-INSERT INTO `bookings` (`booking_id`, `user_id`, `schedule_id`, `number_of_persons`, `total_amount`, `booking_status`, `booking_reference`, `tour_id`, `locpoints_id`) VALUES
-(14, 2, 1, 1, 11757.76, 'Confirmed', 'ESC-2026-5320CF', 1, 7),
-(15, 2, 1, 1, 12093.76, 'Confirmed', 'ESC-2026-495D62', 1, 7),
-(16, 2, 1, 1, 12877.76, 'Confirmed', 'ESC-2026-4138CD', 1, 7),
-(17, 2, 1, 1, 12877.76, 'Confirmed', 'ESC-2026-2CDA22', 1, 7);
+INSERT INTO `bookings` (`booking_id`, `user_id`, `schedule_id`, `number_of_persons`, `total_amount`, `booking_status`, `booking_reference`, `tour_id`, `locpoints_id`, `is_email_sent`) VALUES
+(14, 2, 1, 1, 11757.76, 'Confirmed', 'ESC-2026-5320CF', 1, 7, 0),
+(15, 2, 1, 1, 12093.76, 'Confirmed', 'ESC-2026-495D62', 1, 7, 0),
+(16, 2, 1, 1, 12877.76, 'Confirmed', 'ESC-2026-4138CD', 1, 7, 0),
+(17, 2, 1, 1, 12877.76, 'Confirmed', 'ESC-2026-2CDA22', 1, 7, 0),
+(18, 2, 1, 1, 12093.76, 'Confirmed', 'ESC-2026-069B39', 1, 7, 0),
+(19, 2, 13, 1, 10077.76, 'Confirmed', 'ESC-2026-3E671E', 4, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -134,7 +137,9 @@ CREATE TABLE `payments` (
 INSERT INTO `payments` (`payment_id`, `booking_id`, `user_id`, `paypal_order_id`, `paypal_capture_id`, `amount`, `currency`, `payment_status`, `created_at`) VALUES
 (1, 15, 2, '570938822N054872N', '67445019GT426520M', 12093.76, 'PHP', 'COMPLETED', '2026-01-03 17:56:36'),
 (2, 16, 2, '6Y015898EE628501L', '8LS31742H2964741Y', 12877.76, 'PHP', 'COMPLETED', '2026-01-03 18:00:04'),
-(3, 17, 2, '75C13504EW488981W', '0ES39912US562402T', 12877.76, 'PHP', 'COMPLETED', '2026-01-04 06:41:54');
+(3, 17, 2, '75C13504EW488981W', '0ES39912US562402T', 12877.76, 'PHP', 'COMPLETED', '2026-01-04 06:41:54'),
+(4, 18, 2, '54X17031WM031863U', '21788592GX377091A', 12093.76, 'PHP', 'COMPLETED', '2026-01-04 13:41:20'),
+(5, 19, 2, '19F07445YP624725V', '6WC93084JG702653U', 10077.76, 'PHP', 'COMPLETED', '2026-01-04 13:51:15');
 
 -- --------------------------------------------------------
 
@@ -992,7 +997,7 @@ ALTER TABLE `wishlist`
 -- AUTO_INCREMENT for table `bookings`
 --
 ALTER TABLE `bookings`
-  MODIFY `booking_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `booking_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `destinations`
@@ -1010,7 +1015,7 @@ ALTER TABLE `location_points`
 -- AUTO_INCREMENT for table `payments`
 --
 ALTER TABLE `payments`
-  MODIFY `payment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `payment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `pickup_dropoff`

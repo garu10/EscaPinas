@@ -2,7 +2,6 @@
 include 'php/connect.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // 1. Collect inputs
     $fname = $_POST['first_name'];
     $last_name = $_POST['last_name'];
     $middle_initial = $_POST['middle_initial'];
@@ -14,21 +13,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $confirm_password = $_POST['confirm_password'];
     $role = 'user';
 
-    // 2. Validation
     if ($password !== $confirm_password) {
         die("Error: Passwords do not match.");
     }
 
-    // 3. Security Measures
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
     $role = 'user';
 
-    // 4. Check email uniqueness
     $checkEmail = "SELECT email FROM users WHERE email = '$email'";
     $result = executeQuery($checkEmail);
 
     if ($result->num_rows > 0) {
-        // Trigger Error Modal
         echo "
         <script>
             document.addEventListener('DOMContentLoaded', function() {
@@ -37,11 +32,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             });
         </script>";
     } else {
-        // 5. Build the Query for your executeQuery function
         $insertUser = "INSERT INTO users (first_name, last_name, middle_initial, contact_num, province, city, email, password, role) 
                    VALUES ('$fname', '$last_name', '$middle_initial', '$contact_num', '$province', '$city', '$email', '$hashed_password', '$role')";
 
-        // 6. Execute using your custom function
         if (executeQuery($insertUser)) {
             echo "
             <script>
