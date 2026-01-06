@@ -4,7 +4,7 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
-// absolute path to autoload.php
+// load the PHPMailer autoloader
 require_once __DIR__ . '/../../../vendor/autoload.php';
 
 function sendBookingEmail($conn, $booking_id, $booking_ref)

@@ -1,0 +1,6 @@
+ETO NEED GAWIN PARA SA EMAIL INTEGRATION
+1. Need may dowload ka na composer
+2. If hindi gumana ang composer run mo sa terminal
+    composer require phpmailer/phpmailer
+3. need same ng directory yan and if tama ang directory gagana na and if 
+    palitan dun sa sendEmail.php yung "require_once __DIR__ . '/../../../vendor/autoload.php';"
