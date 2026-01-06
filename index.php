@@ -3,7 +3,6 @@ $_title = "Escapinas";
 session_start();
 include 'frontend/php/connect.php';
 
-// Tour Packages Query
 $query = "
     SELECT 
         t.tour_id,
@@ -20,7 +19,6 @@ $query = "
     LIMIT 3
 ";
 
-// Reviews Query
 $reviewsQuery = "
     SELECT 
         r.review_text,
@@ -46,7 +44,7 @@ if (!$reviewsResult) { die("Review query error: " . mysqli_error($conn)); }
 </head>
 <body class="bg-light">
 
-<?php include "frontend/components/navbar.php"; ?>
+    <?php include "frontend/components/navbar.php"; ?>
     <?php include "frontend/components/banner.php"; ?>
     
     <?php if (isset($_SESSION['user_id'])): ?>
