@@ -1,0 +1,40 @@
+    .ticket-card {
+        border: none;
+        filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.1));
+        position: relative;
+        transition: 0.3s;
+    }
+
+    .border-dashed-start {
+        border-left: 2px dashed #dee2e6 !important;
+        position: relative;
+    }
+
+    .ticket-card::before,
+    .ticket-card::after {
+        content: '';
+        position: absolute;
+        left: 33.33%;
+        width: 20px;
+        height: 20px;
+        background: #f8f9fa;
+        border-radius: 50%;
+        z-index: 10;
+        transform: translateX(-50%);
+    }
+
+    .ticket-card::before {
+        top: -10px;
+    }
+
+    .ticket-card::after {
+        bottom: -10px;
+    }
+
+    .ticket-hover:hover:not(.already-claimed) {
+        transform: translateY(-5px);
+    }
+
+    .already-claimed {
+        filter: grayscale(1) opacity(0.8) !important;
+    }
