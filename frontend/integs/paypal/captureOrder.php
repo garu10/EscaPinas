@@ -40,7 +40,7 @@ if (!isset($response['status']) || $response['status'] !== 'COMPLETED') {
     exit;
 }
 
-$user_id      = $_SESSION['user_id'] ?? 0; 
+$user_id      = $_SESSION['user_id'] ?? 0;
 $tour_id      = intval($_POST['tour_id'] ?? 0);
 $schedule_id  = intval($_POST['schedule_id'] ?? 0);
 $locpoints_id = intval($_POST['locpoints_id'] ?? 0);
@@ -76,19 +76,34 @@ try {
     }
 
     mysqli_commit($conn);
+    // Inside captureOrder.php
+    mysqli_commit($conn);
+
+    // Go up one level from 'paypal' folder, then into 'email' folder
+    $email_file = __DIR__ . '/../email/sendEmail.php';
+
+    if (file_exists($email_file)) {
+        require_once $email_file;
+        // Call it with a try-catch so if email fails, the JSON still sends
+        try {
+            sendBookingEmail($conn, $new_booking_id, $booking_ref);
+        } catch (Exception $e) {
+            // Just log it, don't echo it!
+            error_log("Email error: " . $e->getMessage());
+        }
+    }
 
     echo json_encode([
         'success' => true,
         'ref' => $booking_ref
     ]);
-
+    exit;
 } catch (Exception $e) {
     mysqli_rollback($conn);
-    
+
     error_log($e->getMessage());
     echo json_encode([
         'success' => false,
         'message' => 'Database error: ' . $e->getMessage() . '. Payment ID: ' . $paypal_capture_id
     ]);
 }
-?>
