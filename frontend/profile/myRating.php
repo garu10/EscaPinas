@@ -52,13 +52,7 @@ $myReviewsResult = executeQuery($myReviewsQuery);
 </ul>
 
 <div class="tab-content">
-    <div class="container">
-        <div class="row">
-            <div class="col">
-                
-            </div>
-        </div>
-    </div>
+    <!-- ito yung to rate -->
     <div class="tab-pane fade show active" id="toRate" role="tabpanel">
         <div class="row g-3">
             <?php if (mysqli_num_rows($toRateResult) > 0): ?>
@@ -111,7 +105,7 @@ $myReviewsResult = executeQuery($myReviewsQuery);
             <?php endif; ?>
         </div>
     </div>
-
+    <!-- ito yung my reviews -->
     <div class="tab-pane fade" id="myReviewsTab" role="tabpanel">
         <div class="row g-3">
             <?php if (mysqli_num_rows($myReviewsResult) > 0): ?>
