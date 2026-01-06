@@ -56,11 +56,11 @@ mysqli_begin_transaction($conn);
 
 try {
     $sql_booking = "INSERT INTO bookings 
-            (user_id, tour_id, schedule_id, locpoints_id, number_of_persons, total_amount, booking_status, booking_reference)
+            (user_id, tour_id, schedule_id, locpoints_id, number_of_persons, total_amount, booking_status, booking_reference, is_email_sent)
             VALUES
-            ($user_id, $tour_id, $schedule_id, $locpoints_id, $pax, $total, 'Confirmed', '$booking_ref')";
+            ($user_id, $tour_id, $schedule_id, $locpoints_id, $pax, $total, 'Confirmed', '$booking_ref', 1)";
 
-    if (!mysqli_query($conn, $sql_booking)) {
+    if (!executeQuery($sql_booking)) {
         throw new Exception("Error saving booking: " . mysqli_error($conn));
     }
 
@@ -71,15 +71,13 @@ try {
             VALUES 
             ($new_booking_id, $user_id, '$paypal_order_id', '$paypal_capture_id', $total, 'COMPLETED')";
 
-    if (!mysqli_query($conn, $sql_payment)) {
+    if (!executeQuery($sql_payment)) {
         throw new Exception("Error saving payment record: " . mysqli_error($conn));
     }
 
     mysqli_commit($conn);
-    // Inside captureOrder.php
     mysqli_commit($conn);
 
-    // Go up one level from 'paypal' folder, then into 'email' folder
     $email_file = __DIR__ . '/../email/sendEmail.php';
 
     if (file_exists($email_file)) {
@@ -88,7 +86,6 @@ try {
         try {
             sendBookingEmail($conn, $new_booking_id, $booking_ref);
         } catch (Exception $e) {
-            // Just log it, don't echo it!
             error_log("Email error: " . $e->getMessage());
         }
     }

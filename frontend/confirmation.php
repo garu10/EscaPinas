@@ -11,7 +11,7 @@ if ($ref) {
             JOIN tour_packages t ON b.tour_id = t.tour_id 
             WHERE b.booking_reference = '$ref' LIMIT 1";
 
-    $result = mysqli_query($conn, $sql);
+    $result =executeQuery( $sql);
 
     if ($result && mysqli_num_rows($result) > 0) {
         $booking = mysqli_fetch_assoc($result);
