@@ -37,8 +37,8 @@ $css = "../admin/assets/css/adminProfile.css";
                         <a class="fw-bold text-success" >Tour Inclusions</a>
                         <a class="fw-bold text-success" >Tour Itenerary</a>
                         <a href="adminDashboard.php?page=adminTourPackages" class="fw-bold text-success" >Tour Packages</a>
-                        <a class="fw-bold text-success" >Tour Place</a>
-                        <a class="fw-bold text-success" >Tour Schedules</a>
+                        <a href="adminDashboard.php?page=adminTourPlaces" class="fw-bold text-success" >Tour Place</a>
+                        <a href="adminDashboard.php?page=adminTourSchedules" class="fw-bold text-success" >Tour Schedules</a>
                         <a href="adminDashboard.php?page=adminUsers" class="fw-bold text-success" >Users</a>
                         <a class="fw-bold text-success" >Vouchers</a>
                         <a href="adminDashboard.php?page=adminWishlists" class="fw-bold text-success" >Wishlist</a>
@@ -82,6 +82,12 @@ $css = "../admin/assets/css/adminProfile.css";
                             break;
                         case 'adminRegionFees':
                             include "dashboardLinks/adminRegionFees/regionFeesUI.php";
+                            break;
+                        case 'adminTourSchedules':
+                            include "dashboardLinks/adminTourSchedules/tourSchedulesUI.php";
+                            break;
+                        case 'adminTourPlaces':
+                            include "dashboardLinks/adminTourPlaces/tourPlacesUI.php";
                             break;
                     }
                     ?>
