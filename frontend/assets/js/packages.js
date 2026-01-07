@@ -1,7 +1,8 @@
-//js sa packages
 function updateDestinations() {
     const regionSelect = document.getElementById('regionSelect');
     const attractionSelect = document.getElementById('attractionSelect');
+    if (!regionSelect || !attractionSelect) return;
+
     const selectedRegion = regionSelect.value;
     const dataEntries = document.querySelectorAll('.dest-item');
 
@@ -30,13 +31,13 @@ function handleSearch() {
     const resultWrapper = document.getElementById('searchResultWrapper');
     const searchCards = document.querySelectorAll('.search-result-card');
 
-    if (!regionEl.value || regionEl.value === "Select Region") {
+    if (!regionEl || !regionEl.value || regionEl.value === "Select Region") {
         alert("Please select a region first!");
         return;
     }
 
     const selectedRegion = regionEl.value.toLowerCase();
-    const selectedDest = destEl.value.toLowerCase();
+    const selectedDest = destEl.value ? destEl.value.toLowerCase() : "";
     let count = 0;
 
     searchCards.forEach(card => {
@@ -60,6 +61,48 @@ function handleSearch() {
     } else {
         alert("No tours found matching your search.");
         resultWrapper.style.display = "none";
+    }
+}
+
+function handleQuickSearch() {
+    const query = document.getElementById('packageQuickSearch').value.toLowerCase().trim();
+    const cards = document.querySelectorAll('.tour-card-item');
+    const buttons = document.querySelectorAll('.filter-btn');
+    const noResults = document.getElementById('noResultsMessage'); // The new element
+    
+    let visibleCount = 0;
+    let matchedIsland = "";
+
+    cards.forEach(card => {
+        const destination = card.getAttribute('data-destination').toLowerCase();
+        const tourName = card.querySelector('h5').innerText.toLowerCase();
+
+        if (destination.includes(query) || tourName.includes(query)) {
+            card.style.display = "block";
+            visibleCount++;
+            
+            if (!matchedIsland && query !== "") {
+                matchedIsland = card.getAttribute('data-island').toLowerCase();
+            }
+        } else {
+            card.style.display = "none";
+        }
+    });
+
+    if (visibleCount === 0) {
+        noResults.style.display = "block";
+    } else {
+        noResults.style.display = "none";
+    }
+
+    buttons.forEach(btn => btn.classList.replace('btn-success', 'btn-outline-success'));
+
+    if (query === "") {
+        const allBtn = document.getElementById('btn-all');
+        if (allBtn) allBtn.classList.replace('btn-outline-success', 'btn-success');
+    } else if (matchedIsland) {
+        const targetBtn = document.getElementById('btn-' + matchedIsland);
+        if (targetBtn) targetBtn.classList.replace('btn-outline-success', 'btn-success');
     }
 }
 
