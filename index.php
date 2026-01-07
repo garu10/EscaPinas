@@ -3,6 +3,32 @@ $_title = "Escapinas";
 session_start();
 include 'frontend/php/connect.php';
 
+$searchQuery = "SELECT tour_packages.*, destinations.destination_name, regions.island_name 
+                FROM tour_packages 
+                LEFT JOIN destinations ON tour_packages.destination_id = destinations.destination_id 
+                LEFT JOIN regions ON destinations.island_id = regions.island_id 
+                WHERE tour_packages.status = 'Available'
+                ORDER BY tour_packages.tour_name ASC";
+$searchResult = mysqli_query($conn, $searchQuery);
+$allTours = [];
+while ($row = mysqli_fetch_assoc($searchResult)) {
+    $allTours[] = $row;
+}
+
+$searchQuery = "SELECT tour_packages.*, destinations.destination_name, regions.island_name 
+                FROM tour_packages 
+                LEFT JOIN destinations ON tour_packages.destination_id = destinations.destination_id 
+                LEFT JOIN regions ON destinations.island_id = regions.island_id 
+                WHERE tour_packages.status = 'Available'
+                ORDER BY tour_packages.tour_name ASC";
+$searchResult = mysqli_query($conn, $searchQuery);
+$allTours = [];
+if ($searchResult) {
+    while ($row = mysqli_fetch_assoc($searchResult)) {
+        $allTours[] = $row;
+    }
+}
+
 $query = "
     SELECT 
         t.tour_id,
@@ -45,7 +71,18 @@ if (!$reviewsResult) { die("Review query error: " . mysqli_error($conn)); }
 <body class="bg-light">
 
     <?php include "frontend/components/navbar.php"; ?>
-    <?php include "frontend/components/banner.php"; ?>
+    
+    <div class="container-fluid p-0">
+        <div class="d-flex align-items-center justify-content-center"
+            style="background-image:url('frontend/assets/images/banner_index.gif'); background-size: 100%; 
+            background-position: center top; background-attachment: fixed; height: 450px; position: relative;">
+        </div>
+    </div>
+
+    <div class="container" style="margin-top: -45px; position: relative; z-index: 10; width: 74%;">
+        <?php include "frontend/components/search.php"; ?>
+        <hr class="my-5 opacity-25">
+    </div>
     
     <?php if (isset($_SESSION['user_id'])): ?>
         <?php include "frontend/components/vouchers.php"; ?>
@@ -131,5 +168,6 @@ if (!$reviewsResult) { die("Review query error: " . mysqli_error($conn)); }
     
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
+    <script src="frontend/assets/js/packages.js"></script>
 </body>
 </html>
