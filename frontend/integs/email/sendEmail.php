@@ -35,7 +35,7 @@ function sendBookingEmail($conn, $booking_id, $booking_ref)
         $mail->Host       = 'smtp.gmail.com';
         $mail->SMTPAuth   = true;
         $mail->Username   = 'escapinas26@gmail.com'; // gmail natin
-        $mail->Password   = 'vkaj cytc vhji dnf';   // app password natin
+        $mail->Password   = 'zmby djze urrx vjuf';   // pinalitan ko ang app pass kasi ayaw gumana nung una
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
         $mail->Port       = 465;
 

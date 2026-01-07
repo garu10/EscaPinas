@@ -11,10 +11,21 @@ if ($ref) {
             JOIN tour_packages t ON b.tour_id = t.tour_id 
             WHERE b.booking_reference = '$ref' LIMIT 1";
 
-    $result =executeQuery( $sql);
+    $result = executeQuery($sql);
 
     if ($result && mysqli_num_rows($result) > 0) {
         $booking = mysqli_fetch_assoc($result);
+    }
+    if ($booking) {
+        //path to use the sendEmail function
+        include_once "integs/email/sendEmail.php";
+
+        $emailSent = sendBookingEmail($conn, $booking['booking_id'], $booking['booking_reference']);
+    
+        // testing purpose lang to log if email failed
+        if (!$emailSent) {
+            error_log("Email failed to send for Ref: " . $booking['booking_reference']);
+        }
     }
 }
 
