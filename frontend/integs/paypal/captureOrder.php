@@ -2,17 +2,13 @@
 session_start();
 include_once "../../php/connect.php";
 
-/* ----------------------------------------------------
-   JSON-ONLY RESPONSE SETUP
----------------------------------------------------- */
+/* make the json only response */
 ob_start();
 header('Content-Type: application/json');
 ini_set('display_errors', 0);
 error_reporting(0);
 
-/* ----------------------------------------------------
-   SESSION VALIDATION (CRITICAL)
----------------------------------------------------- */
+/* session validation*/
 if (!isset($_SESSION['user_id'])) {
     ob_clean();
     echo json_encode([
@@ -24,15 +20,11 @@ if (!isset($_SESSION['user_id'])) {
 
 $user_id = intval($_SESSION['user_id']);
 
-/* ----------------------------------------------------
-   PAYPAL CREDENTIALS (SANDBOX)
----------------------------------------------------- */
+/* credentials */
 $clientId = "AZXarGlWci9EF_NV33Uzb79jiNCHrRaA9WCLLFRpl0Tuzul7OIh5Pgc1Frl114bn2MNsUgR1kphO2D1z";
 $secret   = "EMwRDIR7WXs5yZ2-iRGvfe1U5ltmmlRhWk5YhTaRqlv4Et-ragrwo7YEMRkblCuz4fGitoV47iUp23Su";
 
-/* ----------------------------------------------------
-   GET PAYPAL ACCESS TOKEN
----------------------------------------------------- */
+/* get the access token */
 $ch = curl_init("https://api-m.sandbox.paypal.com/v1/oauth2/token");
 curl_setopt_array($ch, [
     CURLOPT_POST => true,
@@ -54,9 +46,7 @@ if (empty($tokenResult['access_token'])) {
 
 $token = $tokenResult['access_token'];
 
-/* ----------------------------------------------------
-   CAPTURE PAYPAL ORDER
----------------------------------------------------- */
+/* capture the paypal order*/
 $orderID = $_POST['orderID'] ?? '';
 
 if (!$orderID) {
@@ -80,9 +70,7 @@ curl_setopt_array($ch, [
 $response = json_decode(curl_exec($ch), true);
 curl_close($ch);
 
-/* ----------------------------------------------------
-   VALIDATE PAYPAL RESPONSE
----------------------------------------------------- */
+/* validation of paypal response */
 if (
     empty($response['status']) ||
     $response['status'] !== 'COMPLETED' ||
@@ -98,9 +86,7 @@ if (
 
 $paypal_capture_id = $response['purchase_units'][0]['payments']['captures'][0]['id'];
 
-/* ----------------------------------------------------
-   INPUT VALIDATION
----------------------------------------------------- */
+/* validation of inputs */
 $tour_id      = intval($_POST['tour_id'] ?? 0);
 $schedule_id  = intval($_POST['schedule_id'] ?? 0);
 $locpoints_id = intval($_POST['locpoints_id'] ?? 0);
@@ -116,9 +102,7 @@ if ($tour_id <= 0 || $schedule_id <= 0 || $locpoints_id <= 0 || $total <= 0) {
     exit;
 }
 
-/* ----------------------------------------------------
-   DATABASE TRANSACTION
----------------------------------------------------- */
+/* database injection */
 $booking_ref = "ESC-" . date("Y") . "-" . strtoupper(substr(uniqid(), -6));
 
 mysqli_begin_transaction($conn);
@@ -151,9 +135,7 @@ try {
 
     mysqli_commit($conn);
 
-    /* ------------------------------------------------
-       SILENT EMAIL SEND (OPTIONAL)
-    ------------------------------------------------ */
+    /*email sending at the same time upon confirmation of payment*/
     $email_file = __DIR__ . '/../email/sendEmail.php';
     if (file_exists($email_file)) {
         include_once $email_file;
