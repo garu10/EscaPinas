@@ -1,33 +1,24 @@
-<?php session_start(); ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <title>About Us | EscaPinas - Discover the Heart of the Philippines</title>
-    <meta name="description" content="Learn more about EscaPinas, your gateway to 7,641 reasons to love the Philippines. We provide affordable, sustainable, and authentic tour packages across the islands.">
-    <meta name="keywords" content="EscaPinas, Philippines Travel, Tour Packages, Sustainable Tourism, Pinoy Travel Agency">
-    <meta name="author" content="EscaPinas Team">
+<?php
+    $_title = "Escapinas Discovery";
+session_start(); ?>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="../../assets/css/about.css">
-</head>
+
+<?php include "../header.php"; ?>
+<link rel="stylesheet" href="../../assets/css/about.css">
+
 <body>
     <?php include "../navbar.php"; ?>
 
-    <header class="about-header">
+    <div class="about-header">
         <div class="container">
             <h1 class="display-2 fw-bold mb-3 text-uppercase">Tuklasin ang Pilipinas</h1>
             <div class="title-divider"></div>
             <p class="lead fs-3 fw-light">Empowering every traveler to experience the soul of the islands.</p>
         </div>
-    </header>
+</div>
 
-    <main>
-        <section class="py-5 mt-5">
+    <div>
+        <div class="py-5 mt-5">
             <div class="container">
                 <div class="row align-items-center g-5">
                     <div class="col-md-6">
@@ -41,16 +32,16 @@
                     </div>
                     <div class="col-md-6 text-center">
                         <div class="logo-wrapper p-2 rounded-5 d-inline-block">
-                            <img src="/EscaPinas/frontend/assets/images/logo_upscaled.jpg" 
-                                 alt="EscaPinas Official Logo - Sustainable Travel and Tours Philippines" 
+                            <img src="/EscaPinas/frontend/assets/images/logo_upscaled.jpg"
+                                 alt="EscaPinas Official Logo - Sustainable Travel and Tours Philippines"
                                  class="img-fluid rounded-5 p-4 brand-logo-img">
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
 
-        <section class="py-5 border-top border-bottom bg-light">
+        <div class="py-5 border-top border-bottom bg-light">
             <div class="container">
                 <div class="row g-4 text-center">
                     <div class="col-md-3">
@@ -79,9 +70,9 @@
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
 
-        <section class="py-5 mv-container my-5 shadow-sm">
+        <div class="py-5 mv-container my-5 shadow-sm">
             <div class="container">
                 <div class="row g-5">
                     <div class="col-md-6 border-end">
@@ -96,9 +87,9 @@
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
 
-        <section class="py-5">
+        <div class="py-5">
             <div class="container text-center">
                 <div class="row justify-content-center">
                     <div class="col-lg-8">
@@ -127,20 +118,23 @@
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
 
         <div class="container">
-            <section class="cta-section shadow-lg text-center">
+            <div class="cta-div shadow-lg text-center">
                 <div class="container">
                     <h2 class="display-5 fw-bold mb-3">Dito sa EscaPinas, bawat biyahe ay may kwento.</h2>
                     <p class="mb-5 fs-5 opacity-90">Experience the magic of Pilipinas today.</p>
                     <a href="../../packages.php" class="btn btn-light btn-lg rounded-pill px-5 py-3 fw-bold text-success shadow">Explore Packages</a>
                 </div>
-            </section>
+            </div>
         </div>
-    </main>
+    </div>
 
     <div class="footer-spacer"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
 
     <?php include "../footer.php"; ?>
 </body>

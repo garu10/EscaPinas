@@ -9,7 +9,7 @@ $logFile = __DIR__ . "/sms_log.txt";
 
 file_put_contents($logFile, "[$timestamp] CALLBACK RECEIVED: " . $rawData . PHP_EOL, FILE_APPEND);
 
-if ($data && isset($data['status'])) {
+if ($data && isset($data['status'])) {  
     $messageId = $data['id'] ?? 'N/A';
     $status = $data['status']; 
     

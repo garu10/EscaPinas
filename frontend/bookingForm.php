@@ -70,7 +70,9 @@ $inclusions = executeQuery("SELECT * FROM tour_inclusions WHERE tour_id = $tour_
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11">
+        
+    </script>
     <style>
         body {
             font-family: 'Poppins', sans-serif;
@@ -143,7 +145,6 @@ $inclusions = executeQuery("SELECT * FROM tour_inclusions WHERE tour_id = $tour_
                 <div class="card border-0 shadow-sm rounded-4 p-4 mb-4">
                     <form id="bookingForm">
 
-                        <!-- REGION -->
                         <div class="mb-4">
                             <label class="form-label small fw-bold text-success">
                                 Where are you traveling from?
@@ -169,7 +170,6 @@ $inclusions = executeQuery("SELECT * FROM tour_inclusions WHERE tour_id = $tour_
                             </div>
                         </div>
 
-                        <!-- SCHEDULE -->
                         <div class="mb-4">
                             <label for="schedule_id" class="form-label small fw-bold">
                                 Select Travel Date:
@@ -191,7 +191,6 @@ $inclusions = executeQuery("SELECT * FROM tour_inclusions WHERE tour_id = $tour_
                             </select>
                         </div>
 
-                        <!-- PICKUP / DROPOFF -->
                         <div class="mb-4">
                             <label class="form-label small fw-bold">
                                 Pickup / Dropoff Point
@@ -350,6 +349,8 @@ $inclusions = executeQuery("SELECT * FROM tour_inclusions WHERE tour_id = $tour_
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://www.paypal.com/sdk/js?client-id=AZXarGlWci9EF_NV33Uzb79jiNCHrRaA9WCLLFRpl0Tuzul7OIh5Pgc1Frl114bn2MNsUgR1kphO2D1z&currency=PHP"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
 
     <script>
         const vouchersMap = <?php echo json_encode($js_voucher_list); ?>;

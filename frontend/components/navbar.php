@@ -1,28 +1,29 @@
 <?php
-include_once(__DIR__ . "/../php/connect.php");
+    include_once(__DIR__ . "/../php/connect.php");
 
-$isLoggedIn = isset($_SESSION['user_id']);
-$userName = "Guest";
+    $isLoggedIn = isset($_SESSION['user_id']);
+    $userName = "Guest";
 
-if ($isLoggedIn) {
-    $uid = $_SESSION['user_id'];
-    $userQuery = "SELECT first_name, last_name FROM users WHERE user_id = $uid";
-    $userResult = executeQuery($userQuery);
-    if ($userData = mysqli_fetch_assoc($userResult)) {
-        $userName = $userData['first_name'] . " " . $userData['last_name'];
+    if ($isLoggedIn) {
+        $uid = $_SESSION['user_id'];
+        $userQuery = "SELECT first_name, last_name FROM users WHERE user_id = $uid";
+        $userResult = mysqli_query($conn, $userQuery);
+        if ($userData = mysqli_fetch_assoc($userResult)) {
+            $userName = $userData['first_name'] . " " . $userData['last_name'];
+        }
     }
-}
 ?>
-<nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top py-1">
+
+<nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top py-1" style="font-family: 'Poppins', sans-serif;">
     <div class="container">
         <div class="col-6 col-lg-2 d-flex align-items-center">
-            <a class="navbar-brand fw-bold" href="/EscaPinas/index.php">
+            <a class="navbar-brand fw-bold" href="/EscaPinas/index.php" style="font-family: 'Poppins', sans-serif;">
                 <img src="/EscaPinas/frontend/assets/images/Logo 1.png" height="60" class="d-inline-block align-text-top">
             </a>
         </div>
 
-        <div class="col-6 col-lg-8 d-flex justify-content-end d-lg-none">
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
+        <div class="col-6 d-flex justify-content-end d-lg-none">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
         </div>
@@ -36,20 +37,17 @@ if ($isLoggedIn) {
                     <a class="nav-link fw-semibold text-dark" href="/EscaPinas/frontend/packages.php">Packages</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link fw-semibold text-dark" href="/EscaPinas/frontend/booking.php">Bookings</a>
-                </li>
-                <li class="nav-item">
                     <a class="nav-link fw-semibold text-dark" href="/EscaPinas/frontend/components/infoLinks/about.php">About</a>
                 </li>
             </ul>
         </div>
 
-        <div class="col-lg-2 d-none d-lg-flex justify-content-end align-items-center gap-3">
+        <div class="col-lg-2 d-none d-lg-flex justify-content-end align-items-center gap-3" style="font-family: 'Poppins', sans-serif;">
             <a href="/EscaPinas/frontend/integs/chatbot/chatbotUI.php" class="text-dark fs-4">
                 <i class="bi bi-chat-dots"></i>
             </a>
             
-            <div class="dropdown">
+        <div class="dropdown">
                 <a href="#" class="text-dark fs-4 lh-1" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="bi bi-person-circle"></i>
                 </a>
@@ -77,6 +75,15 @@ if ($isLoggedIn) {
     </div>
 </nav>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
-    crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var dropdownElementList = [].slice.call(document.querySelectorAll('.dropdown-toggle'))
+        var dropdownList = dropdownElementList.map(function (dropdownToggleEl) {
+            return new bootstrap.Dropdown(dropdownToggleEl)
+        });
+    });
+</script>

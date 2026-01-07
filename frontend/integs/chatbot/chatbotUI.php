@@ -1,8 +1,17 @@
 <?php
+session_start(); 
+$_title="Chat EscaPinas";
+
+if (!isset($_SESSION['chat_history'])) {
+    $_SESSION['chat_history'] = [];
+}
+
 if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['prompt'])) {
     $user_question = $_POST['prompt'];
     
-    $data_path = __DIR__ . "data.txt";
+    $_SESSION['chat_history'][] = ['role' => 'user', 'message' => $user_question];
+
+    $data_path = __DIR__ . "/data.txt"; 
     
     if (file_exists($data_path)) {
         $data_context = file_get_contents($data_path);
@@ -10,21 +19,26 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['prompt'])) {
         $data_context = "EscaPinas is a travel agency in the Philippines providing tour packages for Luzon, Visayas, and Mindanao.";
     }
 
+    $history_string = "";
+    foreach (array_slice($_SESSION['chat_history'], -5) as $chat) { 
+        $history_string .= ($chat['role'] == 'user' ? "Guest: " : "AI: ") . $chat['message'] . "\n";
+    }
+
     $prompt = <<<EOT
-You are the EscaPinas Professional Travel Consultant. 
+You are the EscaPinas Professional Travel Consultant.
 Your goal is to provide accurate, courteous, and formal assistance to our valued guests.
 
 GUIDELINES:
 1. Always maintain a professional, helpful, and welcoming tone.
-2. For greetings, respond with "Magandang [araw, tanghali, hapon, gabi], I'm EscaPinas! How may I assist you today?".
-3. If the asked about the EscaPinas, use ONLY the provided data as your sole source of truth.
-4. If the answer is not in the data, politely inform the guest: "I apologize, but I do not have specific information regarding that request at the moment. Would you like me to connect you with a human representative?"
-5. When answering in Tagalog, use "po" and "opo" to maintain respect.
-6. When asked about booking procedures, provide step-by-step instructions based on standard travel agency practices.
-7. When asked about any information about Escapinas, begin your response with "Our..".
+2. For greetings, respond with "Magandang araw, I'm EscaPinas! How may I assist you today?".
+3. Use ONLY the provided data.
+4. If unknown, offer to connect to a human representative.
+5. Use "po" and "opo" for Tagalog.
 ---- BEGIN DATA ----
 $data_context
 ---- End Data ----
+History:
+$history_string
 Question: $user_question
 Answer:
 EOT;
@@ -39,79 +53,98 @@ EOT;
     curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
     
     $response = curl_exec($ch);
-    $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    curl_close($ch);
-    
-    if ($http_code != 200) {
-        echo "(Connection Error: HTTP $http_code)";
-    } else {
-        $data = json_decode($response, true);
-        echo $data['response'] ?? '(no reply)';
-    }
+    $data = json_decode($response, true);
+    $bot_reply = $data['response'] ?? '(no reply)';
+
+    $_SESSION['chat_history'][] = ['role' => 'bot', 'message' => $bot_reply];
+
+    echo $bot_reply;
     exit();
 }
+
+include __DIR__ . "/../../components/header.php";
+include __DIR__ . "/../../components/navbar.php";
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chatbot - EscaPinas</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../../assets/css/chatbot.css">
-</head>
+<link rel="stylesheet" href="../../assets/css/chatbot.css">
 <body class="vh-100 d-flex flex-column overflow-hidden">
 
-    <div class="bg-white shadow-sm border-bottom">
-        <div class="container-fluid px-4 py-2">
+    <div class="bg-white shadow-sm py-3 sticky-top">
+        <div class="container">
             <div class="row align-items-center">
-                <div class="col">
-                     <a class="navbar-brand fw-bold" href="../../index.php">
-                        <img src="../../assets/images/logo2.jpg" height="90" class="d-inline-block align-text-top"> 
+                <div class="col-2 col-md-3">
+                    <a href="javascript:history.back()" class="btn btn-outline-success border-0 rounded-circle">
+                        <i class="fas fa-arrow-left"></i>
                     </a>
                 </div>
-                <div class="col text-center">
-                    <h1 class="m-0 fw-bold header-title">CHATBOT</h1>
+                <div class="col-8 col-md-6 text-center">
+                    <h2 class="m-0 fw-bold text-success" style="letter-spacing: 1px;">EscaPinas</h2>
+                    <small class="text-muted">Chat Support</small>
                 </div>
-                <div class="col"></div>
+                <div class="col-2 col-md-3"></div>
             </div>
         </div>
     </div>
 
-    <div class="bg-white">
-        <div class="container-fluid px-4 py-3">
-            <div class="row">
-                <div class="col-12">
-                    <a href="javascript:history.back()" class="back-link fw-bold text-decoration-none">BACK</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="chatbox" class="flex-grow-1 overflow-auto bg-white p-4">
-        <div class="d-flex flex-column" id="chat-content">
-            <div class="bot-bubble rounded-3 p-3 mb-3" style="max-width: 80%; background-color: #f1f1f1;">
-                Magandang Buhay, I'm EscaPinas! What can I help you?
-            </div>
-        </div>
-    </div>
-
-    <div class="chat p-4">
-        <div class="container-fluid">
+    <div id="chatbox" class="flex-grow-1 overflow-auto p-4" style="background-color: var(--chat-bg);">
+        <div class="container">
             <div class="row justify-content-center">
-                <div class="col-lg-10 col-12 d-flex gap-2">
-                    <textarea id="prompt" class="form-control border-0 p-2 shadow-none custom-textarea" 
-                        placeholder="Type a message here..."
-                        onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMessage();}"></textarea>
-                    <button id="sendBtn" onclick="sendMessage()" class="btn btn-success send-btn px-4 fw-bold text-white border-0 text-uppercase">Send</button>
+                <div class="col-12 col-md-10 col-lg-8" id="chat-content">
+                    
+                    <div class="bot-bubble bubble shadow-sm d-inline-block w-auto">
+                        <strong>EscaPinas:</strong><br>
+                        Magandang Buhay! I'm EscaPinas. How can I help you plan your Philippine adventure today?
+                    </div>
+
+                    <?php if(isset($_SESSION['chat_history'])): ?>
+                        <?php foreach ($_SESSION['chat_history'] as $chat): ?>
+                            <?php if ($chat['role'] == 'user'): ?>
+                                <div class="text-end mb-3">
+                                    <div class="user-bubble bubble d-inline-block text-start" style="max-width: 85%;">
+                                        <?php echo htmlspecialchars($chat['message']); ?>
+                                    </div>
+                                </div>
+                            <?php else: ?>
+                                <div class="text-start mb-3">
+                                    <div class="bot-bubble bubble d-inline-block" style="max-width: 85%;">
+                                        <strong>EscaPinas:</strong><br><?php echo htmlspecialchars($chat['message']); ?>
+                                    </div>
+                                </div>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="chat-input-section shadow-lg bg-white">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-10 col-lg-8">
+                    <div class="row g-2 align-items-center">
+                        <div class="col">
+                            <textarea id="prompt" class="form-control custom-textarea shadow-none" 
+                                placeholder="Write your question here..."
+                                rows="1"
+                                onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMessage();}"></textarea>
+                        </div>
+                        <div class="col-auto">
+                            <button id="sendBtn" onclick="sendMessage()" class="btn btn-success rounded-circle p-0 d-flex align-items-center justify-content-center" style="width: 45px; height: 45px;">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
+        const chatContainer = document.getElementById('chatbox');
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+
         function sendMessage() {
             const input = document.getElementById('prompt');
             const chatContent = document.getElementById('chat-content'); 
@@ -120,53 +153,40 @@ EOT;
             
             if (!text) return;
 
-            // 1. Add User Bubble
-            const u = document.createElement('div');
-            u.className = 'user-bubble rounded-3 p-3 mb-3 align-self-end text-white ms-auto';
-            u.style.backgroundColor = '#198754';
-            u.style.maxWidth = '80%';
-            u.textContent = text;
-            chatContent.appendChild(u);
+            const userWrapper = document.createElement('div');
+            userWrapper.className = 'text-end mb-3';
+            userWrapper.innerHTML = `<div class="user-bubble bubble d-inline-block text-start" style="max-width: 85%;">${text}</div>`;
+            chatContent.appendChild(userWrapper);
             
-            // Clear input and lock UI
             input.value = "";
             input.disabled = true;
             sendBtn.disabled = true;
 
-            // 2. Add "Processing" Bubble for Bot
             const reply_id = "bot_" + Date.now();
-            const b = document.createElement('div');
-            b.id = reply_id;
-            b.className = 'bot-bubble rounded-3 p-3 mb-3';
-            b.style.maxWidth = '80%';
-            b.style.backgroundColor = '#f1f1f1';
-            b.innerHTML = "<b>EscaPinas:</b> <small>Typing...</small>";
-            chatContent.appendChild(b);
-
-            // Scroll to bottom
-            const chatContainer = document.getElementById('chatbox');
+            const botWrapper = document.createElement('div');
+            botWrapper.className = 'text-start mb-3';
+            botWrapper.innerHTML = `
+                <div id="${reply_id}" class="bot-bubble bubble d-inline-block" style="max-width: 85%;">
+                    <div class="spinner-grow spinner-grow-sm text-success" role="status"></div>
+                </div>`;
+            chatContent.appendChild(botWrapper);
             chatContainer.scrollTop = chatContainer.scrollHeight;
 
-            // 3. FETCH DATA FROM PHP BLOCK ABOVE
-            fetch("chatbotUI.php", {
+            fetch(window.location.href, {
                 method: "POST",
                 headers: {"Content-Type": "application/x-www-form-urlencoded" },
                 body: "prompt=" + encodeURIComponent(text)
             })
             .then(res => res.text())
             .then(reply => {
-                document.getElementById(reply_id).innerHTML = `<b>EscaPinas:</b> ${reply}`;
-            })
-            .catch(() => {
-                document.getElementById(reply_id).innerHTML = "<b>EscaPinas:</b> Sorry, I'm having trouble connecting right now.";
+                document.getElementById(reply_id).innerHTML = `<strong>EscaPinas:</strong><br>${reply}`;
+                chatContainer.scrollTop = chatContainer.scrollHeight;
             })
             .finally(() => {
                 input.disabled = false;
                 sendBtn.disabled = false;
                 input.focus();
-                chatContainer.scrollTop = chatContainer.scrollHeight;
             });
         }
     </script>
 </body>
-</html>

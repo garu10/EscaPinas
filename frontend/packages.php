@@ -1,48 +1,39 @@
 <?php
-session_start();
-include 'php/connect.php';
+    $_title="Escapinas - Tours";
+    session_start();
+    include 'php/connect.php';
 
-$getQuery = "SELECT tour_packages.*, destinations.destination_name, regions.island_name 
-                FROM tour_packages 
-                LEFT JOIN destinations ON tour_packages.destination_id = destinations.destination_id 
-                LEFT JOIN regions ON destinations.island_id = regions.island_id 
-                ORDER BY tour_packages.tour_name ASC";
+    $getQuery = "SELECT tour_packages.*, destinations.destination_name, regions.island_name 
+                    FROM tour_packages 
+                    LEFT JOIN destinations ON tour_packages.destination_id = destinations.destination_id 
+                    LEFT JOIN regions ON destinations.island_id = regions.island_id 
+                    ORDER BY tour_packages.tour_name ASC";
 
-$result = executeQuery($getQuery);
+    $result = executeQuery($getQuery);
 
-if (!$result) {
-    die("Query failed: " . $conn->error);
-}
+    if (!$result) {
+        die("Query failed: " . $conn->error);
+    }
 
-$allTours = [];
-while ($row = $result->fetch_assoc()) {
-    $allTours[] = $row;
-}
+    $allTours = [];
+    while ($row = $result->fetch_assoc()) {
+        $allTours[] = $row;
+    }
 
-$randomTours = $allTours;
-shuffle($randomTours);
-$discoverTours = array_slice($randomTours, 0, 4);
+    $randomTours = $allTours;
+    shuffle($randomTours);
+    $discoverTours = array_slice($randomTours, 0, 4);
 
-$randomTours = $allTours;
-shuffle($randomTours);
-$discoverTours = array_slice($randomTours, 0, 4);
+    $randomTours = $allTours;
+    shuffle($randomTours);
+    $discoverTours = array_slice($randomTours, 0, 4);
 
-$islands_query = "SELECT * FROM regions ORDER BY island_name ASC";
-$islands_result = executeQuery($islands_query);
-?>
+    $islands_query = "SELECT * FROM regions ORDER BY island_name ASC";
+    $islands_result = executeQuery($islands_query);
+    ?>
 
-<!doctype html>
-<html lang="en">
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>EscaPinas</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
-</head>
-
+    <?php include "components/header.php"; ?>
 <body>
     <?php include "components/navbar.php"; ?>
 
@@ -59,7 +50,7 @@ $islands_result = executeQuery($islands_query);
                     </div>
                 </div>
             </div>
-        </div>
+        </div>  
     </div>
 
     <div class="container" style="margin-top: -45px; position: relative; z-index: 10; width: 74%;">
@@ -145,8 +136,6 @@ $islands_result = executeQuery($islands_query);
         </div>
         <hr class="my-5 opacity-25">
     </div>
-
-    <?php include "components/offersCarousel.php"; ?>
 
     <div class="container my-5 text-center">
         <h2 class="fw-bold text-success">Popular Attractions</h2>
@@ -251,9 +240,8 @@ $islands_result = executeQuery($islands_query);
     </div>
     <?php include "components/footer.php"; ?>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
-        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
     <script src="assets/js/packages.js"></script>
 </body>
 

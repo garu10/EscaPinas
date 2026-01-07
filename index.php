@@ -1,48 +1,44 @@
 <?php
-$_title = "Escapinas";
-session_start();
-include 'frontend/php/connect.php';
+    $_title = "Escapinas";
+    session_start();
+    include 'frontend/php/connect.php';
 
-$query = "
-    SELECT 
-        t.tour_id,
-        t.tour_name,
-        t.description,
-        t.price,
-        IFNULL(AVG(r.rating_score), 0) AS avg_rating,
-        COUNT(r.review_id) AS total_reviews
-    FROM tour_packages t
-    LEFT JOIN ratings r ON t.tour_id = r.tour_id
-    WHERE t.status = 'Available'
-    GROUP BY t.tour_id, t.tour_name, t.description, t.price
-    ORDER BY RAND()
-    LIMIT 3
-";
+    $query = "
+        SELECT 
+            t.tour_id,
+            t.tour_name,
+            t.description,
+            t.price,
+            IFNULL(AVG(r.rating_score), 0) AS avg_rating,
+            COUNT(r.review_id) AS total_reviews
+        FROM tour_packages t
+        LEFT JOIN ratings r ON t.tour_id = r.tour_id
+        WHERE t.status = 'Available'
+        GROUP BY t.tour_id, t.tour_name, t.description, t.price
+        ORDER BY RAND()
+        LIMIT 3
+    ";
 
-$reviewsQuery = "
-    SELECT 
-        r.review_text,
-        r.rating_score,
-        u.first_name
-    FROM ratings r
-    LEFT JOIN users u ON r.user_id = u.user_id
-    ORDER BY RAND()
-    LIMIT 3
-";
+    $reviewsQuery = "
+        SELECT 
+            r.review_text,
+            r.rating_score,
+            u.first_name
+        FROM ratings r
+        LEFT JOIN users u ON r.user_id = u.user_id
+        ORDER BY RAND()
+        LIMIT 3
+    ";
 
-$result = mysqli_query($conn, $query);
-$reviewsResult = mysqli_query($conn, $reviewsQuery);
+    $result = mysqli_query($conn, $query);
+    $reviewsResult = mysqli_query($conn, $reviewsQuery);
 
-if (!$result) { die("Tour query error: " . mysqli_error($conn)); }
-if (!$reviewsResult) { die("Review query error: " . mysqli_error($conn)); }
+    if (!$result) { die("Tour query error: " . mysqli_error($conn)); }
+    if (!$reviewsResult) { die("Review query error: " . mysqli_error($conn)); }
 ?>
 
-<!doctype html>
-<html lang="en">
-<head>
     <?php include "frontend/components/header.php"; ?>
-</head>
-<body class="bg-light">
+    <body class="bg-light">
 
     <?php include "frontend/components/navbar.php"; ?>
     <?php include "frontend/components/banner.php"; ?>
