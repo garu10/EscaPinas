@@ -6,7 +6,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $place_name = mysqli_real_escape_string($conn, $_POST['place_name']);
     $day_number = $_POST['day_number'];
     
-    // Image Upload Logic
     $image = $_FILES['place_image']['name'];
     $target = "../../../../assets/images/tour_places/" . basename($image);
 

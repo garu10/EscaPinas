@@ -8,9 +8,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $day_number = intval($_POST['day_number']);
     $old_image = $_POST['old_image'];
 
-    $image_name = $old_image; // Default to existing
+    $image_name = $old_image; 
 
-    // Check if a new image was uploaded
     if (isset($_FILES['place_image']['name']) && $_FILES['place_image']['name'] != "") {
         $image_name = $_FILES['place_image']['name'];
         $target = "../../../../assets/images/tour_places/" . basename($image_name);
