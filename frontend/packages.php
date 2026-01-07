@@ -1,45 +1,33 @@
 <?php
-    $_title="Escapinas - Tours";
+    $_title = "Escapinas - Packages";
     session_start();
     include 'php/connect.php';
 
-
 $getQuery = "SELECT tour_packages.*, destinations.destination_name, regions.island_name 
-            FROM tour_packages 
-            LEFT JOIN destinations ON tour_packages.destination_id = destinations.destination_id 
-            LEFT JOIN regions ON destinations.island_id = regions.island_id 
-            WHERE tour_packages.status = 'Available'
-            ORDER BY tour_packages.tour_name ASC";
+             FROM tour_packages 
+             LEFT JOIN destinations ON tour_packages.destination_id = destinations.destination_id 
+             LEFT JOIN regions ON destinations.island_id = regions.island_id 
+             WHERE tour_packages.status = 'Available'
+             ORDER BY tour_packages.tour_name ASC";
 
-    $result = executeQuery($getQuery);
+$result = executeQuery($getQuery);
 
-    if (!$result) {
-        die("Query failed: " . $conn->error);
-    }
+if (!$result) {
+    die("Query failed: " . $conn->error);
+}
 
-    $allTours = [];
-    while ($row = $result->fetch_assoc()) {
-        $allTours[] = $row;
-    }
-
+$allTours = [];
+while ($row = $result->fetch_assoc()) {
+    $allTours[] = $row;
+}
 
 $randomTours = $allTours;
 shuffle($randomTours);
 $discoverTours = array_slice($randomTours, 0, 4);
 ?>
 
-<!doctype html>
-<html lang="en">
+<?php include "components/header.php"; ?>
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>EscaPinas - Tour Packages</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
-</head>
-
-    <?php include "components/header.php"; ?>
 <body>
     <?php include "components/navbar.php"; ?>
 
@@ -86,15 +74,6 @@ $discoverTours = array_slice($randomTours, 0, 4);
             <i class="bi bi-search text-muted" style="font-size: 3rem;"></i>
             <h4 class="mt-3 text-muted">No tours available for that destination.</h4>
             <p class="text-secondary">EscaPinas is continuously exploring more hidden gems across the islands to provide the best possible experience for our customers. <br>Feel free to explore and browse our other available tours in the meantime!</br></p>
-        </div>
-
-    <div class="container my-5 text-center">
-        <h2 class="fw-bold text-success">Popular Attractions</h2>
-        <div class="btn-group my-5 shadow-sm rounded-pill overflow-hidden d-inline-flex border border-success">
-            <button class="btn btn-success btn-md px-4 filter-btn border-0" onclick="filterTours('all', this)">All</button>
-            <button class="btn btn-outline-success btn-md px-4 filter-btn border-0" onclick="filterTours('luzon', this)">Luzon</button>
-            <button class="btn btn-outline-success btn-md px-4 filter-btn border-0" onclick="filterTours('visayas', this)">Visayas</button>
-            <button class="btn btn-outline-success btn-md px-4 filter-btn border-0" onclick="filterTours('mindanao', this)">Mindanao</button>
         </div>
 
         <div class="row g-4 justify-content-center" id="tourContainer">
@@ -188,14 +167,9 @@ $discoverTours = array_slice($randomTours, 0, 4);
         </div>
     </div>
     <?php include "components/footer.php"; ?>
-
-<<<<<<< HEAD
+        
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
-=======
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
->>>>>>> 2f15f2a3128b3c1d7fd40eec1d7fb5ba12e6802b
     <script src="assets/js/packages.js"></script>
 </body>
-
 </html>
