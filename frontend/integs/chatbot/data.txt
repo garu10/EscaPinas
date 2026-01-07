@@ -1,0 +1,199 @@
+========================================
+COMPANY INFORMATION
+========================================
+
+COMPANY NAME:
+EscaPinas – Travel Agency based in the Philippines
+
+ABOUT:
+EscaPinas is a centralized web application–based travel management and booking system designed to support Philippine tour agencies and travelers. The system organizes curated tour packages across Luzon, Visayas, and Mindanao, providing standardized and easy-to-compare travel information.
+
+MISSION:
+To democratize travel by providing high-quality yet budget-friendly tour packages and make the wonders of the Philippines accessible to all.
+
+VISION:
+To be the Philippines' leading travel technology platform that inspires people to "EscaPe" the ordinary and celebrate our heritage.
+
+CONTACT & LOCATION:
+Phone: 
+Email: escapinas26@gmail.com
+Location: Tanauan City, Batangas, Philippines
+Social Media: We don’t have social media accounts yet, but you can reach us via email or text message.
+
+
+========================================
+BOOKING INFORMATION
+========================================
+
+HOW TO BOOK:
+Browse available tour packages, select your preferred date, and complete the booking form with accurate details. Booking confirmation will be sent after payment verification.
+
+BOOKING REQUIREMENTS:
+- Full name
+- Contact number and email
+- Preferred tour date
+- Number of participants
+
+BOOKING STATUS:
+- Pending: Payment not yet verified
+- Confirmed: Payment verified and slot secured
+- Cancelled: Booking cancelled by guest or EscaPinas
+
+BOOKING VERIFICATION TIME:
+Payment verification usually takes 24–48 hours.
+
+
+========================================
+PAYMENT INFORMATION
+========================================
+
+ACCEPTED PAYMENT METHODS:
+- PayPal
+
+PAYMENT TERMS:
+A required deposit or full payment must be settled to secure a tour slot.
+
+PROOF OF PAYMENT:
+//hindi ko alam ilalagay
+
+CURRENCY:
+All prices are in Philippine Peso.
+
+========================================
+TOUR PACKAGES
+========================================
+
+TOUR REGIONS:
+- Luzon
+- Visayas
+- Mindanao
+
+TOUR PACKAGE DETAILS:
+Each tour package includes:
+- Tour name
+- Location and region
+- Duration
+- Price per person
+- Minimum and maximum number of guests
+- Package inclusions
+- Package exclusions
+- Sample itinerary
+- Meeting point and time
+- Special notes or restrictions
+
+
+========================================
+DESTINATION INFORMATION
+========================================
+
+DESTINATION DETAILS:
+Each destination may include:
+- Best travel season
+- Weather considerations
+- Mobile signal and internet availability
+- Recommended clothing and gear
+- Difficulty level (Beginner / Moderate / Advanced)
+
+AGE & HEALTH CONSIDERATIONS:
+Some tours may not be suitable for children, seniors, or guests with medical conditions. Guests are advised to review tour details carefully.
+
+
+========================================
+CANCELLATION & REFUND POLICY
+========================================
+
+CANCELLATION POLICY:
+- Cancellations made at least 7 days before the tour date are eligible for a 50% refund.
+- Cancellations made within 48 hours of departure are strictly non-refundable.
+
+REFUND PROCESS:
+Approved refunds will be processed within 7–14 business days.
+
+
+========================================
+WEATHER & SAFETY
+========================================
+
+WEATHER CONDITIONS:
+Tours may be rescheduled or cancelled due to extreme weather conditions or official coast guard advisories.
+
+SAFETY GUIDELINES:
+Guests must follow tour guide instructions at all times to ensure safety.
+
+LATE ARRIVALS:
+Guests who arrive late at the meeting point may forfeit their slot without refund.
+
+
+========================================
+CHANGES & SPECIAL REQUESTS
+========================================
+
+DATE RESCHEDULING:
+Date changes are subject to availability and approval.
+
+NAME CORRECTIONS:
+Minor name corrections are allowed before final confirmation.
+
+SPECIAL REQUESTS:
+Dietary needs, accessibility requests, or private tour requests must be communicated in advance.
+
+
+========================================
+CUSTOMER SUPPORT & EMERGENCY
+========================================
+
+CUSTOMER SUPPORT:
+Email: escapinas26@gmail.com
+Phone:
+
+OFFICE HOURS:
+Monday to Saturday, 9:00 AM – 6:00 PM
+
+EMERGENCY DURING TOUR:
+Emergency contact details will be provided upon booking confirmation.
+
+
+========================================
+PRIVACY POLICY
+========================================
+
+DATA COLLECTION:
+We collect personal information such as name, email, and contact number for booking purposes.
+
+DATA USAGE:
+Information is used solely to process bookings, verify payments, and provide travel updates.
+
+DATA SHARING:
+Personal data is only shared with payment gateways and local tour operators when necessary.
+
+DATA SECURITY:
+Industry-standard security measures are implemented to protect personal information.
+
+USER RIGHTS:
+Guests may request access, updates, or deletion of their personal data at any time.
+
+
+========================================
+TERMS & CONDITIONS
+========================================
+
+BOOKING AGREEMENT:
+By booking with EscaPinas, guests agree to provide accurate information and comply with all policies.
+
+CONDUCT:
+Guests are expected to behave responsibly and follow safety instructions during tours.
+
+ENVIRONMENTAL POLICY:
+Guests must follow “Leave No Trace” principles. Littering and wildlife disturbance are prohibited.
+
+MEDIA USAGE:
+Photos or videos taken during tours may be used for marketing purposes unless guests opt out.
+
+LIABILITY LIMITATION:
+EscaPinas is not responsible for losses or injuries caused by third-party services or natural events.
+
+POLICY UPDATES:
+Policies may be updated at any time. Continued use of services indicates acceptance of updates.
+
+
+

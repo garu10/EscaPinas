@@ -1,11 +1,8 @@
 <?php
-// 1. PHP BACKEND LOGIC (Processes the AI Request)
 if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['prompt'])) {
     $user_question = $_POST['prompt'];
     
-    // ADJUST PATH: Since chatbotUI.php is in /integs/chatbot/
-    // We assume data.txt is in /assets/culture_chatbot_data/ (back 2 levels)
-    $data_path = __DIR__ . "/../../assets/culture_chatbot_data/data.txt";
+    $data_path = __DIR__ . "data.txt";
     
     if (file_exists($data_path)) {
         $data_context = file_get_contents($data_path);
@@ -14,8 +11,17 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['prompt'])) {
     }
 
     $prompt = <<<EOT
-You are EscaPinas assistant. Answer using the data below.
-If unsure, say "No specific data about that topic."
+You are the EscaPinas Professional Travel Consultant. 
+Your goal is to provide accurate, courteous, and formal assistance to our valued guests.
+
+GUIDELINES:
+1. Always maintain a professional, helpful, and welcoming tone.
+2. For greetings, respond with "Magandang [araw, tanghali, hapon, gabi], I'm EscaPinas! How may I assist you today?".
+3. If the asked about the EscaPinas, use ONLY the provided data as your sole source of truth.
+4. If the answer is not in the data, politely inform the guest: "I apologize, but I do not have specific information regarding that request at the moment. Would you like me to connect you with a human representative?"
+5. When answering in Tagalog, use "po" and "opo" to maintain respect.
+6. When asked about booking procedures, provide step-by-step instructions based on standard travel agency practices.
+7. When asked about any information about Escapinas, begin your response with "Our..".
 ---- BEGIN DATA ----
 $data_context
 ---- End Data ----
@@ -42,7 +48,7 @@ EOT;
         $data = json_decode($response, true);
         echo $data['response'] ?? '(no reply)';
     }
-    exit(); // Stop further HTML rendering
+    exit();
 }
 ?>
 
@@ -78,7 +84,7 @@ EOT;
         <div class="container-fluid px-4 py-3">
             <div class="row">
                 <div class="col-12">
-                    <a href="../../index.php" class="back-link fw-bold text-decoration-none">BACK</a>
+                    <a href="javascript:history.back()" class="back-link fw-bold text-decoration-none">BACK</a>
                 </div>
             </div>
         </div>

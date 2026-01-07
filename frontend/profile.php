@@ -19,7 +19,6 @@ $page = $_GET['page'] ?? 'personal';
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/profile.css">
 </head>
-class="fw-bold text-success"
 <body>
     <?php include "components/navbar.php"; ?>
 
