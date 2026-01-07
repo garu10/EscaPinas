@@ -3,11 +3,13 @@
     session_start();
     include 'php/connect.php';
 
-    $getQuery = "SELECT tour_packages.*, destinations.destination_name, regions.island_name 
-                    FROM tour_packages 
-                    LEFT JOIN destinations ON tour_packages.destination_id = destinations.destination_id 
-                    LEFT JOIN regions ON destinations.island_id = regions.island_id 
-                    ORDER BY tour_packages.tour_name ASC";
+
+$getQuery = "SELECT tour_packages.*, destinations.destination_name, regions.island_name 
+            FROM tour_packages 
+            LEFT JOIN destinations ON tour_packages.destination_id = destinations.destination_id 
+            LEFT JOIN regions ON destinations.island_id = regions.island_id 
+            WHERE tour_packages.status = 'Available'
+            ORDER BY tour_packages.tour_name ASC";
 
     $result = executeQuery($getQuery);
 
@@ -20,18 +22,22 @@
         $allTours[] = $row;
     }
 
-    $randomTours = $allTours;
-    shuffle($randomTours);
-    $discoverTours = array_slice($randomTours, 0, 4);
 
-    $randomTours = $allTours;
-    shuffle($randomTours);
-    $discoverTours = array_slice($randomTours, 0, 4);
+$randomTours = $allTours;
+shuffle($randomTours);
+$discoverTours = array_slice($randomTours, 0, 4);
+?>
 
-    $islands_query = "SELECT * FROM regions ORDER BY island_name ASC";
-    $islands_result = executeQuery($islands_query);
-    ?>
+<!doctype html>
+<html lang="en">
 
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>EscaPinas - Tour Packages</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+</head>
 
     <?php include "components/header.php"; ?>
 <body>
@@ -40,7 +46,7 @@
     <div class="container-fluid p-0">
         <div class="d-flex align-items-center justify-content-center"
             style="background: linear-gradient(#053207bf, #0ca458a6), url('/EscaPinas/frontend/assets/images/banner_package.jpg'); 
-                background-size: 100%; background-position: center top; background-attachment: fixed; height: 450px; position: relative;">
+                background-size: 100%; background-position: center top; background-attachment: fixed; height: 385px; position: relative;">
             <div class="container">
                 <div class="row">
                     <div class="col-12 text-center text-white">
@@ -53,89 +59,34 @@
         </div>  
     </div>
 
-    <div class="container" style="margin-top: -45px; position: relative; z-index: 10; width: 74%;">
-        <div class="card shadow-lg border-0" style="border-radius: 15px;">
-            <div class="card-body p-4">
-                <div class="row g-3 align-items-center">
-                    <div class="col-md-5 border-end pe-3">
-                        <div class="d-flex align-items-center px-2">
-                            <div class="w-100">
-                                <label class="form-label fw-bold text-success small mb-0">
-                                    <i class="bi bi-geo-alt-fill text-success fs-6 me-1"></i> WHERE TO GO?</label>
-                                <select class="form-select border-0 p-0 fw-bold shadow-none" id="regionSelect" onchange="updateDestinations()">
-                                    <option selected disabled>Select Region</option>
-                                    <?php
-                                    $islands = array_unique(array_column($allTours, 'island_name'));
-                                    foreach ($islands as $island): ?>
-                                        <option value="<?php echo htmlspecialchars($island); ?>"><?php echo strtoupper($island); ?></option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-5">
-                        <div class="d-flex align-items-center px-2 ps-md-3">
+    <div class="container my-5">
+        <h2 class="fw-bold text-success text-center mb-4 text-uppercase">Popular Attractions</h2>
 
-                            <div class="w-100">
-                                <label class="form-label fw-bold text-success small mb-0">
-                                    <i class="bi bi-search text-success fs-6 me-1"></i> WHAT TO SEE?</label>
-                                <select class="form-select border-0 p-0 fw-bold shadow-none" id="attractionSelect" disabled>
-                                    <option value="">Select region first...</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-2">
-                        <button type="button" onclick="handleSearch()" class="btn btn-success w-100 py-3 fw-bold rounded-3 shadow-sm">SEARCH</button>
-                    </div>
+        <div class="row g-3 justify-content-center align-items-center mb-5">
+            <div class="col-auto">
+                <div class="btn-group shadow-sm rounded-pill overflow-hidden border border-success bg-white">
+                    <button class="btn btn-success px-4 filter-btn" id="btn-all" onclick="filterTours('all', this)">All</button>
+                    <button class="btn btn-outline-success px-4 filter-btn border-0" id="btn-luzon" onclick="filterTours('luzon', this)">Luzon</button>
+                    <button class="btn btn-outline-success px-4 filter-btn border-0" id="btn-visayas" onclick="filterTours('visayas', this)">Visayas</button>
+                    <button class="btn btn-outline-success px-4 filter-btn border-0" id="btn-mindanao" onclick="filterTours('mindanao', this)">Mindanao</button>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="input-group shadow-sm">
+                    <input type="text" id="packageQuickSearch" class="form-control border-success rounded-start-pill ps-4" placeholder="Search destination (e.g. Cebu)..." onkeyup="handleQuickSearch()">
+                    <button class="btn btn-success rounded-end-pill px-4">
+                        <i class="bi bi-search"></i>
+                    </button>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div id="destinationData" style="display: none;">
-        <?php foreach ($allTours as $tour): ?>
-            <span class="dest-item"
-                data-region="<?php echo htmlspecialchars($tour['island_name']); ?>"
-                data-val="<?php echo htmlspecialchars($tour['destination_name']); ?>"></span>
-        <?php endforeach; ?>
-    </div>
-
-    <div id="searchResultWrapper" style="display: none; scroll-margin-top: 50px;" class="container my-5 pt-5">
-        <div class="d-flex align-items-center justify-content-center mb-4 position-relative">
-            <h2 class="fw-bold text-success mb-0">Search Results</h2>
-            <button class="btn btn-sm btn-outline-success position-absolute end-0" onclick="window.location.reload()">Clear Search</button>
+        <div id="noResultsMessage" class="text-center py-5 w-100" style="display: none;">
+            <i class="bi bi-search text-muted" style="font-size: 3rem;"></i>
+            <h4 class="mt-3 text-muted">No tours available for that destination.</h4>
+            <p class="text-secondary">EscaPinas is continuously exploring more hidden gems across the islands to provide the best possible experience for our customers. <br>Feel free to explore and browse our other available tours in the meantime!</br></p>
         </div>
-        <div class="row g-4 justify-content-center" id="searchResultsGrid">
-            <?php foreach ($allTours as $row): ?>
-                <div class="col-md-4 search-result-card"
-                    data-island="<?php echo strtolower($row['island_name']); ?>"
-                    data-destination="<?php echo strtolower($row['destination_name']); ?>">
-                    <div class="card border-0 shadow-sm h-100">
-                        <img src="<?php echo htmlspecialchars($row['image']); ?>" class="card-img-top" height="200" style="object-fit: cover;">
-                        <div class="card-body">
-                            <h5 class="fw-bold mb-1"><?php echo htmlspecialchars($row['tour_name']); ?></h5>
-                            <p class="text-muted small mb-2"><i class="bi bi-geo-alt-fill text-danger"></i> <?php echo htmlspecialchars($row['island_name'] . " | " . $row['destination_name']); ?></p>
-                            <div class="border-top pt-3">
-                                <div class="row justify-content-center align-items-center">
-                                    <div class="col-7">
-                                        <span class="text-muted d-block" style="font-size: 0.7rem;">Starting at:</span>
-                                        <span class="fw-bold text-success fs-5">₱<?php echo number_format($row['price'], 2); ?></span>
-                                    </div>
-                                    <div class="col-5 text-end">
-                                        <a href="packageView.php?tour_id=<?php echo $row['tour_id']; ?>" class="btn btn-success btn-sm px-3 rounded-pill fw-bold shadow-sm" style="font-size: 0.75rem;">
-                                            View Details <i class="bi bi-chevron-right"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            <?php endforeach; ?>
-        </div>
-        <hr class="my-5 opacity-25">
-    </div>
 
     <div class="container my-5 text-center">
         <h2 class="fw-bold text-success">Popular Attractions</h2>
@@ -145,45 +96,43 @@
             <button class="btn btn-outline-success btn-md px-4 filter-btn border-0" onclick="filterTours('visayas', this)">Visayas</button>
             <button class="btn btn-outline-success btn-md px-4 filter-btn border-0" onclick="filterTours('mindanao', this)">Mindanao</button>
         </div>
+
         <div class="row g-4 justify-content-center" id="tourContainer">
             <?php if (empty($allTours)): ?>
-                <p>No tours available at the moment.</p>
+                <div class="col-12 text-center py-5">
+                    <i class="bi bi-emoji-frown fs-1 text-muted"></i>
+                    <p class="mt-2 text-muted">No tours available at the moment.</p>
+                </div>
             <?php else: ?>
                 <?php foreach ($allTours as $tour): ?>
-                    <div class="col-md-4 tour-card-item" data-island="<?php echo strtolower($tour['island_name']); ?>">
-                        <div class="card border-0 shadow-sm h-100 text-start">
+                    <div class="col-md-4 tour-card-item"
+                        data-island="<?php echo strtolower($tour['island_name']); ?>"
+                        data-destination="<?php echo strtolower($tour['destination_name']); ?>">
+                        <div class="card border-0 shadow-sm h-100">
                             <img src="<?php echo htmlspecialchars($tour['image']); ?>" class="card-img-top rounded-top-4" height="300" style="object-fit: cover;">
 
-                            <div class="card-body d-flex flex-column justify-content-between">
-                                <div class="mb-3">
-                                    <div class="row align-items-start g-0">
-                                        <div class="col-8">
-                                            <h5 class="fw-bold mb-0 text-truncate" title="<?php echo htmlspecialchars($tour['tour_name']); ?>">
-                                                <?php echo htmlspecialchars($tour['tour_name']); ?>
-                                            </h5>
-                                        </div>
-                                        <div class="col-4 text-end">
-                                            <span class="badge bg-light text-success border border-success-subtle rounded-pill fw-medium" style="font-size: 0.7rem;">
-                                                <i class="bi bi-clock"></i> <?php echo htmlspecialchars($tour['duration_days']); ?>D/<?php echo htmlspecialchars($tour['duration_nights']); ?>N
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <p class="text-muted small mt-1 mb-0">
-                                        <i class="bi bi-geo-alt-fill text-danger"></i>
-                                        <?php echo htmlspecialchars($tour['island_name'] . " | " . $tour['destination_name']); ?>
-                                    </p>
+                            <div class="card-body d-flex flex-column">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <h5 class="fw-bold mb-0 text-success"><?php echo htmlspecialchars($tour['tour_name']); ?></h5>
+                                    <span class="badge bg-light text-success border border-success-subtle rounded-pill">
+                                        <i class="bi bi-clock"></i> <?php echo htmlspecialchars($tour['duration_days']); ?>D/<?php echo htmlspecialchars($tour['duration_nights']); ?>N
+                                    </span>
                                 </div>
 
-                                <div class="border-top pt-3">
+                                <p class="text-muted small mb-3">
+                                    <i class="bi bi-geo-alt-fill text-danger"></i>
+                                    <?php echo htmlspecialchars($tour['island_name'] . " | " . $tour['destination_name']); ?>
+                                </p>
+
+                                <div class="mt-auto border-top pt-3">
                                     <div class="row align-items-center">
-                                        <div class="col-7">
-                                            <span class="text-muted d-block" style="font-size: 0.7rem;">Starting at:</span>
-                                            <span class="fw-bold text-success fs-5">
-                                                ₱<?php echo number_format($tour['price'], 2); ?>
-                                            </span>
+                                        <div class="col-6">
+                                            <span class="text-muted d-block" style="font-size: 0.7rem;">Starts at</span>
+                                            <span class="fw-bold text-success fs-5">₱<?php echo number_format($tour['price'], 2); ?></span>
                                         </div>
-                                        <div class="col-5 text-end">
-                                            <a href="packageView.php?tour_id=<?php echo $tour['tour_id']; ?>" class="btn btn-success btn-sm px-3 rounded-pill fw-bold shadow-sm" style="font-size: 0.75rem;">
+                                        <div class="col-6 text-end">
+                                            <a href="packageView.php?tour_id=<?php echo $tour['tour_id']; ?>"
+                                                class="btn btn-success btn-sm px-3 rounded-pill fw-bold">
                                                 View Details <i class="bi bi-chevron-right"></i>
                                             </a>
                                         </div>
@@ -240,8 +189,12 @@
     </div>
     <?php include "components/footer.php"; ?>
 
+<<<<<<< HEAD
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
+=======
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+>>>>>>> 2f15f2a3128b3c1d7fd40eec1d7fb5ba12e6802b
     <script src="assets/js/packages.js"></script>
 </body>
 

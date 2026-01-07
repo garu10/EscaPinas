@@ -2,7 +2,7 @@
 COMPANY INFORMATION
 ========================================
 
-COMPANY NAME:
+BUSINESS NAME:
 EscaPinas – Travel Agency based in the Philippines
 
 ABOUT:
@@ -15,7 +15,7 @@ VISION:
 To be the Philippines' leading travel technology platform that inspires people to "EscaPe" the ordinary and celebrate our heritage.
 
 CONTACT & LOCATION:
-Phone: 
+Phone: 09629726088
 Email: escapinas26@gmail.com
 Location: Tanauan City, Batangas, Philippines
 Social Media: We don’t have social media accounts yet, but you can reach us via email or text message.
@@ -32,7 +32,7 @@ BOOKING REQUIREMENTS:
 - Full name
 - Contact number and email
 - Preferred tour date
-- Number of participants
+- Total Guests
 
 BOOKING STATUS:
 - Pending: Payment not yet verified
@@ -42,6 +42,11 @@ BOOKING STATUS:
 BOOKING VERIFICATION TIME:
 Payment verification usually takes 24–48 hours.
 
+========================================
+TRANSPORTATION
+========================================
+Mode of transportation:
+Van
 
 ========================================
 PAYMENT INFORMATION
@@ -54,7 +59,7 @@ PAYMENT TERMS:
 A required deposit or full payment must be settled to secure a tour slot.
 
 PROOF OF PAYMENT:
-//hindi ko alam ilalagay
+
 
 CURRENCY:
 All prices are in Philippine Peso.
@@ -62,32 +67,375 @@ All prices are in Philippine Peso.
 ========================================
 TOUR PACKAGES
 ========================================
+PICK UP & DROP OFF LOCATIONS:
+Luzon:
+- Cubao
+- Makati
+- NAIA (Ninoy Aquino International Airport)
+
+Visayas:
+- Ilo-Ilo City
+- Cebu City
+- Mactan–Cebu International Airport
+
+Mindanao:
+- Davao City
+- Davao International Airport
+- Cagayan de Oro
 
 TOUR REGIONS:
 - Luzon
 - Visayas
 - Mindanao
 
-TOUR PACKAGE DETAILS:
-Each tour package includes:
-- Tour name
-- Location and region
-- Duration
-- Price per person
-- Minimum and maximum number of guests
-- Package inclusions
-- Package exclusions
-- Sample itinerary
-- Meeting point and time
-- Special notes or restrictions
+TOUR PACKAGES:
+Tour Name: Baguio–Sagada Tour
+Destination: Baguio–Sagada (Luzon)
+Duration: 4 Days / 3 Nights
+Price per Person: PHP 7,998.00
+Maximum number of passenger: 30
 
+Description
+A cool-climate adventure combining Baguio city charm and Sagada culture.
+
+Itinerary:
+Day 1:
+- Arrival at Baguio City, hotel check-in (Breakfast included)
+- Burnham Park boat ride
+- Mines View Park sightseeing
+- Lunch at Good Taste (own expense)
+- Visit The Mansion and Wright Park
+- Session Road shopping
+- Baguio Night Market visit
+
+Day 2:
+- Travel to Sagada
+- Visit Hanging Coffins
+- Sumaguing Cave spelunking
+- Lunch at local restaurant (own expense)
+- Echo Valley hike
+- Return travel to Manila
+
+PLACES VISITED:
+- Burnham Park
+- Mines View Park
+- The Mansion
+- Hanging Coffins
+- Sumaguing Cave
+- Echo Valley
+
+Schedules:
+January 15–18, 2026
+January 12–15, 2026
+February 10–13, 2026
+March 17–20, 2026
+
+----------------------------------------
+Tour Name: Ilocos–Laoag Tour
+Destination: Ilocos (Luzon)
+Duration: 4 Days / 3 Nights
+Price per Person: PHP 8,998.00
+Maximum number of passenger: 30
+
+Description
+A heritage and coastal tour showcasing Spanish-era landmarks.
+
+Itinerary:
+Day 1:
+- Arrival in Ilocos
+- Bangui Windmills
+- Cape Bojeador Lighthouse
+- Patapat Viaduct
+- Lunch (included)
+- Vigan Calle Crisologo walk
+- Vigan Market shopping
+- Dinner at hotel
+
+Day 2:
+- Breakfast at hotel
+- Bantay Church and Bell Tower
+- Laoag Sand Dunes
+- 4x4 adventure
+- Paoay Church visit
+
+Day 3:
+- Breakfast
+- Kapurpurawan Rock Formation
+- Lunch (own expense)
+- Malacañang of the North
+- Capitol souvenir shopping
+
+Day 4:
+- Breakfast
+- Pagudpud Beach relaxation
+- Departure to Manila
+
+PLACES VISITED:
+- Calle Crisologo
+- Laoag Sand Dunes
+- Paoay Church
+- Kapurpurawan Rock Formation
+- Pagudpud Beach
+
+Schedules:
+- January 5–8, 2026
+- February 16–19, 2026
+- February 22–25, 2026
+- March 11–14, 2026
+
+----------------------------------------
+Tour Name: La Union Tour
+Destination: La Union (Luzon)
+Duration: 3 Days / 2 Nights
+Price per Person: PHP 6,998.00
+Maximum number of passenger: 30
+
+Description
+A laid-back beach and nature escape.
+
+Itinerary:
+Day 1:
+- Arrival and hotel check-in (Breakfast included)
+- San Juan Surf Beach relaxation
+
+Day 2:
+- Breakfast
+- Ma-Cho Temple visit
+- Lunch (own expense)
+- Tangadan Falls adventure
+- Check-in at Thunderbird Resort
+
+Day 3:
+- Breakfast
+- Resort leisure and café hopping
+- Departure to Manila
+
+PLACES VISITED:
+- San Juan Surf Beach
+- Ma-Cho Temple
+- Tangadan Falls
+- Thunderbird Resort
+
+Schedules:
+- January 23–25, 2026
+- February 8–10, 2026
+- March 14–16, 2026
+- March 24–26, 2026
+
+----------------------------------------
+Tour Name: Bicol Tour
+Destination: Bicol (Luzon)
+Duration: 4 Days / 3 Nights
+Price per Person: PHP 8,998.00
+Maximum number of passenger: 30
+
+Description
+An adventure-filled tour featuring volcano views and island hopping.
+
+Itinerary:
+Day 1: 
+- Arrival at Legazpi City and check-in at the hotel.
+- Enjoy free lunch at a local restaurant. (Lunch included)
+- Visit the Mayon Volcano View and Photo Stop.
+
+ Day 2:
+- Breakfast at the hotel. (Breakfast included)
+- Discover the Cagsawa Ruins and learn about its history.
+- Take a scenic ATV ride around the base of Mayon Volcano.
+- Enjoy lunch at a local restaurant. (Lunch at your own account)
+- Explore local markets.
+
+ Day 3:
+- Breakfast at the hotel. (Breakfast included)
+- Travel to Donsol for whale shark watching.
+- Enjoy lunch at a local restaurant. (Lunch at your own account)
+- Swim with the gentle giants of the sea.
+
+ Day 4
+- Breakfast at the hotel. (Breakfast included)
+- Island hopping tour in Caramoan Islands.
+- Enjoy lunch on one of the islands. (Lunch at your own account)
+- Departure to Manila
+
+Schedules:
+- January 18–22, 2026
+- February 22–26, 2026
+- March 19–23, 2026
+
+----------------------------------------
+Tour Name: Batangas–Tagaytay Tour
+Destination: Tagaytay & Batangas (Luzon)
+Duration: 2 Days / 1 Night
+Price per Person: PHP 5,498.00
+Maximum number of passenger: 30
+
+Description
+A relaxing getaway with cool weather and scenic views.
+
+Itinerary: 
+Day 1:
+- Arrival at Tagaytay and visit the Taal Volcano Viewpoint.
+- Breakfast at the buffet restaurant with a view. (Breakfast included)
+- Enjoy rides and leisure activities at Sky Ranch.
+
+ Day 2:
+- Relax and have a picnic in scenic surroundings.
+- Explore different gardens and cafes in Tagaytay.
+- Enjoy lunch at a local restaurant. (Lunch at your own account)
+- Visit Tagaytay Public Market for local products.
+
+Schedules:
+- January 5–6, 2026
+- January 10–11, 2026
+- January 14–15, 2026
+- January 24–25, 2026
+- February 2–3, 2026
+- February 7–8, 2026
+- February 14–15, 2026
+- February 24–25, 2026
+- March 5–6, 2026
+- March 13–14, 2026
+- March 17–18, 2026
+- March 25–26, 2026
+
+----------------------------------------
+Tour Name: Cebu City Tour
+Destination: Cebu (Visayas)
+Duration: 4 Days / 3 Nights
+Price per Person: PHP 7,998.00
+Maximum number of passenger: 30
+
+HIGHLIGHTS:
+- Magellan’s Cross
+- Basilica del Santo Niño
+- Kawasan Falls
+- Oslob Whale Shark Watching
+
+Schedules:
+- January 24–27, 2026
+- February 17–20, 2026
+- March 23–26, 2026
+----------------------------------------
+TOUR ID: 7
+Tour Name: Bohol Countryside Tour
+Destination: Bohol (Visayas)
+Duration: 3 Days / 2 Nights
+Price per Person: PHP 6,998.00
+Maximum number of passenger: 30
+
+HIGHLIGHTS:
+- Chocolate Hills
+- Tarsier Sanctuary
+- Loboc River Cruise
+- Panglao Beach
+
+Schedules:
+- January 11–13, 2026
+- February 20–22, 2026
+- March 21–23, 2026
+
+----------------------------------------
+TOUR ID: 8
+Tour Name: Boracay Island Tour
+Destination: Boracay (Visayas)
+Duration: 4 Days / 3 Nights
+Price per Person: PHP 7,998.00
+Maximum number of passenger: 30
+
+HIGHLIGHTS:
+- White Beach
+- Island hopping
+- Bulabog Beach
+- Sunset Sailing
+
+Schedules:
+- January 28–31, 2026
+- February 8–11, 2026 
+- March 1–4, 2026
+- March 9–12, 2026
+
+----------------------------------------
+TOUR ID: 9
+Tour Name: Davao City Tour
+Destination: Davao (Mindanao)
+Duration: 3 Days / 2 Nights
+Price per Person: PHP 6,998.00
+Maximum number of passenger: 30
+
+HIGHLIGHTS:
+- Philippine Eagle Center
+- Eden Nature Park
+- Samal Island
+
+Schedules:
+- January 18–20, 2026
+- February 19–21, 2026
+- March 25–27, 2026
+
+----------------------------------------
+TOUR ID: 10
+Tour Name: Siargao Island Tour
+Destination: Siargao (Mindanao)
+Duration: 4 Days / 3 Nights
+Price per Person: PHP 7,998.00
+Maximum number of passenger: 30
+
+HIGHLIGHTS:
+- Cloud 9 surfing
+- Magpupungko Rock Pools
+- Sugba Lagoon
+- Naked Island
+
+Schedules:
+- January 25–28, 2026
+- February 3–6, 2026
+- March 1–3, 2026
+
+----------------------------------------
+TOUR ID: 11
+Tour Name: Cagayan de Oro Tour
+Destination: Cagayan de Oro (Mindanao)
+Duration: 3 Days / 2 Nights
+Price per Person: PHP 6,998.00
+Maximum number of passenger: 30
+
+HIGHLIGHTS:
+- White Water Rafting
+- Mapawa Nature Park
+- Seven Seas Waterpark
+
+Schedules:
+- January 7–9, 2026
+- February 17–19, 2026
+- March 14–16, 2026
+
+
+----------------------------------------
+TOUR ID: 12
+Tour Name: Palawan Island Adventure
+Destination: Palawan (Luzon)
+Duration: 5 Days / 3 Nights
+Price per Person: PHP 12,000.00
+Maximum number of passenger: 30
+
+HIGHLIGHTS:
+- Puerto Princesa Underground River
+- Honda Bay Island Hopping
+- El Nido Lagoons
+- Coron Kayangan Lake
+- Coron Reef Snorkeling
+
+Schedules:
+- Jan 10–15, 2026 
+- Feb 05–10, 2026 
+- Mar 12–17, 2026 
 
 ========================================
-DESTINATION INFORMATION
+Destination INFORMATION
 ========================================
 
-DESTINATION DETAILS:
-Each destination may include:
+Destination DETAILS:
+Each Destination may include:
 - Best travel season
 - Weather considerations
 - Mobile signal and internet availability
@@ -178,9 +526,15 @@ TERMS & CONDITIONS
 ========================================
 
 BOOKING AGREEMENT:
-By booking with EscaPinas, guests agree to provide accurate information and comply with all policies.
+By booking with EscaPinas, you enter a formal agreement to provide accurate details. All reservations are subject to availability and verification of payment.
 
-CONDUCT:
+PAYMENTS TERMS:
+We process payments through secure gateways. Full payment or a required deposit must be settled to finalize your tour schedule.
+
+CANCELLATION & REFUNDS:
+Cancellations made 7 days prior are eligible for a 50% refund. Please note that bookings cancelled within 48 hours of departure are strictly non-refundable.
+
+CONDUCT & SAFETY :
 Guests are expected to behave responsibly and follow safety instructions during tours.
 
 ENVIRONMENTAL POLICY:
@@ -192,8 +546,5 @@ Photos or videos taken during tours may be used for marketing purposes unless gu
 LIABILITY LIMITATION:
 EscaPinas is not responsible for losses or injuries caused by third-party services or natural events.
 
-POLICY UPDATES:
-Policies may be updated at any time. Continued use of services indicates acceptance of updates.
-
-
-
+WEATHER DISCRUPTIONS:
+EscaPinas reserves the right to reschedule or cancel trips due to coast guard advisories or extreme weather to ensure the safety of our guests.
