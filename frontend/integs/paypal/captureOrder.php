@@ -59,6 +59,7 @@ $booking_ref = "ESC-" . date("Y") . "-" . strtoupper(substr(uniqid(), -6));
 mysqli_begin_transaction($conn);
 
 try {
+    
     // 2. Siguraduhin na ang $conn ay available at walang 'echo' sa loob ng executeQuery
     $sql_booking = "INSERT INTO bookings 
             (user_id, tour_id, schedule_id, locpoints_id, number_of_persons, total_amount, booking_status, booking_reference, is_email_sent)
