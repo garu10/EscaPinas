@@ -69,7 +69,7 @@ if ($isLoggedIn) {
                         <li class="px-3 py-2 small text-muted fw-semibold">Welcome, <?php echo htmlspecialchars($userName); ?></li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" href="/EscaPinas/frontend/login.php"><i class="bi bi-box-arrow-in-right"></i> Login</a></li>
-                        <li><a class="dropdown-item" href="/EscaPinas/frontend/register.php"><i class="bi bi-pencil-square"></i> Sign Up</a></li>
+                        <li><a class="dropdown-item" href="/EscaPinas/frontend/registerAccount.php"><i class="bi bi-pencil-square"></i> Sign Up</a></li>
                     <?php endif; ?>
                 </ul>
             </div>

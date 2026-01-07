@@ -1,64 +1,69 @@
 <?php
-    session_start();
-    include_once "php/connect.php";
+session_start();
+include_once "php/connect.php";
 
-    if (!isset($_SESSION['user_id'])) {
-        $redirect = isset($_GET['tour_id']) ? '?tour_id=' . intval($_GET['tour_id']) : '';
-        header("Location: login.php$redirect");
-        exit;
+if (!isset($_SESSION['user_id'])) {
+    $redirect = isset($_GET['tour_id']) ? '?tour_id=' . intval($_GET['tour_id']) : '';
+    header("Location: login.php$redirect");
+    exit;
+}
+
+$user_id = $_SESSION['user_id'];
+
+$availableVouchers = [];
+$vQuery = "SELECT * FROM vouchers WHERE user_id = ? AND is_redeemed = 0";
+$stmtV = $conn->prepare($vQuery);
+$stmtV->bind_param("i", $user_id);
+$stmtV->execute();
+$vRes = $stmtV->get_result();
+if ($vRes) {
+    while ($row = $vRes->fetch_assoc()) {
+        $availableVouchers[] = $row;
     }
+}
+$js_voucher_list = [];
+foreach ($availableVouchers as $v) {
+    $js_voucher_list[$v['code']] = floatval($v['discount_amount']);
+}
 
-    $user_id = $_SESSION['user_id'];
+$userResult = executeQuery("SELECT * FROM users WHERE user_id = $user_id");
+$user = ($userResult) ? $userResult->fetch_assoc() : null;
 
-    $availableVouchers = [];
-    $vQuery = "SELECT * FROM vouchers WHERE user_id = ? AND is_redeemed = 0"; 
-    $stmtV = $conn->prepare($vQuery);
-    $stmtV->bind_param("i", $user_id);
-    $stmtV->execute();
-    $vRes = $stmtV->get_result();
-    if ($vRes) {
-        while ($row = $vRes->fetch_assoc()) {
-            $availableVouchers[] = $row;
-        }
-    }
-    $js_voucher_list = [];
-    foreach ($availableVouchers as $v) {
-        $js_voucher_list[$v['code']] = floatval($v['discount_amount']);
-    }
+$tour_id = isset($_GET['tour_id']) ? intval($_GET['tour_id']) : 1;
+$pax = isset($_GET['pax']) ? max(1, intval($_GET['pax'])) : 1;
+$client_region = isset($_GET['client_region']) ? $_GET['client_region'] : "";
 
-    $userResult = executeQuery("SELECT * FROM users WHERE user_id = $user_id");
-    $user = ($userResult) ? $userResult->fetch_assoc() : null;
-
-    $tour_id = isset($_GET['tour_id']) ? intval($_GET['tour_id']) : 1;
-    $pax = isset($_GET['pax']) ? max(1, intval($_GET['pax'])) : 1;
-    $client_region = isset($_GET['client_region']) ? $_GET['client_region'] : "";
-
-    $tourQuery = "SELECT t.*, d.destination_name, r.island_name FROM tour_packages t 
+$tourQuery = "SELECT t.*, d.destination_name, r.island_name FROM tour_packages t 
                   JOIN destinations d ON t.destination_id = d.destination_id 
                   JOIN regions r ON d.island_id = r.island_id WHERE t.tour_id = $tour_id";
-    $tourResult = executeQuery($tourQuery);
-    $tour = ($tourResult) ? $tourResult->fetch_assoc() : null;
-    if (!$tour) { die("Tour not found."); }
+$tourResult = executeQuery($tourQuery);
+$tour = ($tourResult) ? $tourResult->fetch_assoc() : null;
+if (!$tour) {
+    die("Tour not found.");
+}
 
-    $base_price = floatval($tour['price']);
-    $subtotal = $base_price * $pax;
-    $airfare_fee = 0.00;
-    if (!empty($client_region)) {
-        $stmtF = $conn->prepare("SELECT additional_fee FROM region_fees WHERE origin_island=? AND destination_island=?");
-        $stmtF->bind_param("ss", $client_region, $tour['island_name']);
-        $stmtF->execute();
-        $feeRes = $stmtF->get_result();
-        if ($f = $feeRes->fetch_assoc()) { $airfare_fee = floatval($f['additional_fee']) * $pax; }
+$base_price = floatval($tour['price']);
+$subtotal = $base_price * $pax;
+$airfare_fee = 0.00;
+if (!empty($client_region)) {
+    $stmtF = $conn->prepare("SELECT additional_fee FROM region_fees WHERE origin_island=? AND destination_island=?");
+    $stmtF->bind_param("ss", $client_region, $tour['island_name']);
+    $stmtF->execute();
+    $feeRes = $stmtF->get_result();
+    if ($f = $feeRes->fetch_assoc()) {
+        $airfare_fee = floatval($f['additional_fee']) * $pax;
     }
-    $vat = ($subtotal + $airfare_fee) * 0.12;
-    $total = ($subtotal + $airfare_fee + $vat);
+}
+$vat = ($subtotal + $airfare_fee) * 0.12;
+$total = ($subtotal + $airfare_fee + $vat);
 
-    $schedules = executeQuery("SELECT * FROM tour_schedules WHERE tour_id = $tour_id");
-    $inclusions = executeQuery("SELECT * FROM tour_inclusions WHERE tour_id = $tour_id");
+$schedules = executeQuery("SELECT * FROM tour_schedules WHERE tour_id = $tour_id");
+$inclusions = executeQuery("SELECT * FROM tour_inclusions WHERE tour_id = $tour_id");
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Checkout - EscaPinas</title>
@@ -67,12 +72,31 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
-        body { font-family: 'Poppins', sans-serif; background-color: #f8f9fa; }
-        .tour-img { width: 100%; max-width: 400px; border-radius: 15px; object-fit: cover; }
-        .voucher-card:hover { border-color: #198754 !important; cursor: pointer; background-color: #f0fff4; }
-        .sticky-summary { position: sticky; top: 20px; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        .tour-img {
+            width: 100%;
+            max-width: 400px;
+            border-radius: 15px;
+            object-fit: cover;
+        }
+
+        .voucher-card:hover {
+            border-color: #198754 !important;
+            cursor: pointer;
+            background-color: #f0fff4;
+        }
+
+        .sticky-summary {
+            position: sticky;
+            top: 20px;
+        }
     </style>
 </head>
+
 <body>
     <?php include "components/navbar.php"; ?>
 
@@ -92,8 +116,9 @@
 
                     <div class="small text-muted mb-3 border-start border-success border-3 ps-3">
                         <strong>Inclusions:</strong><br>
-                        <?php mysqli_data_seek($inclusions, 0); while ($inc = $inclusions->fetch_assoc()): ?>
-                        <div class="mb-1"><i class="fas fa-check text-success me-2 small"></i><?php echo htmlspecialchars($inc['inclusion_detail']); ?></div>
+                        <?php mysqli_data_seek($inclusions, 0);
+                        while ($inc = $inclusions->fetch_assoc()): ?>
+                            <div class="mb-1"><i class="fas fa-check text-success me-2 small"></i><?php echo htmlspecialchars($inc['inclusion_detail']); ?></div>
                         <?php endwhile; ?>
                     </div>
 
@@ -117,47 +142,126 @@
                 <div class="h5 text-success fw-bold mb-3">Booking Details</div>
                 <div class="card border-0 shadow-sm rounded-4 p-4 mb-4">
                     <form id="bookingForm">
+
+                        <!-- REGION -->
                         <div class="mb-4">
-                            <label class="form-label small fw-bold text-success">Where are you traveling from?</label>
+                            <label class="form-label small fw-bold text-success">
+                                Where are you traveling from?
+                            </label>
                             <div class="d-flex gap-4">
-                                <?php foreach (['Luzon', 'Visayas', 'Mindanao'] as $reg): ?>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="client_region" value="<?php echo $reg ?>" <?php echo ($client_region == $reg) ? 'checked' : ''; ?> onchange="window.location.href='?tour_id=<?php echo $tour_id ?>&pax=<?php echo $pax ?>&client_region='+this.value">
-                                    <label class="form-check-label small"><?php echo $reg ?></label>
-                                </div>
+                                <?php foreach (['Luzon', 'Visayas', 'Mindanao'] as $reg):
+                                    $regId = "region_" . strtolower($reg);
+                                ?>
+                                    <div class="form-check">
+                                        <input
+                                            class="form-check-input"
+                                            type="radio"
+                                            name="client_region"
+                                            id="<?= $regId ?>"
+                                            value="<?= $reg ?>"
+                                            <?= ($client_region === $reg) ? 'checked' : '' ?>
+                                            onchange="window.location.href='?tour_id=<?= $tour_id ?>&pax=<?= $pax ?>&client_region=' + this.value">
+                                        <label class="form-check-label small" for="<?= $regId ?>">
+                                            <?= $reg ?>
+                                        </label>
+                                    </div>
                                 <?php endforeach; ?>
                             </div>
                         </div>
 
+                        <!-- SCHEDULE -->
                         <div class="mb-4">
-                            <label class="form-label small fw-bold">Select Travel Date:</label>
-                            <select id="schedule_id" class="form-select form-select-sm w-50">
-                                <?php mysqli_data_seek($schedules, 0); while ($s = $schedules->fetch_assoc()): ?>
-                                <option value="<?php echo $s['schedule_id']; ?>"><?php echo date('M d, Y', strtotime($s['start_date'])); ?> - <?php echo date('M d, Y', strtotime($s['end_date'])); ?></option>
+                            <label for="schedule_id" class="form-label small fw-bold">
+                                Select Travel Date:
+                            </label>
+                            <select
+                                name="schedule_id"
+                                id="schedule_id"
+                                class="form-select form-select-sm w-50">
+                                <?php
+                                mysqli_data_seek($schedules, 0);
+                                while ($s = $schedules->fetch_assoc()):
+                                ?>
+                                    <option value="<?= $s['schedule_id']; ?>">
+                                        <?= date('M d, Y', strtotime($s['start_date'])); ?>
+                                        -
+                                        <?= date('M d, Y', strtotime($s['end_date'])); ?>
+                                    </option>
                                 <?php endwhile; ?>
                             </select>
                         </div>
 
+                        <!-- PICKUP / DROPOFF -->
                         <div class="mb-4">
-                            <label class="form-label small fw-bold">Pickup/Dropoff Point</label>
+                            <label class="form-label small fw-bold">
+                                Pickup / Dropoff Point
+                            </label>
                             <div class="border rounded-3 p-3 bg-light">
                                 <?php
                                 if (!empty($client_region)) {
-                                    $locQ = ($airfare_fee > 0) ? "SELECT * FROM location_points WHERE origin_island='Tours Requiring AirTravel'" : "SELECT * FROM location_points WHERE origin_island='$client_region'";
+                                    $locQ = ($airfare_fee > 0)
+                                        ? "SELECT * FROM location_points WHERE origin_island='Tours Requiring AirTravel'"
+                                        : "SELECT * FROM location_points WHERE origin_island='$client_region'";
+
                                     $lRes = executeQuery($locQ);
+
                                     while ($l = $lRes->fetch_assoc()) {
-                                        echo "<div class='form-check mb-2'><input class='form-check-input' type='radio' name='locpoints_id' value='{$l['locpoints_id']}' required> <label class='small'>".htmlspecialchars($l['pickup_points'])."</label></div>";
+                                        $locId = "loc_" . $l['locpoints_id'];
+                                        echo "
+                                <div class='form-check mb-2'>
+                                    <input
+                                        class='form-check-input'
+                                        type='radio'
+                                        name='locpoints_id'
+                                        id='$locId'
+                                        value='{$l['locpoints_id']}'
+                                        required
+                                    >
+                                    <label class='form-check-label small' for='$locId'>
+                                        " . htmlspecialchars($l['pickup_points']) . "
+                                    </label>
+                                </div>";
                                     }
-                                } else { echo "<small class='text-muted'>Select region first.</small>"; }
+                                } else {
+                                    echo "<small class='text-muted'>Select region first.</small>";
+                                }
                                 ?>
                             </div>
                         </div>
 
+                        <!-- USER INFO -->
                         <div class="row g-3">
-                            <div class="col-md-5"><label class="small fw-bold">First Name</label><input type="text" class="form-control" value="<?php echo htmlspecialchars($user['first_name'] ?? ''); ?>" readonly></div>
-                            <div class="col-md-5"><label class="small fw-bold">Last Name</label><input type="text" class="form-control" value="<?php echo htmlspecialchars($user['last_name'] ?? ''); ?>" readonly></div>
-                            <div class="col-md-2"><label class="small fw-bold">M.I.</label><input type="text" class="form-control" value="<?php echo htmlspecialchars($user['middle_initial'] ?? ''); ?>" readonly></div>
+                            <div class="col-md-5">
+                                <label for="first_name" class="small fw-bold">First Name</label>
+                                <input
+                                    id="first_name"
+                                    type="text"
+                                    class="form-control"
+                                    value="<?= htmlspecialchars($user['first_name'] ?? ''); ?>"
+                                    readonly>
+                            </div>
+
+                            <div class="col-md-5">
+                                <label for="last_name" class="small fw-bold">Last Name</label>
+                                <input
+                                    id="last_name"
+                                    type="text"
+                                    class="form-control"
+                                    value="<?= htmlspecialchars($user['last_name'] ?? ''); ?>"
+                                    readonly>
+                            </div>
+
+                            <div class="col-md-2">
+                                <label for="middle_initial" class="small fw-bold">M.I.</label>
+                                <input
+                                    id="middle_initial"
+                                    type="text"
+                                    class="form-control"
+                                    value="<?= htmlspecialchars($user['middle_initial'] ?? ''); ?>"
+                                    readonly>
+                            </div>
                         </div>
+
                     </form>
                 </div>
             </div>
@@ -166,41 +270,78 @@
                 <div class="sticky-summary">
                     <div class="h5 text-success fw-bold mb-3">Purchase Summary</div>
                     <div class="card border-0 shadow-sm rounded-4 p-4">
-                        <div class="d-flex justify-content-between mb-2 small"><span>Subtotal</span> <span class="fw-bold">₱<?php echo number_format($subtotal, 2); ?></span></div>
-                        <?php if ($airfare_fee > 0): ?><div class="d-flex justify-content-between mb-2 text-danger small"><span><i class="fas fa-plane"></i> Airfare</span> <span class="fw-bold">+ ₱<?php echo number_format($airfare_fee, 2); ?></span></div><?php endif; ?>
-                        <div class="d-flex justify-content-between mb-2 small"><span>VAT (12%)</span> <span>₱<?php echo number_format($vat, 2); ?></span></div>
-                        
-                        <div id="discountDisplay" class="d-none justify-content-between text-success small fw-bold mt-2"><span>Discount</span> <span id="discountValue">- ₱0.00</span></div>
-                        <hr>
-                        <label class="small fw-bold text-success mb-2">Apply Voucher</label>
-                        <div class="input-group mb-2">
-                            <input type="text" id="voucherInput" class="form-control form-control-sm" placeholder="Code">
-                            <button class="btn btn-outline-success btn-sm" type="button" data-bs-toggle="modal" data-bs-target="#voucherModal"><i class="fas fa-ticket-alt"></i></button>
-                            <button type="button" id="applyVoucherBtn" class="btn btn-success btn-sm">Apply</button>
+                        <div class="d-flex justify-content-between mb-2 small">
+                            <span>Subtotal</span>
+                            <span class="fw-bold">₱<?= number_format($subtotal, 2); ?></span>
                         </div>
-                        <div id="voucherErrorMessage" class="text-danger d-none" style="font-size:0.7rem;"></div>
+
+                        <?php if ($airfare_fee > 0): ?>
+                            <div class="d-flex justify-content-between mb-2 text-danger small">
+                                <span><i class="fas fa-plane"></i> Airfare</span>
+                                <span class="fw-bold">+ ₱<?= number_format($airfare_fee, 2); ?></span>
+                            </div>
+                        <?php endif; ?>
+
+                        <div class="d-flex justify-content-between mb-2 small">
+                            <span>VAT (12%)</span>
+                            <span>₱<?= number_format($vat, 2); ?></span>
+                        </div>
+
+                        <div id="discountDisplay" class="d-none justify-content-between text-success small fw-bold mt-2">
+                            <span>Discount</span>
+                            <span id="discountValue">- ₱0.00</span>
+                        </div>
+
                         <hr>
+
+                        <label for="voucherInput" class="small fw-bold text-success mb-2">
+                            Apply Voucher
+                        </label>
+                        <div class="input-group mb-2">
+                            <input
+                                type="text"
+                                id="voucherInput"
+                                class="form-control form-control-sm"
+                                placeholder="Code">
+                            <button class="btn btn-outline-success btn-sm" type="button" data-bs-toggle="modal" data-bs-target="#voucherModal">
+                                <i class="fas fa-ticket-alt"></i>
+                            </button>
+                            <button type="button" id="applyVoucherBtn" class="btn btn-success btn-sm">
+                                Apply
+                            </button>
+                        </div>
+
+                        <div id="voucherErrorMessage" class="text-danger d-none" style="font-size:0.7rem;"></div>
+
+                        <hr>
+
                         <div class="d-flex justify-content-between align-items-center mb-4">
                             <span class="h5 fw-bold">Total</span>
-                            <span class="h4 fw-bold text-success" id="totalAmountText">₱<?php echo number_format($total, 2); ?></span>
+                            <span class="h4 fw-bold text-success" id="totalAmountText">
+                                ₱<?= number_format($total, 2); ?>
+                            </span>
                         </div>
+
                         <div id="paypal-button-container"></div>
                     </div>
                 </div>
             </div>
         </div>
+
     </div>
 
     <div class="modal fade" id="voucherModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header bg-success text-white"><h5>Select Voucher</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+                <div class="modal-header bg-success text-white">
+                    <h5>Select Voucher</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
                 <div class="modal-body">
                     <?php foreach ($availableVouchers as $av): ?>
-                    <div class="card mb-2 voucher-card p-3" onclick="selectVoucher('<?php echo $av['code']; ?>')">
-                        <div class="fw-bold text-success"><?php echo $av['code']; ?></div>
-                        <div class="small">₱<?php echo number_format($av['discount_amount'], 2); ?> OFF</div>
-                    </div>
+                        <div class="card mb-2 voucher-card p-3" onclick="selectVoucher('<?php echo $av['code']; ?>')">
+                            <div class="fw-bold text-success"><?php echo $av['code']; ?></div>
+                            <div class="small">₱<?php echo number_format($av['discount_amount'], 2); ?> OFF</div>
+                        </div>
                     <?php endforeach; ?>
                 </div>
             </div>
@@ -209,108 +350,118 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://www.paypal.com/sdk/js?client-id=AZXarGlWci9EF_NV33Uzb79jiNCHrRaA9WCLLFRpl0Tuzul7OIh5Pgc1Frl114bn2MNsUgR1kphO2D1z&currency=PHP"></script>
-    
+
     <script>
-    const vouchersMap = <?php echo json_encode($js_voucher_list); ?>;
-    const baseTotalVal = parseFloat("<?php echo $total; ?>");
-    let finalTotal = baseTotalVal; // Ito ang gagamitin ng PayPal
+        const vouchersMap = <?php echo json_encode($js_voucher_list); ?>;
+        const baseTotalVal = parseFloat("<?php echo $total; ?>");
+        let finalTotal = baseTotalVal; // Ito ang gagamitin ng PayPal
 
-    function selectVoucher(code) {
-        document.getElementById('voucherInput').value = code;
-        
-        const modalElement = document.getElementById('voucherModal');
-        const modalInstance = bootstrap.Modal.getInstance(modalElement) || new bootstrap.Modal(modalElement);
-        modalInstance.hide();
+        function selectVoucher(code) {
+            document.getElementById('voucherInput').value = code;
 
-        const backdrops = document.querySelectorAll('.modal-backdrop');
-        backdrops.forEach(b => b.remove());
-        document.body.classList.remove('modal-open');
-        document.body.style.paddingRight = '';
+            const modalElement = document.getElementById('voucherModal');
+            const modalInstance = bootstrap.Modal.getInstance(modalElement) || new bootstrap.Modal(modalElement);
+            modalInstance.hide();
 
-        applyVoucherLogic(code);
-    }
+            const backdrops = document.querySelectorAll('.modal-backdrop');
+            backdrops.forEach(b => b.remove());
+            document.body.classList.remove('modal-open');
+            document.body.style.paddingRight = '';
 
-    document.getElementById('applyVoucherBtn').addEventListener('click', function() {
-        applyVoucherLogic(document.getElementById('voucherInput').value.trim());
-    });
-
-    function applyVoucherLogic(code) {
-        const amount = vouchersMap[code] || 0;
-        const discountDiv = document.getElementById('discountDisplay');
-        const totalDisplay = document.getElementById('totalAmountText');
-        const errorMsg = document.getElementById('voucherErrorMessage');
-
-        if (amount > 0) {
-            finalTotal = Math.max(0, baseTotalVal - amount);
-            
-            discountDiv.classList.remove('d-none');
-            discountDiv.classList.add('d-flex');
-            document.getElementById('discountValue').innerText = "- ₱" + amount.toLocaleString(undefined, {minimumFractionDigits: 2});
-            errorMsg.classList.add('d-none');
-            
-            Swal.fire({ icon: 'success', title: 'Voucher Applied!', timer: 800, showConfirmButton: false });
-        } else {
-            finalTotal = baseTotalVal;
-            discountDiv.classList.add('d-none');
-            discountDiv.classList.remove('d-flex');
-            if(code !== "") {
-                errorMsg.innerText = "Invalid code.";
-                errorMsg.classList.remove('d-none');
-            }
+            applyVoucherLogic(code);
         }
 
-        totalDisplay.innerText = "₱" + finalTotal.toLocaleString(undefined, {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2
+        document.getElementById('applyVoucherBtn').addEventListener('click', function() {
+            applyVoucherLogic(document.getElementById('voucherInput').value.trim());
         });
-    }
 
-    paypal.Buttons({
-        createOrder: (data, actions) => {
-            const loc = document.querySelector('input[name="locpoints_id"]:checked');
-            if (!loc) { 
-                Swal.fire('Requirement', 'Please select a Pickup Point first.', 'warning'); 
-                return;
+        function applyVoucherLogic(code) {
+            const amount = vouchersMap[code] || 0;
+            const discountDiv = document.getElementById('discountDisplay');
+            const totalDisplay = document.getElementById('totalAmountText');
+            const errorMsg = document.getElementById('voucherErrorMessage');
+
+            if (amount > 0) {
+                finalTotal = Math.max(0, baseTotalVal - amount);
+
+                discountDiv.classList.remove('d-none');
+                discountDiv.classList.add('d-flex');
+                document.getElementById('discountValue').innerText = "- ₱" + amount.toLocaleString(undefined, {
+                    minimumFractionDigits: 2
+                });
+                errorMsg.classList.add('d-none');
+
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Voucher Applied!',
+                    timer: 800,
+                    showConfirmButton: false
+                });
+            } else {
+                finalTotal = baseTotalVal;
+                discountDiv.classList.add('d-none');
+                discountDiv.classList.remove('d-flex');
+                if (code !== "") {
+                    errorMsg.innerText = "Invalid code.";
+                    errorMsg.classList.remove('d-none');
+                }
             }
-            
-            return actions.order.create({
-                purchase_units: [{
-                    amount: {
-                        currency_code: 'PHP',
-                        value: finalTotal.toFixed(2) 
-                    }
-                }]
+
+            totalDisplay.innerText = "₱" + finalTotal.toLocaleString(undefined, {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
             });
-        },
-onApprove: (data, actions) => {
-    return fetch('integs/paypal/captureOrder.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams({
-            orderID: data.orderID,
-            tour_id: '<?php echo $tour_id; ?>',
-            pax: '<?php echo $pax; ?>',
-            schedule_id: document.getElementById('schedule_id').value,
-            total_amount: finalTotal.toFixed(2),
-            locpoints_id: document.querySelector('input[name="locpoints_id"]:checked').value,
-            voucher_code: document.getElementById('voucherInput').value
-        })
-    })
-    .then(res => res.json())
-    .then(res => {
-        console.log("Response from PHP:", res); 
-        if(res.success) {
-            window.location.href = "confirmation.php?ref=" + res.ref;
-        } else {
-            Swal.fire('Error', res.message, 'error');
         }
-    })
-    .catch(err => {
-        console.error("Fetch Error:", err);
-    });
-}
-    }).render('#paypal-button-container');
-</script>
+
+        paypal.Buttons({
+            createOrder: (data, actions) => {
+                const loc = document.querySelector('input[name="locpoints_id"]:checked');
+                if (!loc) {
+                    Swal.fire('Requirement', 'Please select a Pickup Point first.', 'warning');
+                    return;
+                }
+
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: {
+                            currency_code: 'PHP',
+                            value: finalTotal.toFixed(2)
+                        }
+                    }]
+                });
+            },
+            onApprove: (data, actions) => {
+                return fetch('integs/paypal/captureOrder.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        },
+                        body: new URLSearchParams({
+                            orderID: data.orderID,
+                            tour_id: '<?php echo $tour_id; ?>',
+                            pax: '<?php echo $pax; ?>',
+                            schedule_id: document.getElementById('schedule_id').value,
+                            total_amount: finalTotal.toFixed(2),
+                            locpoints_id: document.querySelector('input[name="locpoints_id"]:checked').value,
+                            voucher_code: document.getElementById('voucherInput').value
+                        })
+                    })
+                    .then(res => res.json())
+                    .then(res => {
+                        console.log("Response from PHP:", res);
+                        if (res.success) {
+                            window.location.href = "confirmation.php?ref=" + res.ref;
+                        } else {
+                            Swal.fire('Error', res.message, 'error');
+                        }
+                    })
+                    .catch(err => {
+                        console.error("Fetch Error:", err);
+                    });
+            }
+        }).render('#paypal-button-container');
+    </script>
 
 </body>
+
 </html>
