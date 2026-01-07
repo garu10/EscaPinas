@@ -1,17 +1,17 @@
 <?php
+// MANUAL LOADING - Dahil nandoon na ang files sa folder
+require_once __DIR__ . '/PHPMailer/Exception.php';
+require_once __DIR__ . '/PHPMailer/PHPMailer.php';
+require_once __DIR__ . '/PHPMailer/SMTP.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
-// load the PHPMailer autoloader
-require_once __DIR__ . '/../../../vendor/autoload.php';
-
-function sendBookingEmail($conn, $booking_id, $booking_ref)
-{
+function sendBookingEmail($conn, $booking_id, $booking_ref) {
     ob_start();
 
-    //  get data from database
+    // 1. Kunin ang data mula sa Database
     $query = "SELECT u.email, u.first_name, tp.tour_name, b.total_amount, ts.start_date 
               FROM bookings b
               JOIN users u ON b.user_id = u.user_id
@@ -30,46 +30,46 @@ function sendBookingEmail($conn, $booking_id, $booking_ref)
     $mail = new PHPMailer(true);
 
     try {
-        // Server settings
+        // --- SMTP SETTINGS ---
         $mail->isSMTP();
         $mail->Host       = 'smtp.gmail.com';
         $mail->SMTPAuth   = true;
-        $mail->Username   = 'escapinas26@gmail.com'; // gmail natin
-        $mail->Password   = 'zmby djze urrx vjuf';   // pinalitan ko ang app pass kasi ayaw gumana nung una
+        $mail->Username   = 'escapinas26@gmail.com';
+        $mail->Password   = 'zmbydjzeurrxvjuf'; // App Password
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
         $mail->Port       = 465;
 
-        // pag sesendan ng email depende sa user na mag book
-        $mail->setFrom('no-reply@escapinas.com', 'EscaPinas Tours');
+        // SSL FIX PARA SA LOCALHOST/XAMPP
+        $mail->SMTPOptions = array(
+            'ssl' => array(
+                'verify_peer' => false,
+                'verify_peer_name' => false,
+                'allow_self_signed' => true
+            )
+        );
+
+        // --- EMAIL CONTENT ---
+        $mail->setFrom('escapinas26@gmail.com', 'EscaPinas Tours');
         $mail->addAddress($data['email'], $data['first_name']);
 
-        // contents ng email natin
         $mail->isHTML(true);
         $mail->Subject = 'Booking Confirmed - Ref: ' . $booking_ref;
-
-        $mail->Body = "
-            <div style='font-family: Arial, sans-serif; max-width: 600px; border: 1px solid #eee; padding: 20px;'>
+        $mail->Body    = "
+            <div style='font-family: Arial, sans-serif; padding: 20px; border: 1px solid #eee;'>
                 <h2 style='color: #198754;'>Booking Confirmed!</h2>
                 <p>Hi " . htmlspecialchars($data['first_name']) . ",</p>
-                <p>Thank you for your payment. Your adventure is ready!</p>
-                <div style='background: #f8f9fa; padding: 15px; border-radius: 5px;'>
-                    <p><strong>Tour:</strong> " . htmlspecialchars($data['tour_name']) . "</p>
-                    <p><strong>Travel Date:</strong> " . date('M d, Y', strtotime($data['start_date'])) . "</p>
-                    <p><strong>Reference:</strong> " . $booking_ref . "</p>
-                    <p><strong>Total Paid:</strong> ₱" . number_format($data['total_amount'], 2) . "</p>
-                </div>
-                <p style='margin-top:20px;'>Please present this email or your booking reference upon arrival.</p>
+                <p>Your booking for <b>" . htmlspecialchars($data['tour_name']) . "</b> has been confirmed.</p>
+                <p><b>Reference No:</b> " . $booking_ref . "</p>
             </div>";
 
         $mail->send();
-
-        //clean yung buffer and return
         ob_end_clean();
         return true;
+
     } catch (Exception $e) {
-        // log the error for debugging
         error_log("EscaPinas Mailer Error: {$mail->ErrorInfo}");
         ob_end_clean();
         return false;
     }
 }
+?>

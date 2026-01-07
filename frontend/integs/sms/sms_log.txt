@@ -2,3 +2,23 @@
 [2026-01-05 19:13:03] RECEIVED: {"deviceId":"qfuElwaK9CHatp0ps3UBN","event":"sms:received","id":"Wi3OvF0fHc354RjjWHJK2","payload":{"message":"YES","receivedAt":"2026-01-06T02:13:02.000+08:00","messageId":"2ea3849b","phoneNumber":"+639912676928","simNumber":1},"webhookId":"6vioE69ZwXAIfE2bgGwBe"}
 [2026-01-05 19:13:04] SEND RESPONSE: {"id":"xIII2mxIacAo6vKPwWecr","deviceId":"qfuElwaK9CHatp0ps3UBN","state":"Pending","isHashed":false,"isEncrypted":false,"recipients":[{"phoneNumber":"+639912676928","state":"Pending"}],"states":{}}
 [2026-01-05 19:13:03] DB SUCCESS: Verified number ending in 9912676928
+[2026-01-07 14:13:40] RECEIVED: {"deviceId":"qfuElwaK9CHatp0ps3UBN","event":"sms:received","id":"TH3nWxgExmwOmdvFovdlC","payload":{"message":"YES","receivedAt":"2026-01-07T21:13:39.000+08:00","messageId":"d3b60693","phoneNumber":"+639912676928","simNumber":1},"webhookId":"6vioE69ZwXAIfE2bgGwBe"}
+[2026-01-07 14:13:41] SEND RESPONSE: {"id":"Zni1VK-gU5A5A3NA-Byeq","deviceId":"qfuElwaK9CHatp0ps3UBN","state":"Pending","isHashed":false,"isEncrypted":false,"recipients":[{"phoneNumber":"+639912676928","state":"Pending"}],"states":{}}
+[2026-01-07 14:13:40] DB SUCCESS: Verified number ending in 9912676928
+[2026-01-07 14:16:10] RECEIVED: {"deviceId":"qfuElwaK9CHatp0ps3UBN","event":"sms:received","id":"RRWi0OPp5m0vqN2mRHgcS","payload":{"message":"YES","receivedAt":"2026-01-07T15:25:40.000+08:00","messageId":"76f9201e","phoneNumber":"+639941792281","simNumber":1},"webhookId":"6vioE69ZwXAIfE2bgGwBe"}
+[2026-01-07 14:16:10] DB IGNORE: Number 9941792281 not found or already verified.
+[2026-01-07 14:18:08] RECEIVED: {"deviceId":"qfuElwaK9CHatp0ps3UBN","event":"sms:received","id":"VMEbyBPW5eV7RW2-FGKju","payload":{"message":"YES","receivedAt":"2026-01-07T21:18:06.000+08:00","messageId":"323aee8e","phoneNumber":"+639941792281","simNumber":1},"webhookId":"6vioE69ZwXAIfE2bgGwBe"}
+[2026-01-07 14:18:08] DB IGNORE: Number 9941792281 not found or already verified.
+[2026-01-07 21:29:15] RAW RECEIVED: {"deviceId":"qfuElwaK9CHatp0ps3UBN","event":"sms:received","id":"u7KW9Qwb3212c0cXFpy0n","payload":{"message":"YES","receivedAt":"2026-01-07T21:29:13.000+08:00","messageId":"58739b16","phoneNumber":"+639941792281","simNumber":1},"webhookId":"6vioE69ZwXAIfE2bgGwBe"}
+[2026-01-07 21:29:15] PROCESSING: Num: +639941792281 | Msg: YES
+[2026-01-07 21:29:15] DB ERROR: No user found in DB matching ending 9941792281
+[2026-01-07 21:30:31] RAW RECEIVED: {"deviceId":"qfuElwaK9CHatp0ps3UBN","event":"sms:received","id":"dVjCznLVM_8NUPgRF-FUF","payload":{"message":"YES","receivedAt":"2026-01-07T21:30:30.000+08:00","messageId":"da6c3db","phoneNumber":"+639912676928","simNumber":1},"webhookId":"6vioE69ZwXAIfE2bgGwBe"}
+[2026-01-07 21:30:31] PROCESSING: Num: +639912676928 | Msg: YES
+[2026-01-07 21:30:31] DB IGNORE: User ending in 9912676928 is ALREADY verified.
+[2026-01-07 14:57:53] RECEIVED: {"deviceId":"qfuElwaK9CHatp0ps3UBN","event":"sms:received","id":"n4FCB4kXdxqoEPDUGhxVu","payload":{"message":"YES","receivedAt":"2026-01-07T21:47:20.000+08:00","messageId":"96b7473e","phoneNumber":"+639941792281","simNumber":1},"webhookId":"6vioE69ZwXAIfE2bgGwBe"}
+[2026-01-07 14:57:53] DB IGNORE: Number 9941792281 not found or already verified.
+[2026-01-07 14:58:09] RECEIVED: {"deviceId":"qfuElwaK9CHatp0ps3UBN","event":"sms:received","id":"_kqpc78EM0fjAozrikOkT","payload":{"message":"YES","receivedAt":"2026-01-07T21:58:07.000+08:00","messageId":"bbbab966","phoneNumber":"+639941792281","simNumber":1},"webhookId":"6vioE69ZwXAIfE2bgGwBe"}
+[2026-01-07 14:58:09] DB IGNORE: Number 9941792281 not found or already verified.
+[2026-01-07 15:01:09] RECEIVED: {"deviceId":"qfuElwaK9CHatp0ps3UBN","event":"sms:received","id":"tRIopfDPK5jgRRq1our1A","payload":{"message":"YES","receivedAt":"2026-01-07T22:01:07.000+08:00","messageId":"c611b286","phoneNumber":"+639941792281","simNumber":1},"webhookId":"6vioE69ZwXAIfE2bgGwBe"}
+[2026-01-07 15:01:09] SEND RESPONSE: {"id":"h_OSW-0CnFkn3MNZHCVZl","deviceId":"qfuElwaK9CHatp0ps3UBN","state":"Pending","isHashed":false,"isEncrypted":false,"recipients":[{"phoneNumber":"+639941792281","state":"Pending"}],"states":{}}
+[2026-01-07 15:01:09] DB SUCCESS: Verified number ending in 9941792281
