@@ -11,18 +11,26 @@ if (!isset($_SESSION['user_id'])) {
 $user_id = $_SESSION['user_id'];
 
 $availableVouchers = [];
-$vQuery = "SELECT * FROM vouchers WHERE user_id = ? AND is_redeemed = 0";
+
+$vQuery = "SELECT t.code, t.discount_amount, t.discount_type 
+           FROM user_vouchers uv
+           JOIN voucher_templates t ON uv.template_id = t.template_id
+           WHERE uv.user_id = ? AND uv.is_redeemed = 0 AND t.expires_at > NOW()";
+
 $stmtV = $conn->prepare($vQuery);
 $stmtV->bind_param("i", $user_id);
 $stmtV->execute();
 $vRes = $stmtV->get_result();
+
 if ($vRes) {
     while ($row = $vRes->fetch_assoc()) {
         $availableVouchers[] = $row;
     }
 }
+
 $js_voucher_list = [];
 foreach ($availableVouchers as $v) {
+    // na handle ba ng js yung discount type na fixed or percentage??
     $js_voucher_list[$v['code']] = floatval($v['discount_amount']);
 }
 

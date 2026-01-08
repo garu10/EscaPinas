@@ -1,47 +1,38 @@
 <?php
 session_start();
-include '../../php/connect.php'; 
+include '../../php/connect.php';
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['v_code']) && isset($_SESSION['user_id'])) {
+// check for template_id instead of individual voucher details
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['template_id']) && isset($_SESSION['user_id'])) {
     $user_id = $_SESSION['user_id'];
-    
-    $code    = mysqli_real_escape_string($conn, $_POST['v_code']);
-    $type    = mysqli_real_escape_string($conn, $_POST['v_type']);
-    $amount  = mysqli_real_escape_string($conn, $_POST['v_amount']);
-    $min     = mysqli_real_escape_string($conn, $_POST['v_min'] ?? 0);
-    $expiry  = mysqli_real_escape_string($conn, $_POST['v_expiry']);
-    $system  = mysqli_real_escape_string($conn, $_POST['v_system']);
 
-    $check_query = "SELECT voucher_id FROM vouchers WHERE user_id = '$user_id' AND code = '$code'";
+    // clean inputs
+    $template_id = mysqli_real_escape_string($conn, $_POST['template_id']);
+
+    // check if the user has already claimed this voucher template
+    $check_query = "SELECT claim_id FROM user_vouchers WHERE user_id = '$user_id' AND template_id = '$template_id'";
     $check_result = mysqli_query($conn, $check_query);
 
     if (mysqli_num_rows($check_result) > 0) {
-        echo "already_claimed"; 
+        echo "already_claimed";
         exit();
     }
 
-    $sql = "INSERT INTO vouchers (
+    // insert claim record
+    $sql = "INSERT INTO user_vouchers (
                 user_id, 
-                external_system, 
-                code, 
-                discount_type, 
-                discount_amount, 
-                min_order_amount, 
-                expires_at, 
-                is_redeemed
+                template_id, 
+                is_redeemed, 
+                claimed_at
             ) VALUES (
                 '$user_id', 
-                '$system', 
-                '$code', 
-                '$type', 
-                '$amount', 
-                '$min', 
-                '$expiry', 
-                0
+                '$template_id', 
+                0, 
+                NOW()
             )";
 
-    if (mysqli_query($conn, $sql)) {
-        echo "success"; 
+    if (executeQuery($sql)) {
+        echo "success";
     } else {
         echo "error";
     }

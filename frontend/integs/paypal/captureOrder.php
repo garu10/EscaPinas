@@ -22,6 +22,7 @@ if (!isset($_SESSION['user_id'])) {
 
 $user_id = intval($_SESSION['user_id']);
 
+// PayPal Credentials
 $clientId = "AZXarGlWci9EF_NV33Uzb79jiNCHrRaA9WCLLFRpl0Tuzul7OIh5Pgc1Frl114bn2MNsUgR1kphO2D1z";
 $secret   = "EMwRDIR7WXs5yZ2-iRGvfe1U5ltmmlRhWk5YhTaRqlv4Et-ragrwo7YEMRkblCuz4fGitoV47iUp23Su";
 
@@ -66,27 +67,43 @@ $paypal_capture_id = $response['purchase_units'][0]['payments']['captures'][0]['
 $tour_id      = intval($_POST['tour_id'] ?? 0);
 $schedule_id  = intval($_POST['schedule_id'] ?? 0);
 $locpoints_id = intval($_POST['locpoints_id'] ?? 0);
-$pax          = intval($_POST['pax'] ?? 1);
+$pax           = intval($_POST['pax'] ?? 1);
 $total        = floatval($_POST['total_amount'] ?? 0);
-$voucher_code = $_POST['voucher_code'] ?? '';
+$voucher_code = mysqli_real_escape_string($conn, $_POST['voucher_code'] ?? '');
 $booking_ref  = "ESC-" . date("Y") . "-" . strtoupper(substr(uniqid(), -6));
 
 mysqli_begin_transaction($conn);
 
 try {
+    // insert the booking
     $sql_booking = "INSERT INTO bookings (user_id, tour_id, schedule_id, locpoints_id, number_of_persons, total_amount, booking_status, booking_reference, is_email_sent)
                     VALUES ($user_id, $tour_id, $schedule_id, $locpoints_id, $pax, $total, 'Confirmed', '$booking_ref', 1)";
-    if (!executeQuery($sql_booking)) throw new Exception("Booking insertion failed");
+    if (!mysqli_query($conn, $sql_booking)) throw new Exception("Booking insertion failed");
 
     $booking_id = mysqli_insert_id($conn);
 
+    // insert the payment
     $sql_payment = "INSERT INTO payments (booking_id, user_id, paypal_order_id, paypal_capture_id, amount, payment_status)
                     VALUES ($booking_id, $user_id, '$orderID', '$paypal_capture_id', $total, 'COMPLETED')";
-    if (!executeQuery($sql_payment)) throw new Exception("Payment insertion failed");
+    if (!mysqli_query($conn, $sql_payment)) throw new Exception("Payment insertion failed");
 
+    // update voucher as redeemed if a voucher code was used
     if (!empty($voucher_code)) {
-        $sql_voucher = "UPDATE vouchers SET is_redeemed = 1 WHERE code = '$voucher_code' AND user_id = $user_id";
-        executeQuery($sql_voucher);
+        $temp_query = "SELECT template_id FROM voucher_templates WHERE code = '$voucher_code' LIMIT 1";
+        $temp_res = mysqli_query($conn, $temp_query);
+        $temp_data = mysqli_fetch_assoc($temp_res);
+
+        if ($temp_data) {
+            $tid = $temp_data['template_id'];
+            
+            // record the voucher redemption and change its status
+            $sql_voucher = "UPDATE user_vouchers 
+                            SET is_redeemed = 1, 
+                                redeemed_at = NOW() 
+                            WHERE template_id = $tid AND user_id = $user_id";
+            
+            if (!mysqli_query($conn, $sql_voucher)) throw new Exception("Voucher redemption failed");
+        }
     }
 
     mysqli_commit($conn);

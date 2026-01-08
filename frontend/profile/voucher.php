@@ -1,27 +1,42 @@
 <?php
-// Sample lang
-$myVouchers = [
-    [
-        "code" => "NEWEXPLORER",
-        "description" => "15% off your very first booking after account registration",
-        "link" => "/EscaPinas/frontend/packages.php"
-    ],
-    [
-        "code" => "GROUPGOALS",
-        "description" => "₱3,000 flat discount for corporate or barkada bookings (10+ pax)",
-        "link" => "/EscaPinas/frontend/packages.php"
-    ],
-    [
-        "code" => "PAYPALPROMO",
-        "description" => "₱400 cashback when paying via PayPal",
-        "link" => "/EscaPinas/frontend/packages.php"
-    ],
-    [
-        "code" => "APPYBIRTHDAY",
-        "description" => "A special voucher sent via SMS during the user's birth month",
-        "link" => "/EscaPinas/frontend/packages.php"
-    ]
-];
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+include_once "php/connect.php";
+
+$user_id = $_SESSION['user_id'] ?? 0;
+$myVouchers = [];
+
+if ($user_id > 0) {
+    // UPDATED SQL: Ensure we select System_type (or external_system depending on your actual column name)
+    $fetch_sql = "SELECT t.code, t.title, t.discount_amount, t.discount_type, t.System_type
+                  FROM user_vouchers uv
+                  JOIN voucher_templates t ON uv.template_id = t.template_id
+                  WHERE uv.user_id = ? AND uv.is_redeemed = 0 AND t.expires_at > NOW()";
+
+    $stmt = $conn->prepare($fetch_sql);
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    while ($row = $result->fetch_assoc()) {
+        $amount_str = ($row['discount_type'] == 'percentage')
+            ? $row['discount_amount'] . "%"
+            : "₱" . number_format($row['discount_amount'], 0);
+
+        // Logic to determine source
+        $is_ebook = ($row['System_type'] == 'ebook_store');
+        $source_label = $is_ebook ? "E-Book Store" : "Travel Agency";
+
+        $myVouchers[] = [
+            "code" => $row['code'],
+            "source" => $source_label,
+            "is_ebook" => $is_ebook,
+            "description" => "$amount_str discount for your next " . ($is_ebook ? "reading adventure" : "trip"),
+            "link" => "/EscaPinas/frontend/packages.php"
+        ];
+    }
+}
 ?>
 
 <h4 class="fw-bold text-success">My Vouchers</h4>
@@ -31,14 +46,21 @@ $myVouchers = [
     <?php if (!empty($myVouchers)): ?>
         <?php foreach ($myVouchers as $voucher): ?>
             <div class="d-flex justify-content-between align-items-center border p-3 mb-3 shadow-sm"
-                style="border-radius: 15px; background: #ffffff; border-left: 6px solid #1aa866 !important;">
+                style="border-radius: 15px; background: #ffffff; border-left: 6px solid <?= $voucher['is_ebook'] ? '#0d6efd' : '#1aa866'; ?> !important;">
                 <div style="flex: 1;">
-                    <div class="fw-bold text-success small mb-1">PROMO CODE: <?= $voucher['code']; ?></div>
-                    <p class="mb-0 text-dark fw-semibold" style="font-size: 14px;"><?= $voucher['description']; ?></p>
+                    <div class="mb-1">
+                        <span class="badge <?= $voucher['is_ebook'] ? 'bg-primary' : 'bg-success'; ?> bg-opacity-10 <?= $voucher['is_ebook'] ? 'text-primary' : 'text-success'; ?> fw-bold uppercase" style="font-size: 10px; letter-spacing: 0.5px;">
+                            <i class="bi <?= $voucher['is_ebook'] ? 'bi-book' : 'bi-airplane'; ?> me-1"></i>
+                            <?= $voucher['source']; ?>
+                        </span>
+                    </div>
+
+                    <div class="fw-bold text-dark small mb-1">PROMO CODE: <?= htmlspecialchars($voucher['code']); ?></div>
+                    <p class="mb-0 text-muted fw-semibold" style="font-size: 14px;"><?= htmlspecialchars($voucher['description']); ?></p>
                 </div>
                 <div class="ms-3">
-                    <a href="<?= $voucher['link']; ?>" onclick="copyAndGo('<?= $voucher['code']; ?>', '<?= $voucher['link']; ?>'); return false;"
-                        class="btn btn-success fw-bold px-4" style="border-radius: 10px; font-size: 13px;">
+                    <a href="<?= $voucher['link']; ?>" onclick="copyAndGo('<?= addslashes($voucher['code']); ?>', '<?= $voucher['link']; ?>'); return false;"
+                        class="btn <?= $voucher['is_ebook'] ? 'btn-outline-primary' : 'btn-success'; ?> fw-bold px-4" style="border-radius: 10px; font-size: 13px;">
                         Use Now
                     </a>
                 </div>
@@ -60,10 +82,8 @@ $myVouchers = [
 <script>
     function copyAndGo(code, link) {
         navigator.clipboard.writeText(code);
-
         var t = document.getElementById('toast');
         t.style.display = 'block';
-
         setTimeout(() => window.location.href = link, 800);
     }
 </script>
