@@ -33,7 +33,7 @@ if (!$result) {
 
 <head>
     <?php include "components/header.php"; ?>
-    <link rel="stylesheet" href="assets/css/voucher.css">
+    <link rel="stylesheet" href="/css/voucher.css">
     <style>
         .ticket-card {
             border: none;
@@ -135,7 +135,7 @@ if (!$result) {
                 <div class="col-12 text-center py-5">
                     <i class="bi bi-ticket-perforated text-muted display-1"></i>
                     <h4 class="mt-3 text-muted">No vouchers found</h4>
-                    <a href="index.php" class="btn btn-success rounded-pill mt-3">Browse Vouchers</a>
+                    <a href="/../index.php" class="btn btn-success rounded-pill mt-3">Browse Vouchers</a>
                 </div>
             <?php endif; ?>
         </div>

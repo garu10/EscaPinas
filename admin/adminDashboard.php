@@ -40,7 +40,7 @@ $css = "../admin/assets/css/adminProfile.css";
                         <a href="adminDashboard.php?page=adminTourPlaces" class="fw-bold text-success">Tour Place</a>
                         <a href="adminDashboard.php?page=adminTourSchedules" class="fw-bold text-success">Tour Schedules</a>
                         <a href="adminDashboard.php?page=adminUsers" class="fw-bold text-success">Users</a>
-                        <a class="fw-bold text-success">Vouchers</a>
+                        <a href="adminDashboard.php?page=adminVouchers" class="fw-bold text-success">Vouchers</a>
                         <a href="adminDashboard.php?page=adminWishlists" class="fw-bold text-success">Wishlist</a>
 
                     </div>
@@ -56,6 +56,9 @@ $css = "../admin/assets/css/adminProfile.css";
                             break;
                         case 'adminUsers':
                             include "dashboardLinks/adminUsers/usersUI.php";
+                            break;
+                        case 'adminVouchers':
+                            include "dashboardLinks/adminVouchers/voucherUI.php";
                             break;
                         case 'adminTourPackages':
                             include "dashboardLinks/adminTourpackages/tourpackagesUI.php";
