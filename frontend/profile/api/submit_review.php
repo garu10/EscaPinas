@@ -1,5 +1,6 @@
 <?php
-include_once __DIR__ . "/../php/connect.php";
+session_start();
+include_once __DIR__ . "/../../php/connect.php";
 
 $uid = $_SESSION['user_id'] ?? null;
 if (!$uid) {
@@ -31,12 +32,38 @@ $myReviewsResult = executeQuery($myReviewsQuery);
 ?>
 
 <style>
-    .star-rating { display: flex; flex-direction: row-reverse; justify-content: center; gap: 8px; }
-    .star-rating input { display: none; }
-    .star-rating label { font-size: 2.2rem; color: #ddd; cursor: pointer; transition: 0.2s; }
-    .star-rating label:hover, .star-rating label:hover ~ label, .star-rating input:checked ~ label { color: #ffc107; }
-    .star-rating label::before { content: "\F586"; font-family: "bootstrap-icons"; }
-    .nav-pills .nav-link.active { background-color: #198754 !important; }
+    .star-rating {
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .star-rating input {
+        display: none;
+    }
+
+    .star-rating label {
+        font-size: 2.2rem;
+        color: #ddd;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+
+    .star-rating label:hover,
+    .star-rating label:hover~label,
+    .star-rating input:checked~label {
+        color: #ffc107;
+    }
+
+    .star-rating label::before {
+        content: "\F586";
+        font-family: "bootstrap-icons";
+    }
+
+    .nav-pills .nav-link.active {
+        background-color: #198754 !important;
+    }
 </style>
 
 <div class="container py-4">
@@ -83,7 +110,7 @@ $myReviewsResult = executeQuery($myReviewsQuery);
                                         <div class="modal-body px-4 text-center">
                                             <input type="hidden" name="tour_id" value="<?= $row['tour_id'] ?>">
                                             <div class="star-rating mb-4">
-                                                <?php for($i=5; $i>=1; $i--): ?>
+                                                <?php for ($i = 5; $i >= 1; $i--): ?>
                                                     <input type="radio" id="s<?= $i ?>-<?= $row['booking_id'] ?>" name="rating_score" value="<?= $i ?>" required />
                                                     <label for="s<?= $i ?>-<?= $row['booking_id'] ?>"></label>
                                                 <?php endfor; ?>
@@ -115,7 +142,7 @@ $myReviewsResult = executeQuery($myReviewsQuery);
                                     <div>
                                         <h6 class="fw-bold m-0 text-success"><?= htmlspecialchars($rev['tour_name']) ?></h6>
                                         <div class="my-1">
-                                            <?php for($i=1; $i<=5; $i++): ?>
+                                            <?php for ($i = 1; $i <= 5; $i++): ?>
                                                 <i class="bi bi-star-fill <?= $i <= $rev['rating_score'] ? 'text-warning' : 'text-light' ?>"></i>
                                             <?php endfor; ?>
                                         </div>
@@ -134,11 +161,11 @@ $myReviewsResult = executeQuery($myReviewsQuery);
 </div>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get('tab') === 'myReviews') {
-        const target = document.querySelector('#my-reviews-tab');
-        if (target) bootstrap.Tab.getOrCreateInstance(target).show();
-    }
-});
+    document.addEventListener('DOMContentLoaded', function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('tab') === 'myReviews') {
+            const target = document.querySelector('#my-reviews-tab');
+            if (target) bootstrap.Tab.getOrCreateInstance(target).show();
+        }
+    });
 </script>

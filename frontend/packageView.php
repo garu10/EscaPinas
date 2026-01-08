@@ -1,53 +1,53 @@
 <?php
-    session_start();
-    include("php/connect.php");
+session_start();
+include("php/connect.php");
 
-    $tour_id = isset($_GET['tour_id']) ? $_GET['tour_id'] : die("Tour ID not found.");
+$tour_id = isset($_GET['tour_id']) ? $_GET['tour_id'] : die("Tour ID not found.");
 
-    $tourQuery = "SELECT tp.*, d.destination_name, r.island_name 
+$tourQuery = "SELECT tp.*, d.destination_name, r.island_name 
                 FROM tour_packages tp
                 JOIN destinations d ON tp.destination_id = d.destination_id
                 JOIN regions r ON d.island_id = r.island_id
                 WHERE tp.tour_id = $tour_id";
 
-    $tourResult = executeQuery($tourQuery);
-    $tour = mysqli_fetch_assoc($tourResult);
+$tourResult = executeQuery($tourQuery);
+$tour = mysqli_fetch_assoc($tourResult);
 
-    $placesQuery = "SELECT * FROM tour_place WHERE tour_id = $tour_id";
-    $placesResult = executeQuery($placesQuery);
+$placesQuery = "SELECT * FROM tour_place WHERE tour_id = $tour_id";
+$placesResult = executeQuery($placesQuery);
 
-    $itineraryQuery = "SELECT * FROM tour_itinerary WHERE tour_id = $tour_id ORDER BY day_number ASC, itinerary_id ASC";
-    $itineraryResult = executeQuery($itineraryQuery);
+$itineraryQuery = "SELECT * FROM tour_itinerary WHERE tour_id = $tour_id ORDER BY day_number ASC, itinerary_id ASC";
+$itineraryResult = executeQuery($itineraryQuery);
 
-    $itineraryData = [];
-    while ($row = mysqli_fetch_assoc($itineraryResult)) {
-        $itineraryData[$row['day_number']][] = $row['short_desc'];
-    }
+$itineraryData = [];
+while ($row = mysqli_fetch_assoc($itineraryResult)) {
+    $itineraryData[$row['day_number']][] = $row['short_desc'];
+}
 
-    $aboutQuery = "SELECT * FROM tour_about WHERE tour_id = $tour_id";
-    $aboutResult = executeQuery($aboutQuery);
-    $about = mysqli_fetch_assoc($aboutResult);
+$aboutQuery = "SELECT * FROM tour_about WHERE tour_id = $tour_id";
+$aboutResult = executeQuery($aboutQuery);
+$about = mysqli_fetch_assoc($aboutResult);
 
-    $tour_id = isset($_GET['tour_id']) ? (int) $_GET['tour_id'] : 0;
+$tour_id = isset($_GET['tour_id']) ? (int) $_GET['tour_id'] : 0;
 
-    $ratingQuery = "SELECT AVG(rating_score) as avg_rating, COUNT(review_id) as total_reviews 
+$ratingQuery = "SELECT AVG(rating_score) as avg_rating, COUNT(review_id) as total_reviews 
                     FROM ratings 
                     WHERE tour_id = $tour_id";
-    $ratingResult = executeQuery($ratingQuery);
-    $ratingData = mysqli_fetch_assoc($ratingResult);
+$ratingResult = executeQuery($ratingQuery);
+$ratingData = mysqli_fetch_assoc($ratingResult);
 
-    $average = $ratingData['avg_rating'] ? round($ratingData['avg_rating'], 1) : 0;
-    $count = $ratingData['total_reviews'] ?? 0;
+$average = $ratingData['avg_rating'] ? round($ratingData['avg_rating'], 1) : 0;
+$count = $ratingData['total_reviews'] ?? 0;
 
-    $isLoggedIn = isset($_SESSION['user_id']);
-    $uid = $_SESSION['user_id'] ?? 0;
-    $isWishlisted = false;
+$isLoggedIn = isset($_SESSION['user_id']);
+$uid = $_SESSION['user_id'] ?? 0;
+$isWishlisted = false;
 
-    if ($isLoggedIn) {
-        $wishCheckQuery = "SELECT * FROM wishlist WHERE user_id = $uid AND tour_id = $tour_id";
-        $wishCheckResult = executeQuery($wishCheckQuery);
-        $isWishlisted = mysqli_num_rows($wishCheckResult) > 0;
-    }
+if ($isLoggedIn) {
+    $wishCheckQuery = "SELECT * FROM wishlist WHERE user_id = $uid AND tour_id = $tour_id";
+    $wishCheckResult = executeQuery($wishCheckQuery);
+    $isWishlisted = mysqli_num_rows($wishCheckResult) > 0;
+}
 ?>
 
 <!doctype html>
@@ -69,24 +69,24 @@
     <div class="row g-0">
         <div class="col">
             <div class="position-relative" style="height: 50vh; min-height: 350px; overflow: hidden;">
-                
+
                 <a href="javascript:history.back()"
-                class="btn btn-success btn-sm position-absolute rounded-pill shadow-sm px-3 py-2"
-                style="top: 20px; left: 20px; z-index: 10;">
+                    class="btn btn-success btn-sm position-absolute rounded-pill shadow-sm px-3 py-2"
+                    style="top: 20px; left: 20px; z-index: 10;">
                     <i class="bi bi-chevron-left"></i> Back
                 </a>
 
                 <?php
-                    $banner_src = !empty($tour['banner_image']) ? $tour['banner_image'] : "assets/images/default-banner.jpg";
+                $banner_src = !empty($tour['banner_image']) ? $tour['banner_image'] : "assets/images/default-banner.jpg";
                 ?>
-                
-                <img src="<?php echo $banner_src; ?>" 
-                    class="w-100 h-100" 
-                    style="object-fit: cover;" 
+
+                <img src="<?php echo $banner_src; ?>"
+                    class="w-100 h-100"
+                    style="object-fit: cover;"
                     alt="Tour Banner">
             </div>
         </div>
-    </div>    
+    </div>
     <div class="container my-5 mb-5">
         <div class="row">
             <div class="col-12">
@@ -104,11 +104,11 @@
                             <?php
                             for ($i = 1; $i <= 5; $i++) {
                                 if ($i <= $average) {
-                                    echo '<i class="bi bi-star-fill"></i>'; 
+                                    echo '<i class="bi bi-star-fill"></i>';
                                 } elseif ($i - 0.5 <= $average) {
-                                    echo '<i class="bi bi-star-half"></i>'; 
+                                    echo '<i class="bi bi-star-half"></i>';
                                 } else {
-                                    echo '<i class="bi bi-star"></i>';  
+                                    echo '<i class="bi bi-star"></i>';
                                 }
                             }
                             ?>
@@ -172,32 +172,32 @@
                         </div>
 
                         <div class="carousel-inner">
-                            <?php 
+                            <?php
                             $count = 0;
                             $isActive = true;
                             if (mysqli_num_rows($placesResult) > 0):
-                                while ($place = mysqli_fetch_assoc($placesResult)): 
+                                while ($place = mysqli_fetch_assoc($placesResult)):
                                     if ($count % 3 == 0): ?>
                                         <div class="carousel-item <?php echo $isActive ? 'active' : ''; ?>">
 
                                             <div class="row g-4">
-                                    <?php 
-                                    $isActive = false; 
-                                    endif; 
-                                    ?>
+                                            <?php
+                                            $isActive = false;
+                                        endif;
+                                            ?>
 
-                                    <div class="col-4">
-                                        <div class="card destination-card border-0 shadow-lg">
-                                            <img src="<?php echo htmlspecialchars($place['image']); ?>" class="card-img rounded-3" style="height: 300px; object-fit: cover;">
-                                            <div class="card-img-overlay d-flex align-items-end p-3">
+                                            <div class="col-4">
+                                                <div class="card destination-card border-0 shadow-lg">
+                                                    <img src="<?php echo htmlspecialchars($place['image']); ?>" class="card-img rounded-3" style="height: 300px; object-fit: cover;">
+                                                    <div class="card-img-overlay d-flex align-items-end p-3">
 
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </div>
 
-                                    <?php 
-                                    $count++;
-                                    if ($count % 3 == 0 || $count == mysqli_num_rows($placesResult)): ?>
+                                            <?php
+                                            $count++;
+                                            if ($count % 3 == 0 || $count == mysqli_num_rows($placesResult)): ?>
                                             </div>
                                         </div>
                                     <?php endif; ?>
@@ -213,13 +213,13 @@
 
                     <div class="mt-5 pt-4 text-center">
                         <p class="fst-italic mb-0 text-muted">Destinations may vary based on weather and site availability. </p>
-                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev" 
-                                style="left: 0; width: 5%;"> <span class="carousel-control-prev-icon bg-dark rounded-circle" aria-hidden="true"></span>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev"
+                            style="left: 0; width: 5%;"> <span class="carousel-control-prev-icon bg-dark rounded-circle" aria-hidden="true"></span>
                             <span class="visually-hidden">Previous</span>
                         </button>
 
-                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next" 
-                                style="right: 0; width: 5%;">
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next"
+                            style="right: 0; width: 5%;">
                             <span class="carousel-control-next-icon bg-dark rounded-circle" aria-hidden="true"></span>
                             <span class="visually-hidden">Next</span>
                         </button>
@@ -419,13 +419,13 @@
                     </div>
 
                     <div class="col-6">
-                        <button id="wishlistBtn" 
-                        class="btn <?= $isWishlisted ? 'btn-danger' : 'btn-outline-danger' ?> px-5 btn-lg py-3 fw-bold rounded-pill w-100" 
-                        onclick="toggleWishlist(this, <?= $tour_id ?>)">
-                        <!-- ito yung changes na mangyayari of natrigger yung wishlist button -->
-                        <!-- ang default look ng btn is yung Add to Wishlist na outlined -->
-                        <!-- kapag clinick yun, magiging filled yung button then magiging Added to Wishlist yung text -->
-                            <i class="bi <?= $isWishlisted ? 'bi-heart-fill' : 'bi-heart' ?> me-2"></i> 
+                        <button id="wishlistBtn"
+                            class="btn <?= $isWishlisted ? 'btn-danger' : 'btn-outline-danger' ?> px-5 btn-lg py-3 fw-bold rounded-pill w-100"
+                            onclick="toggleWishlist(this, <?= $tour_id ?>)">
+                            <!-- ito yung changes na mangyayari of natrigger yung wishlist button -->
+                            <!-- ang default look ng btn is yung Add to Wishlist na outlined -->
+                            <!-- kapag clinick yun, magiging filled yung button then magiging Added to Wishlist yung text -->
+                            <i class="bi <?= $isWishlisted ? 'bi-heart-fill' : 'bi-heart' ?> me-2"></i>
                             <?= $isWishlisted ? 'Added to Wishlist' : 'Add to Wishlist' ?>
                         </button>
                     </div>
@@ -439,22 +439,24 @@
         function toggleWishlist(btn, tourId) {
             // https req toh fetch block na toh, api integ kumabaga
             fetch('php/handle_wishlist.php', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: `tour_id=${tourId}`
-            })
-            .then(response => response.json())
-            // ito yung response pag naexecute na yung fetch request
-            .then(data => {
-                if (data.status === 'added') {
-                    btn.classList.replace('btn-outline-danger', 'btn-danger');
-                    btn.innerHTML = '<i class="bi bi-heart-fill me-2"></i> Added to Wishlist';
-                } else if (data.status === 'removed') {
-                    btn.classList.replace('btn-danger', 'btn-outline-danger');
-                    btn.innerHTML = '<i class="bi bi-heart me-2"></i> Add to Wishlist';
-                }
-            })
-            .catch(err => console.error('Wishlist Error:', err));
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: `tour_id=${tourId}`
+                })
+                .then(response => response.json())
+                // ito yung response pag naexecute na yung fetch request
+                .then(data => {
+                    if (data.status === 'added') {
+                        btn.classList.replace('btn-outline-danger', 'btn-danger');
+                        btn.innerHTML = '<i class="bi bi-heart-fill me-2"></i> Added to Wishlist';
+                    } else if (data.status === 'removed') {
+                        btn.classList.replace('btn-danger', 'btn-outline-danger');
+                        btn.innerHTML = '<i class="bi bi-heart me-2"></i> Add to Wishlist';
+                    }
+                })
+                .catch(err => console.error('Wishlist Error:', err));
         }
     </script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
