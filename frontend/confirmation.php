@@ -1,4 +1,5 @@
 <?php
+$_title="Confirmed Booking";
 session_start();
 include_once "php/connect.php";
 
@@ -60,19 +61,7 @@ if ($ref) {
     }
 }
 ?>
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>Booking Confirmation - EscaPinas</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-<style>
-body{background:#f8f9fa;font-family:Poppins,sans-serif}
-.conf-card{max-width:520px;border-radius:20px}
-</style>
-</head>
-<body>
+<?php include "components/header.php"; ?>
 
 <?php include "components/navbar.php"; ?>
 
@@ -114,6 +103,13 @@ body{background:#f8f9fa;font-family:Poppins,sans-serif}
 <?php endif; ?>
 
 </div>
+    <?php include "components/footer.php"; ?>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://www.paypal.com/sdk/js?client-id=AZXarGlWci9EF_NV33Uzb79jiNCHrRaA9WCLLFRpl0Tuzul7OIh5Pgc1Frl114bn2MNsUgR1kphO2D1z&currency=PHP"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
+
 
 </body>
 </html>
