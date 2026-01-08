@@ -8,7 +8,7 @@ $user_id = $_SESSION['user_id'] ?? 0;
 
 if ($user_id > 0) {
     // This query selects templates that DO NOT have a matching entry in user_vouchers for this user
-    $fetch_sql = "SELECT template_id, code, discount_type as type, discount_amount as amount, 
+    $fetchVoucher = "SELECT template_id, code, discount_type as type, discount_amount as amount, 
                          min_order_amount as min_spend, expires_at as expiry, 
                          System_type as system, title 
                   FROM voucher_templates t
@@ -21,10 +21,10 @@ if ($user_id > 0) {
                   ORDER BY created_at DESC 
                   LIMIT 4";
 
-    $fetch_res = executeQuery($fetch_sql);
+    $resultVoucher = executeQuery($fetchVoucher);
 
-    if ($fetch_res) {
-        while ($row = mysqli_fetch_assoc($fetch_res)) {
+    if ($resultVoucher) {
+        while ($row = mysqli_fetch_assoc($resultVoucher)) {
             $partner_vouchers[] = $row;
         }
     }
@@ -42,7 +42,6 @@ if ($user_id > 0) {
         transform: translateY(-5px);
     }
 
-    /* Bootstrap-aligned dashed border for the ticket effect */
     .border-dashed-start {
         border-left: 2px dashed #dee2e6 !important;
         position: relative;
