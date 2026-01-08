@@ -8,7 +8,10 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
-function sendBookingEmail($conn, $booking_id, $booking_ref) {
+
+function sendBookingEmail($conn, $booking_id, $booking_ref)
+{
+
     ob_start();
 
     // 1. Kunin ang data mula sa Database
@@ -52,6 +55,11 @@ function sendBookingEmail($conn, $booking_id, $booking_ref) {
         $mail->setFrom('escapinas26@gmail.com', 'EscaPinas Tours');
         $mail->addAddress($data['email'], $data['first_name']);
 
+        $pdfPath = __DIR__ . '/pdf/terms&condition.pdf';
+        if (file_exists($pdfPath)) {
+            $mail->addAttachment($pdfPath, 'Terms and Conditions.pdf');
+        }
+
         $mail->isHTML(true);
         $mail->Subject = 'Booking Confirmed - Ref: ' . $booking_ref;
         $mail->Body    = "
@@ -60,16 +68,20 @@ function sendBookingEmail($conn, $booking_id, $booking_ref) {
                 <p>Hi " . htmlspecialchars($data['first_name']) . ",</p>
                 <p>Your booking for <b>" . htmlspecialchars($data['tour_name']) . "</b> has been confirmed.</p>
                 <p><b>Reference No:</b> " . $booking_ref . "</p>
+                <hr style='border:none; border-top: 1px solid #eee;'>
+                <p style='font-size: 0.9em; color: #555;'>
+                    <b>Important:</b> We have attached a copy of our <b>Terms and Conditions</b> to this email. 
+                    Please review them carefully before your scheduled tour date.
+                </p>
             </div>";
 
         $mail->send();
         ob_end_clean();
         return true;
-
     } catch (Exception $e) {
+        // Ito ay maglalabas ng error sa iyong PHP error log para malaman natin ang exact issue
         error_log("EscaPinas Mailer Error: {$mail->ErrorInfo}");
         ob_end_clean();
         return false;
     }
 }
-?>

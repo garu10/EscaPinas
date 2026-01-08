@@ -8,8 +8,7 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 $user_id = $_SESSION['user_id'];
-
-// IMPROVED QUERY: Joining the claim table with the template table
+$_title="My Vouchers - Voucher System";
 $query = "SELECT 
             t.code, 
             t.discount_type, 
