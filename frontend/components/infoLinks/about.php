@@ -9,13 +9,12 @@ session_start(); ?>
 <body>
     <?php include "../navbar.php"; ?>
 
-    <div class="about-header">
-        <div class="container">
-            <h1 class="display-2 fw-bold mb-3 text-uppercase">Tuklasin ang Pilipinas</h1>
-            <div class="title-divider"></div>
-            <p class="lead fs-3 fw-light">Empowering every traveler to experience the soul of the islands.</p>
+    <div class="container-fluid p-0">
+        <div class="d-flex align-items-center justify-content-center"
+            style="background-image:url('/EscaPinas/frontend/assets/images/banner_about.gif'); background-size: 100%; 
+            background-position: center top; background-attachment: fixed; height: 450px; position: relative;">
         </div>
-</div>
+    </div>
 
     <div>
         <div class="py-5 mt-5">

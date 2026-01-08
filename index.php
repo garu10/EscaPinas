@@ -34,6 +34,7 @@ $query = "
         t.tour_id,
         t.tour_name,
         t.description,
+        t.image,
         t.price,
         IFNULL(AVG(r.rating_score), 0) AS avg_rating,
         COUNT(r.review_id) AS total_reviews
@@ -96,30 +97,33 @@ $query = "
                 </a>
             </div>
 
-            <div class="row g-4">
-                <?php while ($row = mysqli_fetch_assoc($result)) { ?>
-                <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="card h-100 shadow p-2 bg-success bg-opacity-25 rounded-4 border-0">
-                        <img src="frontend/assets/images/package<?php echo rand(1, 3)?>.jpg" 
-                             class="card-img-top rounded-4 p-2 shadow-sm" 
-                             style="height:300px; object-fit:cover;">
-                        <div class="card-body">
-                            <h5 class="fw-bold"><?php echo htmlspecialchars($row['tour_name'])?></h5>
-                            <p class="text-muted small"><?php echo htmlspecialchars($row['description'])?></p>
-                            <div class="d-flex align-items-center mb-2">
-                                <span class="badge bg-success">Starts at</span>
-                                <p class="fw-bold mb-0 ms-2 fs-3">
-                                    ₱<?php echo number_format($row['price'], 2)?>
-                                    <span class="fs-6 fw-normal text-muted">/per pax</span>
-                                </p>
-                            </div>
-                            <a href="frontend/packageView.php?tour_id=<?php echo $row['tour_id']?>" class="btn btn-success w-100 mt-2 rounded-pill">Book Now</a>
-                        </div>
+    <div class="row g-4">
+        <?php while ($row = mysqli_fetch_assoc($result)) { ?>
+        <div class="col-lg-4 col-md-6 col-sm-12">
+            <div class="card h-100 shadow p-2 bg-success bg-opacity-25 rounded-4 border-0">
+                
+                <img src="frontend/<?php echo htmlspecialchars($row['image']); ?>"
+                    class="card-img-top rounded-4 p-2 shadow-sm" 
+                    style="height:300px; object-fit:cover;"
+                    onerror="this.src='frontend/assets/images/default.jpg'"> 
+                
+                <div class="card-body">
+                    <h5 class="fw-bold"><?php echo htmlspecialchars($row['tour_name'])?></h5>
+                    <p class="text-muted small"><?php echo htmlspecialchars($row['description'])?></p>
+                    <div class="d-flex align-items-center mb-2">
+                        <span class="badge bg-success">Starts at</span>
+                        <p class="fw-bold mb-0 ms-2 fs-3">
+                            ₱<?php echo number_format($row['price'], 2)?>
+                            <span class="fs-6 fw-normal text-muted">/per pax</span>
+                        </p>
                     </div>
+                    <a href="frontend/packageView.php?tour_id=<?php echo $row['tour_id']?>" class="btn btn-success w-100 mt-2 rounded-pill">Book Now</a>
                 </div>
-                <?php } ?>
             </div>
         </div>
+        <?php } ?>
+    </div>
+    </div>
     </div>
 
     <div class="container my-5 p-5">

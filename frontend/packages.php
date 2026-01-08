@@ -33,18 +33,9 @@ $discoverTours = array_slice($randomTours, 0, 4);
 
     <div class="container-fluid p-0">
         <div class="d-flex align-items-center justify-content-center"
-            style="background: linear-gradient(#053207bf, #0ca458a6), url('/EscaPinas/frontend/assets/images/banner_package.jpg'); 
-                background-size: 100%; background-position: center top; background-attachment: fixed; height: 385px; position: relative;">
-            <div class="container">
-                <div class="row">
-                    <div class="col-12 text-center text-white">
-                        <h1 class="display-2 fw-bold mb-3 text-uppercase">FIND YOUR PERFECT ESCAPE</h1>
-                        <div style="width: 80px; height: 3px; background-color: white; margin: 0 auto 1.5rem;"></div>
-                        <p class="lead fs-3 fw-light">Tailored adventures for every traveler</p>
-                    </div>
-                </div>
-            </div>
-        </div>  
+            style="background-image:url('assets/images/banner_package.gif'); background-size: 100%; 
+            background-position: center top; background-attachment: fixed; height: 450px; position: relative;">
+        </div>
     </div>
 
     <div class="container my-5">

@@ -18,7 +18,7 @@
     <div class="container">
         <div class="col-6 col-lg-2 d-flex align-items-center">
             <a class="navbar-brand fw-bold" href="/EscaPinas/index.php" style="font-family: 'Poppins', sans-serif;">
-                <img src="/EscaPinas/frontend/assets/images/Logo 1.png" height="60" class="d-inline-block align-text-top">
+                <img src="/EscaPinas/frontend/assets/images/landscapeLogo.png" height="60" class="d-inline-block align-text-top">
             </a>
         </div>
 

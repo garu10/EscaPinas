@@ -1,4 +1,5 @@
 <?php
+$_title="Book Tour";
 session_start();
 include_once "php/connect.php";
 
@@ -69,18 +70,8 @@ $schedules = executeQuery("SELECT * FROM tour_schedules WHERE tour_id = $tour_id
 $inclusions = executeQuery("SELECT * FROM tour_inclusions WHERE tour_id = $tour_id");
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
+<?php include "components/header.php"; ?>
 
-<head>
-    <meta charset="UTF-8">
-    <title>Checkout - EscaPinas</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11">
-
-    </script>
     <style>
         body {
             font-family: 'Poppins', sans-serif;
@@ -354,6 +345,9 @@ $inclusions = executeQuery("SELECT * FROM tour_inclusions WHERE tour_id = $tour_
             </div>
         </div>
     </div>
+
+    <?php include "components/footer.php"; ?>
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://www.paypal.com/sdk/js?client-id=AZXarGlWci9EF_NV33Uzb79jiNCHrRaA9WCLLFRpl0Tuzul7OIh5Pgc1Frl114bn2MNsUgR1kphO2D1z&currency=PHP"></script>
