@@ -23,3 +23,16 @@
 [2026-01-07 15:01:09] SEND RESPONSE: {"id":"h_OSW-0CnFkn3MNZHCVZl","deviceId":"qfuElwaK9CHatp0ps3UBN","state":"Pending","isHashed":false,"isEncrypted":false,"recipients":[{"phoneNumber":"+639941792281","state":"Pending"}],"states":{}}
 [2026-01-07 15:01:09] DB SUCCESS: Verified number ending in 9941792281
 [2026-01-07 19:48:12] CALLBACK RECEIVED: {"deviceId":"qfuElwaK9CHatp0ps3UBN","event":"sms:received","id":"3kFWePRFDBeBZroAsfwlU","payload":{"message":"YES","receivedAt":"2026-01-07T15:44:35.000+08:00","messageId":"e7d4d384","phoneNumber":"+639666935239","simNumber":1},"webhookId":"6vioE69ZwXAIfE2bgGwBe"}
+[2026-01-08 09:12:43] REF: ESC-2026-6EFAC1 | TO: 09912676928 | RESP: {"message":"failed to enqueue message: failed to use phone in row 1: invalid phone number"}
+[2026-01-08 09:14:47] REF: ESC-2026-344819 | TO: 09912676928 | RESP: {"message":"failed to enqueue message: failed to use phone in row 1: invalid phone number"}
+[2026-01-08 09:16:22] REF: ESC-2026-1A00D8 | TO: 09912676928 | RESP: {"message":"failed to enqueue message: failed to use phone in row 1: invalid phone number"}
+[2026-01-08 09:19:19] REF: ESC-2026-2789C5 | TO: 09912676928 | RESP: {"message":"failed to enqueue message: failed to use phone in row 1: invalid phone number"}
+[2026-01-08 09:23:28] REF: ESC-2026-C906D1 | TO: 09912676928 | RESP: {"message":"failed to enqueue message: failed to use phone in row 1: invalid phone number"}
+[2026-01-08 09:26:17] REF: ESC-2026-58D4E9 | TO: 09912676928 | RESP: {"message":"failed to enqueue message: failed to use phone in row 1: invalid phone number"}
+[2026-01-08 09:28:12] REF: ESC-2026-87DD1F | TO: 09912676928 | RESP: {"message":"failed to enqueue message: failed to use phone in row 1: invalid phone number"}
+[2026-01-08 09:31:21] REF: ESC-2026-4CF518 | TO: 09912676928 | RESP: {"message":"failed to enqueue message: failed to use phone in row 1: invalid phone number"}
+[2026-01-08 09:35:27] REF:ESC-2026-B473C9 | RESP:HTTP 400 | {"message":"failed to enqueue message: failed to use phone in row 1: invalid phone number"}
+[2026-01-08 09:39:37] REF:ESC-2026-5271D2 | RESP:HTTP 202 | {"id":"hPL-NsdFzsTuOfxM9DC7d","deviceId":"qfuElwaK9CHatp0ps3UBN","state":"Pending","isHashed":false,"isEncrypted":false,"recipients":[{"phoneNumber":"+639912676928","state":"Pending"}],"states":{}} | SENT TO: +639912676928
+[2026-01-08 09:42:00] CALLBACK RECEIVED: {"deviceId":"qfuElwaK9CHatp0ps3UBN","event":"sms:received","id":"YWgGFK2LLNTY5bu5X6rYP","payload":{"message":"this is so lovely ","receivedAt":"2026-01-08T16:41:59.000+08:00","messageId":"756e8c5d","phoneNumber":"+639912676928","simNumber":1},"webhookId":"6vioE69ZwXAIfE2bgGwBe"}
+[2026-01-08 09:48:59] REF:ESC-2026-63874A | RESP:HTTP 202 | {"id":"P24TJKykA6Mj9u9WQatPY","deviceId":"qfuElwaK9CHatp0ps3UBN","state":"Pending","isHashed":false,"isEncrypted":false,"recipients":[{"phoneNumber":"+639912676928","state":"Pending"}],"states":{}}
+[2026-01-08 09:51:14] CALLBACK RECEIVED: {"deviceId":"qfuElwaK9CHatp0ps3UBN","event":"sms:received","id":"MnI7rw7Qr7hy0CoueKnDl","payload":{"message":"wow fantastic ","receivedAt":"2026-01-08T16:51:13.000+08:00","messageId":"62eedc2","phoneNumber":"+639912676928","simNumber":1},"webhookId":"6vioE69ZwXAIfE2bgGwBe"}
