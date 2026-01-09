@@ -65,8 +65,12 @@ if (!empty($client_region)) {
 }
 $vat = ($subtotal + $airfare_fee) * 0.12;
 $total = ($subtotal + $airfare_fee + $vat);
-
-$schedules = executeQuery("SELECT * FROM tour_schedules WHERE tour_id = $tour_id");
+// binago ni ralph sa booking form -- bagong query for tour sched
+$schedules = executeQuery("SELECT * FROM tour_schedules 
+                            WHERE tour_id = $tour_id 
+                            AND available_slots >= $pax 
+                            AND start_date >= CURDATE()");
+// binago ni ralph sa booking form -- bagong query for tour sched
 $inclusions = executeQuery("SELECT * FROM tour_inclusions WHERE tour_id = $tour_id");
 ?>
 
@@ -168,28 +172,23 @@ $inclusions = executeQuery("SELECT * FROM tour_inclusions WHERE tour_id = $tour_
                                 <?php endforeach; ?>
                             </div>
                         </div>
-
+                        <!-- binago ni ralph sa booking form -- para madisplay yung slots ng schedules -->
                         <div class="mb-4">
-                            <label for="schedule_id" class="form-label small fw-bold">
-                                Select Travel Date:
-                            </label>
-                            <select
-                                name="schedule_id"
-                                id="schedule_id"
-                                class="form-select form-select-sm w-50">
-                                <?php
-                                mysqli_data_seek($schedules, 0);
-                                while ($s = $schedules->fetch_assoc()):
-                                ?>
-                                    <option value="<?= $s['schedule_id']; ?>">
-                                        <?= date('M d, Y', strtotime($s['start_date'])); ?>
-                                        -
-                                        <?= date('M d, Y', strtotime($s['end_date'])); ?>
-                                    </option>
-                                <?php endwhile; ?>
+                            <label class="form-label small fw-bold">Select Travel Date:</label>
+                            <select id="schedule_id" class="form-select form-select-sm w-50" required>
+                                <?php if (mysqli_num_rows($schedules) > 0): ?>
+                                    <?php mysqli_data_seek($schedules, 0); while ($s = $schedules->fetch_assoc()): ?>
+                                        <option value="<?php echo $s['schedule_id']; ?>">
+                                            <?php echo date('M d, Y', strtotime($s['start_date'])); ?> 
+                                            (<?php echo $s['available_slots']; ?> slots left)
+                                        </option>
+                                    <?php endwhile; ?>
+                                <?php else: ?>
+                                    <option disabled selected>No available dates for <?php echo $pax; ?> pax</option>
+                                <?php endif; ?>
                             </select>
                         </div>
-
+                        <!-- binago ni ralph sa booking form -- para madisplay yung slots ng schedules -->
                         <div class="mb-4">
                             <label class="form-label small fw-bold">
                                 Pickup / Dropoff Point

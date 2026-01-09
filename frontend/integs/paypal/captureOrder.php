@@ -75,6 +75,22 @@ $booking_ref  = "ESC-" . date("Y") . "-" . strtoupper(substr(uniqid(), -6));
 mysqli_begin_transaction($conn);
 
 try {
+    // dinagdag ni ralph sa captureOrder -- query para maupdate yung slots ng schedule
+    $pax = intval($_POST['pax']);
+    $schedule_id = intval($_POST['schedule_id']);
+    
+    $updateSlots = $conn->prepare("UPDATE tour_schedules SET available_slots = available_slots - ? WHERE schedule_id = ? AND available_slots >= ?");
+    $updateSlots->bind_param("iii", $pax, $schedule_id, $pax);
+    $updateSlots->execute();
+
+    if ($updateSlots->affected_rows === 0) {
+        throw new Exception("Not enough slots available for this schedule.");
+    }
+
+    $conn->commit();
+    echo json_encode(['success' => true, 'ref' => $booking_ref]);
+    // dinagdag ni ralph sa captureOrder -- query para maupdate yung slots ng schedule
+    
     // insert the booking
     $sql_booking = "INSERT INTO bookings (user_id, tour_id, schedule_id, locpoints_id, number_of_persons, total_amount, booking_status, booking_reference)
                     VALUES ($user_id, $tour_id, $schedule_id, $locpoints_id, $pax, $total, 'Confirmed', '$booking_ref')";
