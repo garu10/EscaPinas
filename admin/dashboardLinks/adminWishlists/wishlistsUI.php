@@ -44,7 +44,7 @@ $result = executeQuery($query);
                                         </td>
                                         <td>
                                             <div class="d-flex align-items-center gap-3">
-                                                <img src="../<?= $wish['image'] ?>" class="rounded-3" style="width: 50px; height: 35px; object-fit: cover;">
+                                                <img src="/EscaPinas/frontend/<?= $wish['image'] ?>" class="rounded-3" style="width: 50px; height: 35px; object-fit: cover;">
                                                 <span class="fw-semibold"><?= $wish['tour_name'] ?></span>
                                             </div>
                                         </td>

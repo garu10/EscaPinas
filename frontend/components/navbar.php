@@ -61,7 +61,7 @@
                         <li><a class="dropdown-item" href="/EscaPinas/frontend/profile.php"><i class="bi bi-person"></i> Profile Settings</a></li>
                         <li><a class="dropdown-item" href="/EscaPinas/frontend/my-bookings.php"><i class="bi bi-book"></i> My Bookings</a></li>
                         <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item text-danger" href="frontend\logout.php"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
+                        <li><a class="dropdown-item text-danger" href="/EscaPinas/frontend/logout.php"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
                     
                     <?php else: ?>
                         <li class="px-3 py-2 small text-muted fw-semibold">Welcome, <?php echo htmlspecialchars($userName); ?></li>

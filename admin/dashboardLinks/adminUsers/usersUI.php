@@ -57,11 +57,11 @@ $result = executeQuery($query);
                                             <button class="btn btn-light btn-sm rounded-circle shadow-sm me-1" data-bs-toggle="modal" data-bs-target="#editUser<?= $user['user_id'] ?>">
                                                 <i class="bi bi-pencil-square text-primary"></i>
                                             </button>
-                                            <a href="dashboardLinks/adminUsers/crud/deleteUser.php?id=<?= $user['user_id'] ?>" 
+                                            <!-- <a href="dashboardLinks/adminUsers/crud/deleteUser.php?id=<?= $user['user_id'] ?>" 
                                                class="btn btn-light btn-sm rounded-circle shadow-sm" 
                                                onclick="return confirm('Remove this user permanently?')">
                                                 <i class="bi bi-trash3 text-danger"></i>
-                                            </a>
+                                            </a> -->
                                         </td>
                                     </tr>
 
