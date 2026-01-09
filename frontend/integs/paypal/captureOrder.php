@@ -9,9 +9,9 @@ if (!file_exists($connect_path)) {
 }
 include_once $connect_path;
 
-ob_start(); 
+ob_start();
 header('Content-Type: application/json');
-ini_set('display_errors', 0); 
+ini_set('display_errors', 0);
 error_reporting(E_ALL);
 
 if (!isset($_SESSION['user_id'])) {
@@ -30,7 +30,7 @@ $ch = curl_init("https://api-m.sandbox.paypal.com/v1/oauth2/token");
 curl_setopt_array($ch, [
     CURLOPT_POST => true,
     CURLOPT_RETURNTRANSFER => true,
-    CURLOPT_SSL_VERIFYPEER => false, 
+    CURLOPT_SSL_VERIFYPEER => false,
     CURLOPT_USERPWD => "$clientId:$secret",
     CURLOPT_POSTFIELDS => "grant_type=client_credentials"
 ]);
@@ -76,8 +76,8 @@ mysqli_begin_transaction($conn);
 
 try {
     // insert the booking
-    $sql_booking = "INSERT INTO bookings (user_id, tour_id, schedule_id, locpoints_id, number_of_persons, total_amount, booking_status, booking_reference, is_email_sent)
-                    VALUES ($user_id, $tour_id, $schedule_id, $locpoints_id, $pax, $total, 'Confirmed', '$booking_ref', 1)";
+    $sql_booking = "INSERT INTO bookings (user_id, tour_id, schedule_id, locpoints_id, number_of_persons, total_amount, booking_status, booking_reference)
+                    VALUES ($user_id, $tour_id, $schedule_id, $locpoints_id, $pax, $total, 'Confirmed', '$booking_ref')";
     if (!mysqli_query($conn, $sql_booking)) throw new Exception("Booking insertion failed");
 
     $booking_id = mysqli_insert_id($conn);
@@ -95,23 +95,21 @@ try {
 
         if ($temp_data) {
             $tid = $temp_data['template_id'];
-            
+
             // record the voucher redemption and change its status
             $sql_voucher = "UPDATE user_vouchers 
                             SET is_redeemed = 1, 
                                 redeemed_at = NOW() 
                             WHERE template_id = $tid AND user_id = $user_id";
-            
+
             if (!mysqli_query($conn, $sql_voucher)) throw new Exception("Voucher redemption failed");
         }
     }
 
     mysqli_commit($conn);
-
     ob_clean();
     echo json_encode(['success' => true, 'ref' => $booking_ref]);
     exit;
-
 } catch (Exception $e) {
     mysqli_rollback($conn);
     ob_clean();

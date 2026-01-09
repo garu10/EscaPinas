@@ -11,9 +11,6 @@ use PHPMailer\PHPMailer\Exception;
 
 function sendBookingEmail($conn, $booking_id, $booking_ref)
 {
-
-    ob_start();
-
     // 1. Kunin ang data mula sa Database
     $query = "SELECT u.email, u.first_name, tp.tour_name, b.total_amount, ts.start_date 
               FROM bookings b
@@ -26,7 +23,6 @@ function sendBookingEmail($conn, $booking_id, $booking_ref)
     $data = mysqli_fetch_assoc($result);
 
     if (!$data) {
-        ob_end_clean();
         return false;
     }
 
@@ -38,7 +34,7 @@ function sendBookingEmail($conn, $booking_id, $booking_ref)
         $mail->Host       = 'smtp.gmail.com';
         $mail->SMTPAuth   = true;
         $mail->Username   = 'escapinas26@gmail.com';
-        $mail->Password   = 'zmbydjzeurrxvjuf'; // App Password
+        $mail->Password   = 'ksqu urhy ffrp uaic'; // App Password
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
         $mail->Port       = 465;
 
@@ -76,7 +72,6 @@ function sendBookingEmail($conn, $booking_id, $booking_ref)
             </div>";
 
         $mail->send();
-        ob_end_clean();
         return true;
     } catch (Exception $e) {
         // Ito ay maglalabas ng error sa iyong PHP error log para malaman natin ang exact issue
@@ -85,3 +80,4 @@ function sendBookingEmail($conn, $booking_id, $booking_ref)
         return false;
     }
 }
+?>
