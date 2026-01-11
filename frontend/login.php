@@ -3,7 +3,8 @@ session_start();
 include 'php/connect.php';
 
 // Function para sa Resend SMS
-function sendSMS($to, $msg) {
+function sendSMS($to, $msg)
+{
     $url = "https://api.sms-gate.app/3rdparty/v1/messages";
     $payload = [
         "phoneNumbers" => [$to],
@@ -11,7 +12,7 @@ function sendSMS($to, $msg) {
     ];
     $ch = curl_init($url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_USERPWD, "ADUWE4:6o7hu2uyguo7do"); 
+    curl_setopt($ch, CURLOPT_USERPWD, "ADUWE4:6o7hu2uyguo7do");
     curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
     curl_setopt($ch, CURLOPT_POST, true);
     curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
@@ -20,7 +21,7 @@ function sendSMS($to, $msg) {
     curl_close($ch);
 }
 
-$error_msg = ""; 
+$error_msg = "";
 $show_resend = false;
 $resend_email = "";
 
@@ -39,24 +40,26 @@ if (isset($_GET['resend'])) {
 
 // LOGIC PARA SA LOGIN
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $email = mysqli_real_escape_string($conn, $_POST['email']);
+    // We call this 'identifier' because it could be an email OR a username
+    $identifier = mysqli_real_escape_string($conn, $_POST['email']);
     $password = $_POST['password'];
 
-    // Gamit ang mysqli_query para sa compatibility
-    $get_user = "SELECT * FROM users WHERE email = '$email' LIMIT 1";  
+    // Updated Query: Check email OR user_name
+    $get_user = "SELECT * FROM users WHERE email = '$identifier' OR username = '$identifier' LIMIT 1";
     $result = mysqli_query($conn, $get_user);
 
     if ($result && mysqli_num_rows($result) > 0) {
         $user = mysqli_fetch_assoc($result);
 
+        // Verify password using the hash
         if (password_verify($password, $user['password'])) {
             if ($user['is_verified'] == 0) {
-                // ITO ANG ERROR MESSAGE NA HININGI MO
-                $error_msg = "Account not verified. Please reply 'YES' to our SMS.";
-                $show_resend = true; 
+                $error_msg = "Account not verified. Please check your SMS for the code.";
+                $show_resend = true;
                 $resend_email = $user['email'];
             } else {
                 $_SESSION['user_id'] = $user['user_id'];
+                $_SESSION['username'] = $user['username']; 
                 $_SESSION['first_name'] = $user['first_name'];
                 $_SESSION['role'] = $user['role'];
 
@@ -71,13 +74,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $error_msg = "Invalid Password!";
         }
     } else {
-        $error_msg = "No account found with that email!";
+        $error_msg = "No account found with that Username or Email!";
     }
 }
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -85,9 +89,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/login.css"> </head>
+    <link rel="stylesheet" href="assets/css/login.css">
+</head>
+
 <body>
-    
+
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-12">
@@ -119,7 +125,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                             <form method="POST">
                                 <div class="mb-3">
-                                    <input type="email" class="form-control" name="email" id="email" placeholder="Email" required>
+                                    <input type="text" name="email" class="form-control" placeholder="Username or Email" required>
                                 </div>
                                 <div class="mb-3">
                                     <input type="password" class="form-control" name="password" id="password" placeholder="Password" required>
@@ -128,7 +134,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <a href="#" class="forgot-pass">Forgot Password?</a>
 
                                 <button type="submit" class="btn btn-primary btn-login">Login</button>
-                                
+
                                 <div class="register-link">
                                     Don't have an Account? <a href="registerAccount.php">Register</a>
                                 </div>
@@ -142,4 +148,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

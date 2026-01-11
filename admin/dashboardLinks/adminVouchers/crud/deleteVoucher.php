@@ -6,7 +6,7 @@ if (isset($_GET['id'])) {
     // Cast to integer for security
     $id = intval($_GET['id']);
 
-    $sql = "DELETE FROM voucher_templates WHERE template_id = $id";
+    $sql = "DELETE FROM voucher_templates WHERE voucher_id = $id";
 
     try {
         if (executeQuery( $sql)) {

@@ -15,7 +15,7 @@ $availableVouchers = [];
 
 $vQuery = "SELECT t.code, t.discount_amount, t.discount_type 
            FROM user_vouchers uv
-           JOIN voucher_templates t ON uv.template_id = t.template_id
+           JOIN voucher_templates t ON uv.voucher_id = t.voucher_id
            WHERE uv.user_id = ? AND uv.is_redeemed = 0 AND t.expires_at > NOW()";
 
 $stmtV = $conn->prepare($vQuery);

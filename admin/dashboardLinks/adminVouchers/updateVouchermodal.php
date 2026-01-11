@@ -1,4 +1,4 @@
-<div class="modal fade" id="editVoucher<?= $v['template_id'] ?>" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="editVoucher<?= $v['voucher_id'] ?>" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-0 shadow rounded-4">
             <div class="modal-header border-0">
@@ -7,7 +7,7 @@
             </div>
             <form action="dashboardLinks/adminVouchers/crud/updateVoucher.php" method="POST">
                 <div class="modal-body">
-                    <input type="hidden" name="template_id" value="<?= $v['template_id'] ?>">
+                    <input type="hidden" name="voucher_id" value="<?= $v['voucher_id'] ?>">
 
                     <div class="mb-3">
                         <label class="form-label small fw-bold">Voucher Title</label>

@@ -2,17 +2,19 @@
 include("php/connect.php");
 
 $showVerificationModal = isset($_GET['verify']) ? true : false;
-$registeredEmail = isset($_GET['email']) ? mysqli_real_escape_string($conn, $_GET['email']) : ""; 
+$registeredEmail = isset($_GET['email']) ? mysqli_real_escape_string($conn, $_GET['email']) : "";
 
-function formatPhone($number) {
+function formatPhone($number)
+{
     $number = preg_replace('/[^0-9+]/', '', $number);
-    if(substr($number, 0, 1) == "0") { 
-        $number = "+63" . substr($number, 1); 
+    if (substr($number, 0, 1) == "0") {
+        $number = "+63" . substr($number, 1);
     }
     return $number;
 }
 
-function sendSMS($to, $msg) {
+function sendSMS($to, $msg)
+{
     $to = formatPhone($to);
 
     $url = "https://api.sms-gate.app/3rdparty/v1/messages";
@@ -20,7 +22,7 @@ function sendSMS($to, $msg) {
 
     $ch = curl_init($url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_USERPWD, "ADUWE4:6o7hu2uyguo7do"); 
+    curl_setopt($ch, CURLOPT_USERPWD, "ADUWE4:6o7hu2uyguo7do");
     curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
     curl_setopt($ch, CURLOPT_POST, true);
     curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
@@ -37,6 +39,7 @@ function sendSMS($to, $msg) {
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $fname = mysqli_real_escape_string($conn, $_POST['first_name']);
     $last_name = mysqli_real_escape_string($conn, $_POST['last_name']);
+    $user_name = mysqli_real_escape_string($conn, $_POST['user_name']);
     $middle_initial = mysqli_real_escape_string($conn, $_POST['middle_initial']);
     $contact_num = mysqli_real_escape_string($conn, $_POST['contact_num']);
     $province = mysqli_real_escape_string($conn, $_POST['province']);
@@ -51,7 +54,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-    $otp_code = rand(100000, 999999); 
+    $otp_code = rand(100000, 999999);
     date_default_timezone_set('Asia/Manila');
     $expiry_time = date("Y-m-d H:i:s", strtotime('+1 minute'));
 
@@ -61,11 +64,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($result && mysqli_num_rows($result) > 0) {
         echo "<script>alert('Email already exists!'); window.history.back();</script>";
     } else {
-        $insertUser = "INSERT INTO users (first_name, last_name, middle_initial, contact_num, province, city, email, password, role, is_verified, verification_code, otp_expiry) 
-                       VALUES ('$fname', '$last_name', '$middle_initial', '$contact_num', '$province', '$city', '$email', '$hashed_password', 'user', 0, '$otp_code', '$expiry_time')";
+        $insertUser = "INSERT INTO users (first_name, last_name, middle_initial, contact_num, province, city, username, email, password, role, is_verified, verification_code, otp_expiry) 
+                       VALUES ('$fname', '$last_name', '$middle_initial', '$contact_num', '$province', '$city','$user_name', '$email', '$hashed_password', 'user', 0, '$otp_code', '$expiry_time')";
 
         if (mysqli_query($conn, $insertUser)) {
-            sendSMS($contact_num, "EscaPinas: Ang iyong code ay $otp_code. Valid ito sa loob ng 1 minuto.");   
+            sendSMS($contact_num, "EscaPinas: Ang iyong code ay $otp_code. Valid ito sa loob ng 1 minuto.");
             header("Location: registerAccount.php?verify=true&email=" . urlencode($email));
             exit();
         }
@@ -74,6 +77,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 ?>
 <!doctype html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -83,6 +87,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/register.css">
 </head>
+
 <body>
     <div class="container w-100">
         <div class="row justify-content-center">
@@ -113,6 +118,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <div class="row g-2 mb-3">
                                     <div class="col-md-6"><input type="text" class="form-control" placeholder="Province" name="province"></div>
                                     <div class="col-md-6"><input type="text" class="form-control" placeholder="City" name="city"></div>
+                                </div>
+                                <div class="mb-3">
+                                    <input type="text" class="form-control" placeholder="Username" name="user_name" required>
                                 </div>
                                 <div class="mb-3"><input type="email" class="form-control" placeholder="Email Address" name="email" required></div>
                                 <div class="row g-2 mb-3">
@@ -156,101 +164,110 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-    let countdown;
-    function startCountdown(duration, display) {
-        let timer = duration, minutes, seconds;
-        clearInterval(countdown);
-        countdown = setInterval(function () {
-            minutes = parseInt(timer / 60, 10);
-            seconds = parseInt(timer % 60, 10);
-            display.textContent = (minutes < 10 ? "0" : "") + minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
-            if (--timer < 0) {
-                clearInterval(countdown);
-                document.getElementById('btnVerify').disabled = true;
-                document.getElementById('otp_input').disabled = true;
-                document.getElementById('resendContainer').style.display = 'block';
-            }
-        }, 1000);
-    }
+        let countdown;
 
-    function resendOTP() {
-        let emailInput = document.getElementById('resendEmail');
-        let email = emailInput.value;
-        
-        if (!email) {
-            alert("Email not found. Please refresh the page.");
-            return;
+        function startCountdown(duration, display) {
+            let timer = duration,
+                minutes, seconds;
+            clearInterval(countdown);
+            countdown = setInterval(function() {
+                minutes = parseInt(timer / 60, 10);
+                seconds = parseInt(timer % 60, 10);
+                display.textContent = (minutes < 10 ? "0" : "") + minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
+                if (--timer < 0) {
+                    clearInterval(countdown);
+                    document.getElementById('btnVerify').disabled = true;
+                    document.getElementById('otp_input').disabled = true;
+                    document.getElementById('resendContainer').style.display = 'block';
+                }
+            }, 1000);
         }
 
-        const resendBtn = document.querySelector('#resendContainer button');
-        resendBtn.disabled = true;
-        resendBtn.innerText = "Sending...";
+        function resendOTP() {
+            let emailInput = document.getElementById('resendEmail');
+            let email = emailInput.value;
 
-        fetch('integs/sms/resend_logic.php', { 
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: 'email=' + encodeURIComponent(email)
-        })
-        .then(res => res.json())
-        .then(data => {
-            if (data.status === 'success') {
-                alert('Bagong code ang ipinadala!');
-                document.getElementById('btnVerify').disabled = false;
-                document.getElementById('otp_input').disabled = false;
-                document.getElementById('otp_input').value = '';
-                document.getElementById('resendContainer').style.display = 'none';
-                
-                clearInterval(countdown);
-                startCountdown(60, document.querySelector('#timer'));
-            } else { 
-                alert('Error: ' + data.message); 
+            if (!email) {
+                alert("Email not found. Please refresh the page.");
+                return;
             }
-        })
-        .catch(err => {
-            console.error(err);
-            alert("Connection Error: Pakisiguro na stable ang internet.");
-        })
-        .finally(() => {
-            resendBtn.disabled = false;
-            resendBtn.innerText = "RESEND NEW CODE";
-        });
-    }
 
-    document.getElementById('otpForm').addEventListener('submit', function(e){
-        e.preventDefault();
-        const email = document.getElementById('resendEmail').value;
-        const otp = document.getElementById('otp_input').value;
+            const resendBtn = document.querySelector('#resendContainer button');
+            resendBtn.disabled = true;
+            resendBtn.innerText = "Sending...";
 
-        if(!otp){
-            alert("Pakilagay ang OTP code.");
-            return;
+            fetch('integs/sms/resend_logic.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: 'email=' + encodeURIComponent(email)
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        alert('Bagong code ang ipinadala!');
+                        document.getElementById('btnVerify').disabled = false;
+                        document.getElementById('otp_input').disabled = false;
+                        document.getElementById('otp_input').value = '';
+                        document.getElementById('resendContainer').style.display = 'none';
+
+                        clearInterval(countdown);
+                        startCountdown(60, document.querySelector('#timer'));
+                    } else {
+                        alert('Error: ' + data.message);
+                    }
+                })
+                .catch(err => {
+                    console.error(err);
+                    alert("Connection Error: Pakisiguro na stable ang internet.");
+                })
+                .finally(() => {
+                    resendBtn.disabled = false;
+                    resendBtn.innerText = "RESEND NEW CODE";
+                });
         }
 
-        fetch('integs/sms/verify_otp.php', {
-            method: 'POST',
-            headers: {'Content-Type':'application/x-www-form-urlencoded'},
-            body: `email=${encodeURIComponent(email)}&otp_input=${encodeURIComponent(otp)}`
-        })
-        .then(res => res.json())
-        .then(data => {
-            if(data.status === 'success'){
-                alert(data.message);
-                window.location.href = 'login.php';
-            } else {
-                alert(data.message);
-            }
-        })
-        .catch(err=>{
-            console.error(err);
-            alert("Connection error. Pakisiguro ang internet.");
-        });
-    });
+        document.getElementById('otpForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('resendEmail').value;
+            const otp = document.getElementById('otp_input').value;
 
-    <?php if ($showVerificationModal): ?>
-        var myModal = new bootstrap.Modal(document.getElementById('successModal'), {backdrop: 'static'});
-        myModal.show();
-        startCountdown(60, document.querySelector('#timer'));
-    <?php endif; ?>
+            if (!otp) {
+                alert("Pakilagay ang OTP code.");
+                return;
+            }
+
+            fetch('integs/sms/verify_otp.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: `email=${encodeURIComponent(email)}&otp_input=${encodeURIComponent(otp)}`
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        alert(data.message);
+                        window.location.href = 'login.php';
+                    } else {
+                        alert(data.message);
+                    }
+                })
+                .catch(err => {
+                    console.error(err);
+                    alert("Connection error. Pakisiguro ang internet.");
+                });
+        });
+
+        <?php if ($showVerificationModal): ?>
+            var myModal = new bootstrap.Modal(document.getElementById('successModal'), {
+                backdrop: 'static'
+            });
+            myModal.show();
+            startCountdown(60, document.querySelector('#timer'));
+        <?php endif; ?>
     </script>
 </body>
+
 </html>
