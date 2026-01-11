@@ -46,4 +46,12 @@ if ($isLoggedIn) {
     $wishCheckResult = executeQuery($wishCheckQuery);
     $isWishlisted = mysqli_num_rows($wishCheckResult) > 0;
 }
+{// Fetch all reviews for this specific tour
+$reviewsQuery = "SELECT r.*, u.first_name, u.last_name 
+                 FROM ratings r 
+                 JOIN users u ON r.user_id = u.user_id 
+                 WHERE r.tour_id = $tour_id 
+                 ORDER BY r.review_id DESC";
+$reviewsResult = mysqli_query($conn, $reviewsQuery);
+}
 ?>

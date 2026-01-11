@@ -105,6 +105,38 @@ include("backend/packageViewSelect.php");
     <?php include "carousel/packageViewTours.php"; ?>
     <?php include "accordion/packageViewAccordion.php"; ?>
     <div class="container my-5">
+    <h3 class="fw-bold text-success mb-4">Customer Reviews</h3>
+        <div class="row">
+            <?php if (mysqli_num_rows($reviewsResult) > 0): ?>
+                <?php while ($review = mysqli_fetch_assoc($reviewsResult)): ?>
+                    <div class="col-md-6 mb-3">
+                        <div class="card border-0 shadow-sm rounded-4 p-4">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <h6 class="fw-bold mb-0">
+                                    <?= htmlspecialchars($review['first_name'] . ' ' . $review['last_name']) ?>
+                                </h6>
+                                <div class="text-warning small">
+                                    <?php
+                                    for ($i = 1; $i <= 5; $i++) {
+                                        echo ($i <= $review['rating_score']) ? '<i class="bi bi-star-fill"></i>' : '<i class="bi bi-star"></i>';
+                                    }
+                                    ?>
+                                </div>
+                            </div>
+                            <p class="text-secondary mb-0">
+                                "<?= htmlspecialchars($review['review_text']) ?>"
+                            </p>
+                        </div>
+                    </div>
+                <?php endwhile; ?>
+            <?php else: ?>
+                <div class="col-12 text-center py-4">
+                    <p class="text-muted italic">No reviews yet for this tour. Be the first to share your experience!</p>
+                </div>
+            <?php endif; ?>
+        </div>
+    </div>
+    <div class="container my-5">
         <div class="row justify-content-center">
             <div class="col-lg-8 col-md-10">
                 <div class="row g-3 text-center">
