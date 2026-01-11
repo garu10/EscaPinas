@@ -13,13 +13,13 @@ if ($result) {
     while ($row = mysqli_fetch_assoc($result)) {
         // Use the actual column names from your database
         $vouchers[] = [
-            "title"    => "EscaPinas Discount",
+            "title"    => "EscaPinas",
             "code"     => $row['code'],
             "type"     => $row['discount_type'],
             "amount"   => $row['discount_amount'],
             "min_spend"=> $row['min_order_amount'],
             "expiry"   => $row['expires_at'],
-            "provider" => $row['system_type'] ?? 'unknown' 
+            "provider" => $row['System_type'] ?? 'unknown' 
         ];
     }
 } else {

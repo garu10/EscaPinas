@@ -17,7 +17,7 @@ $query = "SELECT
             t.System_type, 
             uv.is_redeemed 
           FROM user_vouchers uv
-          JOIN voucher_templates t ON uv.template_id = t.template_id
+          JOIN voucher_templates t ON uv.voucher_id = t.voucher_id
           WHERE uv.user_id = '$user_id' 
           ORDER BY uv.claim_id DESC";
 

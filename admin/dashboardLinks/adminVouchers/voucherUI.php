@@ -67,10 +67,10 @@ $result = mysqli_query($conn, $query);
                                                 <?= date('M d, Y', strtotime($v['expires_at'])) ?>
                                             </td>
                                             <td class="pe-4 text-end">
-                                                <button class="btn btn-light btn-sm rounded-circle shadow-sm me-1" data-bs-toggle="modal" data-bs-target="#editVoucher<?= $v['template_id'] ?>">
+                                                <button class="btn btn-light btn-sm rounded-circle shadow-sm me-1" data-bs-toggle="modal" data-bs-target="#editVoucher<?= $v['voucher_id'] ?>">
                                                     <i class="bi bi-pencil-square text-primary"></i>
                                                 </button>
-                                                <a href="dashboardLinks/adminVouchers/crud/deleteVoucher.php?id=<?= $v['template_id'] ?>"
+                                                <a href="dashboardLinks/adminVouchers/crud/deleteVoucher.php?id=<?= $v['voucher_id'] ?>"
                                                     class="btn btn-light btn-sm rounded-circle shadow-sm"
                                                     onclick="return confirm('Delete this voucher template permanently?')">
                                                     <i class="bi bi-trash3 text-danger"></i>

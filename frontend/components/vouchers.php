@@ -8,14 +8,14 @@ $user_id = $_SESSION['user_id'] ?? 0;
 
 if ($user_id > 0) {
     // This query selects templates that DO NOT have a matching entry in user_vouchers for this user
-    $fetchVoucher = "SELECT template_id, code, discount_type as type, discount_amount as amount, 
+    $fetchVoucher = "SELECT voucher_id, code, discount_type as type, discount_amount as amount, 
                          min_order_amount as min_spend, expires_at as expiry, 
                          System_type as system, title 
                   FROM voucher_templates t
                   WHERE expires_at > NOW() 
                   AND NOT EXISTS (
                       SELECT 1 FROM user_vouchers uv 
-                      WHERE uv.template_id = t.template_id 
+                      WHERE uv.voucher_id = t.voucher_id 
                       AND uv.user_id = '$user_id'
                   )
                   ORDER BY created_at DESC 
@@ -72,8 +72,8 @@ if ($user_id > 0) {
         <div class="row g-4">
             <?php if (!empty($partner_vouchers)): ?>
                 <?php foreach ($partner_vouchers as $v):
-                    $template_id = $v['template_id'];
-                    $check_sql = "SELECT 1 FROM user_vouchers WHERE user_id = '$user_id' AND template_id = '$template_id' LIMIT 1";
+                    $voucher_id = $v['voucher_id'];
+                    $check_sql = "SELECT 1 FROM user_vouchers WHERE user_id = '$user_id' AND voucher_id = '$voucher_id' LIMIT 1";
                     $check_res = executeQuery( $check_sql);
                     $is_claimed = (mysqli_num_rows($check_res) > 0);
                 ?>
@@ -105,7 +105,7 @@ if ($user_id > 0) {
                                             </small>
 
                                             <form class="claim-form">
-                                                <input type="hidden" name="template_id" value="<?php echo $v['template_id']; ?>">
+                                                <input type="hidden" name="voucher_id" value="<?php echo $v['voucher_id']; ?>">
                                                 <input type="hidden" name="v_code" value="<?php echo htmlspecialchars($v['code']); ?>">
                                                 <input type="hidden" name="v_type" value="<?php echo $v['type']; ?>">
                                                 <input type="hidden" name="v_amount" value="<?php echo $v['amount']; ?>">
