@@ -1,31 +1,50 @@
-<?php // api ito na ibato ng voucher templates na hindi pa expired  sa ibang user
-    // parang endpoint lang ito 
+<?php
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
 include '../../php/connect.php';
 
-$query = "SELECT * FROM voucher_templates WHERE expires_at > NOW()";
+// URL for Voucher API
+$externalUrl = "http://192.168.1.15/api/getVouchers.php";
 
-$result = mysqli_query($conn, $query);
-$vouchers = [];
+$json_data = @file_get_contents($externalUrl);
 
-if ($result) {
-    while ($row = mysqli_fetch_assoc($result)) {
-        // Use the actual column names from your database
-        $vouchers[] = [
-            "title"    => "EscaPinas",
-            "code"     => $row['code'],
-            "type"     => $row['discount_type'],
-            "amount"   => $row['discount_amount'],
-            "min_spend"=> $row['min_order_amount'],
-            "expiry"   => $row['expires_at'],
-            "provider" => $row['System_type'] ?? 'unknown' 
-        ];
-    }
-} else {
-    // If the query fails, show the error
-    echo json_encode(["error" => mysqli_error($conn)]);
+if ($json_data === FALSE) {
+    echo json_encode(["status" => "error", "message" => "Could not connect to Voucher API."]);
     exit;
 }
 
-echo json_encode($vouchers);
+$externalVouchers = json_decode($json_data, true);
+
+if (!empty($externalVouchers) && is_array($externalVouchers)) {
+    $count = 0;
+
+    foreach ($externalVouchers as $v) {
+        $sys_type     = mysqli_real_escape_string($conn, $v['System_type']);
+        $code         = mysqli_real_escape_string($conn, $v['code']);
+        $title        = mysqli_real_escape_string($conn, $v['title']);
+        $disc_type    = mysqli_real_escape_string($conn, $v['discount_type']);
+        $disc_amount  = (float)$v['discount_amount'];
+        $min_order    = (float)$v['min_order_amount'];
+        $expires_at   = mysqli_real_escape_string($conn, $v['expires_at']);
+
+        $sql = "INSERT INTO voucher_templates 
+                (System_type, code, title, discount_type, discount_amount, min_order_amount, expires_at) 
+                VALUES 
+                ('$sys_type', '$code', '$title', '$disc_type', $disc_amount, $min_order, '$expires_at')
+                ON DUPLICATE KEY UPDATE 
+                title = '$title',
+                discount_amount = $disc_amount,
+                expires_at = '$expires_at'";
+
+        if (mysqli_query($conn, $sql)) {
+            $count++;
+        }
+    }
+
+    echo json_encode([
+        "status" => "success",
+        "message" => "$count vouchers synced successfully."
+    ]);
+} else {
+    echo json_encode(["status" => "error", "message" => "No voucher data received."]);
+}
