@@ -1,7 +1,7 @@
 <?php
-    $_title = "Escapinas - Packages";
-    session_start();
-    include 'php/connect.php';
+$_title = "Escapinas - Packages";
+session_start();
+include 'php/connect.php';
 
 $getQuery = "SELECT tour_packages.*, destinations.destination_name, regions.island_name 
              FROM tour_packages 
@@ -32,9 +32,14 @@ $discoverTours = array_slice($randomTours, 0, 4);
     <?php include "components/navbar.php"; ?>
 
     <div class="container-fluid p-0">
-        <div class="d-flex align-items-center justify-content-center"
-            style="background-image:url('assets/images/banner_package.gif'); background-size: 100%; 
-            background-position: center top; background-attachment: fixed; height: 450px; position: relative;">
+        <div class="d-none d-md-flex align-items-center justify-content-center"
+            style="background-image:url('assets/images/banner_package.gif'); background-size: cover; background-position: center top;
+                background-repeat: no-repeat; background-attachment: fixed; height: 450px; position: relative;">
+        </div>
+
+        <div class="d-flex d-md-none align-items-center justify-content-center"
+            style="background-image:url('assets/images/banner_package.gif'); background-size: cover; background-position: center top; 
+                background-repeat: no-repeat; height: 250px; position: relative;">
         </div>
     </div>
 
@@ -54,9 +59,7 @@ $discoverTours = array_slice($randomTours, 0, 4);
             <div class="col-md-4">
                 <div class="input-group shadow-sm">
                     <input type="text" id="packageQuickSearch" class="form-control border-success rounded-start-pill ps-4" placeholder="Search destination (e.g. Cebu)..." onkeyup="handleQuickSearch()">
-                    <button class="btn btn-success rounded-end-pill px-4">
-                        <i class="bi bi-search"></i>
-                    </button>
+                    <button class="btn btn-success rounded-end-pill px-4"><i class="bi bi-search"></i></button>
                 </div>
             </div>
         </div>

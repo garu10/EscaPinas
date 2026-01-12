@@ -1,7 +1,7 @@
 <?php
-    $_title = "Escapinas";
-    session_start();
-    include 'frontend/php/connect.php';
+$_title = "Escapinas";
+session_start();
+include 'frontend/php/connect.php';
 
 $searchQuery = "SELECT tour_packages.*, destinations.destination_name, regions.island_name 
                 FROM tour_packages 
@@ -46,33 +46,38 @@ $query = "
     LIMIT 3
 ";
 
-    $reviewsQuery = "
-        SELECT 
-            r.review_text,
-            r.rating_score,
-            u.first_name
-        FROM ratings r
-        LEFT JOIN users u ON r.user_id = u.user_id
-        ORDER BY RAND()
-        LIMIT 3
-    ";
+$reviewsQuery = "
+    SELECT 
+        r.review_text,
+        r.rating_score,
+        u.first_name
+    FROM ratings r
+    LEFT JOIN users u ON r.user_id = u.user_id
+    ORDER BY RAND()
+    LIMIT 3
+";
 
-    $result = mysqli_query($conn, $query);
-    $reviewsResult = mysqli_query($conn, $reviewsQuery);
+$result = mysqli_query($conn, $query);
+$reviewsResult = mysqli_query($conn, $reviewsQuery);
 
-    if (!$result) { die("Tour query error: " . mysqli_error($conn)); }
-    if (!$reviewsResult) { die("Review query error: " . mysqli_error($conn)); }
+if (!$result) { die("Tour query error: " . mysqli_error($conn)); }
+if (!$reviewsResult) { die("Review query error: " . mysqli_error($conn)); }
 ?>
 
-    <?php include "frontend/components/header.php"; ?>
-    <body class="bg-light">
+<?php include "frontend/components/header.php"; ?>
 
+<body class="bg-light">
     <?php include "frontend/components/navbar.php"; ?>
     
     <div class="container-fluid p-0">
-        <div class="d-flex align-items-center justify-content-center"
-            style="background-image:url('frontend/assets/images/banner_index.gif'); background-size: 100%; 
-            background-position: center top; background-attachment: fixed; height: 450px; position: relative;">
+        <div class="d-none d-md-flex align-items-center justify-content-center"
+            style="background-image:url('frontend/assets/images/banner_index.gif'); background-size: cover; background-position: center top;
+                background-repeat: no-repeat; background-attachment: fixed; height: 450px; position: relative;">
+        </div>
+
+        <div class="d-flex d-md-none align-items-center justify-content-center"
+            style="background-image:url('frontend/assets/images/banner_index.gif'); background-size: cover; background-position: center top; 
+                background-repeat: no-repeat; height: 250px; position: relative;">
         </div>
     </div>
 
@@ -88,7 +93,7 @@ $query = "
     <div class="container my-5">
         <div class="row">
             <div class="col-12 p-0">
-                <h5 class="mt-3" style="font-size:20px; color:#053207;">Your Next Escape Starts Here!</h5>
+                <h5 class="ps-3" style="font-size:20px; color:#053207;">Your Next Escape Starts Here!</h5>
             </div>
             <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap">
                 <h2 class="fw-bold text-success">EscaPinas' Top Choices</h2>
@@ -97,33 +102,33 @@ $query = "
                 </a>
             </div>
 
-    <div class="row g-4">
-        <?php while ($row = mysqli_fetch_assoc($result)) { ?>
-        <div class="col-lg-4 col-md-6 col-sm-12">
-            <div class="card h-100 shadow p-2 bg-success bg-opacity-25 rounded-4 border-0">
-                
-                <img src="frontend/<?php echo htmlspecialchars($row['image']); ?>"
-                    class="card-img-top rounded-4 p-2 shadow-sm" 
-                    style="height:300px; object-fit:cover;"
-                    onerror="this.src='frontend/assets/images/default.jpg'"> 
-                
-                <div class="card-body">
-                    <h5 class="fw-bold"><?php echo htmlspecialchars($row['tour_name'])?></h5>
-                    <p class="text-muted small"><?php echo htmlspecialchars($row['description'])?></p>
-                    <div class="d-flex align-items-center mb-2">
-                        <span class="badge bg-success">Starts at</span>
-                        <p class="fw-bold mb-0 ms-2 fs-3">
-                            ₱<?php echo number_format($row['price'], 2)?>
-                            <span class="fs-6 fw-normal text-muted">/per pax</span>
-                        </p>
+            <div class="row g-4">
+                <?php while ($row = mysqli_fetch_assoc($result)) { ?>
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="card h-100 shadow p-2 bg-success bg-opacity-25 rounded-4 border-0">
+                        
+                        <img src="frontend/<?php echo htmlspecialchars($row['image']); ?>"
+                            class="card-img-top rounded-4 p-2 shadow-sm" 
+                            style="height:300px; object-fit:cover;"
+                            onerror="this.src='frontend/assets/images/default.jpg'"> 
+                        
+                        <div class="card-body">
+                            <h5 class="fw-bold"><?php echo htmlspecialchars($row['tour_name'])?></h5>
+                            <p class="text-muted small"><?php echo htmlspecialchars($row['description'])?></p>
+                            <div class="d-flex align-items-center mb-2">
+                                <span class="badge bg-success">Starts at</span>
+                                <p class="fw-bold mb-0 ms-2 fs-3">
+                                    ₱<?php echo number_format($row['price'], 2)?>
+                                    <span class="fs-6 fw-normal text-muted">/per pax</span>
+                                </p>
+                            </div>
+                            <a href="frontend/packageView.php?tour_id=<?php echo $row['tour_id']?>" class="btn btn-success w-100 mt-2 rounded-pill">Book Now</a>
+                        </div>
                     </div>
-                    <a href="frontend/packageView.php?tour_id=<?php echo $row['tour_id']?>" class="btn btn-success w-100 mt-2 rounded-pill">Book Now</a>
                 </div>
+                <?php } ?>
             </div>
         </div>
-        <?php } ?>
-    </div>
-    </div>
     </div>
 
     <div class="container my-5 p-5">

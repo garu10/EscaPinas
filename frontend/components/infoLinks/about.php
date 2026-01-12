@@ -1,7 +1,6 @@
 <?php
-    $_title = "Escapinas Discovery";
+$_title = "Escapinas - About Us";
 session_start(); ?>
-
 
 <?php include "../header.php"; ?>
 <link rel="stylesheet" href="../../assets/css/about.css">
@@ -10,9 +9,14 @@ session_start(); ?>
     <?php include "../navbar.php"; ?>
 
     <div class="container-fluid p-0">
-        <div class="d-flex align-items-center justify-content-center"
-            style="background-image:url('/EscaPinas/frontend/assets/images/banner_about.gif'); background-size: 100%; 
-            background-position: center top; background-attachment: fixed; height: 450px; position: relative;">
+        <div class="d-none d-md-flex align-items-center justify-content-center"
+            style="background-image:url('/EscaPinas/frontend/assets/images/banner_about.gif'); background-size: cover; background-position: center top;
+                background-repeat: no-repeat; background-attachment: fixed; height: 450px; position: relative;">
+        </div>
+
+        <div class="d-flex d-md-none align-items-center justify-content-center"
+            style="background-image:url('/EscaPinas/frontend/assets/images/banner_about.gif'); background-size: cover; background-position: center top; 
+                background-repeat: no-repeat; height: 250px; position: relative;">
         </div>
     </div>
 
@@ -129,12 +133,9 @@ session_start(); ?>
             </div>
         </div>
     </div>
-
-    <div class="footer-spacer"></div>
+    <?php include "../footer.php"; ?>
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
-
-    <?php include "../footer.php"; ?>
 </body>
 </html>
