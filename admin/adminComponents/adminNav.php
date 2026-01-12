@@ -8,7 +8,7 @@
             </div>
             <div class="d-flex flex-row align-items-center">
                 <div class="ms-3"><a href="adminDashboard.php">Dashboard</a></div>
-                <div class="ms-3"><a>More</a></div>
+                <div class="ms-3"><a href="adminEmail.php">Email</a></div>
                 <div class="ms-3"><a>Logout</a></div>
             </div>
 

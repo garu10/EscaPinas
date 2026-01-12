@@ -1,5 +1,7 @@
 {
     "require": {
-        "phpmailer/phpmailer": "^7.0"
+        "phpmailer/phpmailer": "^7.0",
+        "webklex/php-imap": "^6.2",
+        "php-imap/php-imap": "^2.0"
     }
 }
