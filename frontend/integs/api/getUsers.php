@@ -2,7 +2,7 @@
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
 include '../../php/connect.php';
-$externalUrl = "http://192.168.1.15/api/getUsers.php"; // ito need palitan ng tamang URL ng external system
+$externalUrl = "http://192.168.1.15/EscaPinas\frontend\integs\api\sendUsers.php"; // ito need palitan ng tamang URL ng external system
 
 $json_data = @file_get_contents($externalUrl);
 

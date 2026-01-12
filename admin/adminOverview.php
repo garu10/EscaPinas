@@ -71,7 +71,7 @@ $totalAlerts = mysqli_fetch_assoc($alertQuery)['total'];
             this.disabled = true; // prevent multiple clicks
             this.innerText = 'Syncing...';
 
-            fetch('frontend\integs\api\getUsers.php') // adjust path if getUsers.php is in a subfolder
+            fetch('../frontend/integs/api/getUsers.php') // adjust path if getUsers.php is in a subfolder
                 .then(response => response.json())
                 .then(data => {
                     alert(data.message);
@@ -88,7 +88,7 @@ $totalAlerts = mysqli_fetch_assoc($alertQuery)['total'];
             this.disabled = true;
             this.innerText = 'Syncing...';
 
-            fetch('frontend\integs\api\getVouchers.php') // adjust path if getVouchers.php is in a subfolder
+            fetch('../frontend/integs/api/getVouchers.php') // adjust path if getVouchers.php is in a subfolder
                 .then(response => response.json())
                 .then(data => {
                     alert(data.message);

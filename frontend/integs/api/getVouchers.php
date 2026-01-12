@@ -4,7 +4,7 @@ header("Content-Type: application/json; charset=UTF-8");
 include '../../php/connect.php';
 
 // URL for Voucher API
-$externalUrl = "http://192.168.1.15/api/getVouchers.php";
+$externalUrl = "http://192.168.1.15/EscaPinas\frontend\integs\api\sendVouchers.php"; // palitan na lang ito ng tamang URL ng external system
 
 $json_data = @file_get_contents($externalUrl);
 
