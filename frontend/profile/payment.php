@@ -72,11 +72,21 @@ if (!function_exists('renderPaymentCard')) {
                                 <small class="fw-bold" style="color: <?= $statusColor ?>;"><?= $payment['payment_status'] ?></small>
                                 <span class="status-dot" style="background-color: <?= $statusColor ?>; width: 10px; height: 10px; border-radius: 50%; display: inline-block;"></span>
                             </div>
-                            <button type="button" class="btn btn-success fw-bold px-4 shadow-sm rounded-pill"
-                                    style="background-color: #0ca458; border: none;"
-                                    data-bs-toggle="modal" data-bs-target="#pay<?= $payment['payment_id'] ?>">
-                                View Receipt
-                            </button>
+                            <!-- mga binago ni ralph -- js for cancel/refund -->
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-outline-success btn-sm fw-bold px-3 rounded-pill me-2"
+                                        data-bs-toggle="modal" data-bs-target="#pay<?= $payment['payment_id'] ?>">
+                                    Receipt
+                                </button>
+                                
+                                <?php if ($payment['payment_status'] == 'COMPLETED'): ?>
+                                <button type="button" class="btn btn-danger btn-sm fw-bold px-3 rounded-pill"
+                                        onclick="cancelAndRefund(<?= $payment['payment_id'] ?>)">
+                                    Cancel
+                                </button>
+                                <?php endif; ?>
+                            </div>
+                            <!-- mga binago ni ralph -- js for cancel/refund -->
                         </div>
                     </div>
                 </div>
@@ -162,3 +172,34 @@ foreach ($allRecords as $payment):
         </div>
     </div>
 <?php endforeach; ?>
+<!-- mga binago ni ralph -- js for cancel/refund -->
+<script>
+    function cancelAndRefund(paymentId) {
+    if (confirm("Are you sure you want to cancel this booking? The amount will be refunded to your EscaPinas Wallet.")) {
+        const formData = new FormData();
+        formData.append('payment_id', paymentId);
+
+        fetch('backend/process_refund.php', { 
+            method: 'POST',
+            body: formData
+        })
+        .then(response => {
+            if (!response.ok) throw new Error('Network response was not ok');
+            return response.json();
+        })
+        .then(data => {
+            if (data.status === 'success') {
+                alert("Refunded successfully to your wallet!");
+                location.reload();
+            } else {
+                alert("Error: " + data.message);
+            }
+        })
+        .catch(err => {
+            console.error("Fetch Error:", err);
+            alert("Failed to process refund. Check console.");
+        });
+    }
+}
+</script>
+<!-- mga binago ni ralph -- js for cancel/refund -->

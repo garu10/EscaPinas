@@ -22,12 +22,11 @@ $totalAlerts = mysqli_fetch_assoc($alertQuery)['total'];
 
 <body>
     <?php include 'adminComponents/adminNav.php'; ?>
-
-    <div class="container-fluid bg-success bg-opacity-50 p-5 align-items-center" style="min-height: 50vh;">
-        <div class="row">
-            <div class="col d-flex flex-column p-5">
-                <div class="h1 text-start mb-4 text-success">Dashboard Overview</div>
-                <div class="d-flex flex-row justify-content-around gap-3">
+        <div class="container-fluid bg-success bg-opacity-50 p-5 align-items-center" style="min-height: 50vh;">
+            <div class="row">
+                <div class="col d-flex flex-column p-5">
+                    <div class="h1 text-start mb-4 text-success">Dashboard Overview</div>
+                    <div class="d-flex flex-row justify-content-around gap-3">
 
                     <button class="h5 p-5 bg-success bg-opacity-25 rounded-5 border border-5 border-success">
                         <div class="h3 fw-bold"><?= $totalTours ?></div>
@@ -43,7 +42,6 @@ $totalAlerts = mysqli_fetch_assoc($alertQuery)['total'];
                         <div class="h3 fw-bold"><?= $totalClients ?></div>
                         <div class="h6 m-0">Total Clients</div>
                     </button>
-
                     <button class="h5 p-5 bg-success bg-opacity-25 rounded-5 border border-5 border-success">
                         <div class="h3 fw-bold">₱<?= number_format($totalRevenue, 2) ?></div>
                         <div class="h6 m-0">Total Revenue</div>
