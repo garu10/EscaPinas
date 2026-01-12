@@ -14,10 +14,17 @@ if ($data && isset($data['status'])) {
     $status = $data['status']; 
     
     file_put_contents($logFile, "[$timestamp] SMS ID: $messageId | STATUS: $status" . PHP_EOL, FILE_APPEND);
+
+    if ($messageId !== 'N/A') {
+        $stmt = $conn->prepare("UPDATE sms_logs SET status = ? WHERE message_id = ?");
+        $stmt->bind_param("ss", $status, $messageId);
+        $stmt->execute();
+        $stmt->close();
+    }
 }
 
 http_response_code(200);
-echo json_encode(["status" => "ok", "message" => "Callback logged"]);
+echo json_encode(["status" => "ok", "message" => "Callback logged and DB updated"]);
 
 function sendSMS($to, $msg) {
     $url = "https://api.sms-gate.app/3rdparty/v1/messages";

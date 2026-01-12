@@ -50,13 +50,13 @@
             <h2 class="fw-bold text-success mb-0">Search Results</h2>
             <button class="btn btn-sm btn-outline-success position-absolute end-0" onclick="window.location.reload()">Clear Search</button>
         </div>
-        <div class="row g-4 justify-content-center" id="searchResultsGrid">
+        <div class="row g-4 justify-content-center" id="searchResultsGrid"> 
             <?php foreach ($allTours as $row): ?>
                 <div class="col-md-4 search-result-card"
                     data-island="<?php echo strtolower($row['island_name']); ?>"
                     data-destination="<?php echo strtolower($row['destination_name']); ?>">
                     <div class="card border-0 shadow-sm h-100">
-                        <img src="<?php echo htmlspecialchars($row['image']); ?>" class="card-img-top" height="200" style="object-fit: cover;">
+                        <img src="/EscaPinas/frontend/<?php echo htmlspecialchars($row['image']); ?>" class="card-img-top" height="200" style="object-fit: cover;">
                         <div class="card-body">
                             <h5 class="fw-bold mb-1"><?php echo htmlspecialchars($row['tour_name']); ?></h5>
                             <p class="text-muted small mb-2"><i class="bi bi-geo-alt-fill text-danger"></i> <?php echo htmlspecialchars($row['island_name'] . " | " . $row['destination_name']); ?></p>

@@ -1,65 +1,55 @@
 <?php
-error_reporting(0);
-ini_set('display_errors', 0);
+error_reporting(E_ALL);
+ini_set('display_errors', 0); 
 header('Content-Type: application/json');
 
-$target_path = dirname(__DIR__, 2) . DIRECTORY_SEPARATOR . 'php' . DIRECTORY_SEPARATOR . 'connect.php';
-$include_path = realpath($target_path);
-
-if (!$include_path || !file_exists($include_path)) {
-    echo json_encode(["status" => "error", "message" => "Connection file not found."]);
-    exit();
-}
-
-require_once $include_path;
+require_once "../../php/connect.php";
 date_default_timezone_set('Asia/Manila');
 
-if ($_SERVER["REQUEST_METHOD"] !== "POST") {
-    echo json_encode(["status" => "error", "message" => "Invalid request."]);
-    exit();
-}
-
-$email = isset($_POST['email']) ? trim($_POST['email']) : '';
+$identifier = $_POST['email'] ?? $_POST['contact_num'] ?? '';
 $otp_input = isset($_POST['otp_input']) ? trim($_POST['otp_input']) : '';
 
-if (empty($email) || empty($otp_input)) {
-    echo json_encode(["status" => "error", "message" => "Email or OTP not provided."]);
+if (empty($identifier) || empty($otp_input)) {
+    echo json_encode(["status" => "error", "message" => "Email/Contact or OTP not provided."]);
     exit();
 }
 
 $now = date("Y-m-d H:i:s");
 
-$stmt = $conn->prepare("SELECT verification_code, otp_expiry FROM users WHERE email = ? LIMIT 1");
-if (!$stmt) {
-    echo json_encode(["status" => "error", "message" => "Database error."]);
-    exit();
-}
-
-$stmt->bind_param("s", $email);
+$stmt = $conn->prepare("SELECT user_id, contact_num, verification_code, otp_expiry FROM users WHERE email = ? OR contact_num = ? LIMIT 1");
+$stmt->bind_param("ss", $identifier, $identifier);
 $stmt->execute();
 $result = $stmt->get_result();
 
 if ($user = $result->fetch_assoc()) {
+    $user_id = $user['user_id'];
+    $phone = $user['contact_num'];
+
     if ($user['verification_code'] !== $otp_input) {
-        echo json_encode(["status" => "error", "message" => "Maling verification code."]);
+        echo json_encode(["status" => "error", "message" => "Wrong Verification Code."]);
         exit();
     }
 
     if ($user['otp_expiry'] < $now) {
-        echo json_encode(["status" => "error", "message" => "Ang iyong OTP ay expired. I-click ang Resend Code."]);
+        echo json_encode(["status" => "error", "message" => "Code already expired. Resend new."]);
         exit();
     }
 
-    $updateStmt = $conn->prepare("UPDATE users SET is_verified = 1, verification_code = NULL, otp_expiry = NULL WHERE email = ?");
-    $updateStmt->bind_param("s", $email);
+    $updateStmt = $conn->prepare("UPDATE users SET is_verified = 1, verification_code = NULL, otp_expiry = NULL WHERE user_id = ?");
+    $updateStmt->bind_param("i", $user_id);
+    
     if ($updateStmt->execute()) {
-        echo json_encode(["status" => "success", "message" => "Account verified! Redirecting to login..."]);
+        
+        $log_msg = "User successfully verified their account using OTP.";
+        $log_stmt = $conn->prepare("INSERT INTO sms_logs (user_id, contact_num, sms_type, message_content, status) VALUES (?, ?, 'OTP', ?, 'delivered')");
+        $log_stmt->bind_param("iss", $user_id, $phone, $log_msg);
+        $log_stmt->execute();
+
+        echo json_encode(["status" => "success", "message" => "Account verified!Redirecting to Login."]);
     } else {
-        echo json_encode(["status" => "error", "message" => "Failed to verify account."]);
+        echo json_encode(["status" => "error", "message" => "Error in Database: " . $conn->error]);
     }
 } else {
-    echo json_encode(["status" => "error", "message" => "Email not found."]);
+    echo json_encode(["status" => "error", "message" => "No account can be found."]);
 }
-
 exit();
-?>

@@ -1,5 +1,8 @@
 <?php
-function sendSMS($rawNumber, $message) {
+include_once("../frontend/php/connect.php");
+
+function sendSMS($rawNumber, $message, $user_id = null, $type = 'Review') {
+    global $conn; 
     $number = preg_replace('/[^0-9]/', '', $rawNumber);
 
     if (strlen($number) === 11 && substr($number, 0, 2) === '09') {
@@ -10,11 +13,11 @@ function sendSMS($rawNumber, $message) {
         return "INVALID NUMBER FORMAT: " . $rawNumber;
     }
 
-    $number = '+' . $number;
+    $formattedNumber = '+' . $number;
     $url = "https://api.sms-gate.app/3rdparty/v1/messages";
 
     $payload = [
-        "phoneNumbers" => [$number],
+        "phoneNumbers" => [$formattedNumber],
         "textMessage" => ["text" => $message]
     ];
 
@@ -30,11 +33,21 @@ function sendSMS($rawNumber, $message) {
     $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
 
+    $resData = json_decode($response, true);
+    $messageId = $resData['id'] ?? null;
+    $status = ($httpCode == 200 || $httpCode == 201) ? 'sent' : 'failed';
+
+    if ($user_id) {
+        $stmt = $conn->prepare("INSERT INTO sms_logs (user_id, contact_num, sms_type, message_content, status, message_id) VALUES (?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("isssss", $user_id, $rawNumber, $type, $message, $status, $messageId);
+        $stmt->execute();
+    }
+
     return "HTTP $httpCode | $response";
 }
 
-function sendBookingSMS($rawNumber, $ref) {
+function sendBookingSMS($rawNumber, $ref, $user_id) {
     $message = "Thank you for booking with EscaPinas! We value your experience and would love your feedback. Reply to this message to share your thoughts. Ref: " . $ref;
-    return sendSMS($rawNumber, $message);
+    return sendSMS($rawNumber, $message, $user_id, 'Review');
 }
 ?>

@@ -24,6 +24,7 @@ $css = "../admin/assets/css/adminProfile.css";
                     <a href="profile.php?page=personal" class="text-center d-block text-decoration-none text-dark small">Update personal info</a>
 
                     <div class="sidebar-links">
+                        <a href="adminDashboard.php?page=adminSMS" class="fw-bold text-success">SMS</a>
                         <a href="adminDashboard.php?page=adminBookings" class="fw-bold text-success">Bookings</a>
                         <a href="adminDashboard.php?page=adminDestinations" class="fw-bold text-success">Destinations</a>
                         <a href="adminDashboard.php?page=adminLocationPoints" class="fw-bold text-success">Location Points</a>
@@ -51,6 +52,9 @@ $css = "../admin/assets/css/adminProfile.css";
                 <div class="box-details">
                     <?php
                     switch ($page) {
+                        case 'adminSMS':
+                            include "dashboardLinks/adminSMS/smsUI.php";
+                            break;
                         case 'adminBookings':
                             include "dashboardLinks/adminBookings/bookingsUI.php";
                             break;
