@@ -26,27 +26,35 @@ $fields = [
 
 <div class="mt-4">
     <!-- nandito pa rin yung code at logic, may binago lang ako sa fields/labels at yung laman ng p tag -->
-    <?php 
-    $idx = 0;
-    foreach ($fields as $label => $val): ?>
-        <div class="mb-4 profile-row" id="row-<?= $idx ?>">
-            <div class="d-flex justify-content-between align-items-center">
-                <label class="fw-semibold text-success small"><?= $label ?></label>
-                <span class="edit-link text-primary fw-bold" onclick="toggleEdit(<?= $idx ?>, true)" style="font-size: 13px; cursor: pointer;">Edit</span>
-            </div>
-            <div class="info-box" style="background: #edededff; border-radius: 12px; padding: 12px 15px; min-height: 48px; display: flex; align-items: center; margin-top: 5px;">
-                <p class="view-text m-0 fw-semibold text-dark w-100"><?= !empty($val) ? htmlspecialchars($val) : "Not set"; ?></p>
-                <input type="text" class="custom-input w-100 fw-semibold text-dark" placeholder="<?= $field ?>"
-                    style="background: transparent; border: none; padding: 0; display: none; outline: none;">
-            </div>
-            <div class="text-end">
-                <button type="button" class="btn btn-success btn-save mt-2 px-4 fw-bold" onclick="openModal(<?= $idx ?>)"
-                    style="border-radius: 10px; display: none; font-size: 14px;">Save</button>
-            </div>
+<!-- mga binago ko (ralph) -->
+<?php 
+$idx = 0;
+foreach ($fields as $label => $val): 
+    // Create a key that matches the $allowed_columns in the API
+    $columnKey = str_replace(' ', '_', strtolower($label));
+?>
+    <div class="mb-4 profile-row" id="row-<?= $idx ?>">
+        <div class="d-flex justify-content-between align-items-center">
+            <label class="fw-semibold text-success small"><?= $label ?></label>
+            <span class="edit-link text-primary fw-bold" onclick="toggleEdit(<?= $idx ?>, true)" style="font-size: 13px; cursor: pointer;">Edit</span>
         </div>
-    <?php 
-    $idx++;
-    endforeach; ?>
+        <div class="info-box" style="background: #edededff; border-radius: 12px; padding: 12px 15px; min-height: 48px; display: flex; align-items: center; margin-top: 5px;">
+            <p class="view-text m-0 fw-semibold text-dark w-100"><?= !empty($val) ? htmlspecialchars($val) : "Not set"; ?></p>
+            
+            <input type="text" class="custom-input w-100 fw-semibold text-dark" 
+                data-column="<?= $columnKey ?>"
+                value="<?= htmlspecialchars($val) ?>"
+                style="background: transparent; border: none; padding: 0; display: none; outline: none;">
+        </div>
+        <div class="text-end">
+            <button type="button" class="btn btn-success btn-save mt-2 px-4 fw-bold" onclick="openModal(<?= $idx ?>)"
+                style="border-radius: 10px; display: none; font-size: 14px;">Save</button>
+        </div>
+    </div>
+<?php 
+$idx++;
+endforeach; ?>
+<!-- mga binago ko (ralph) -->
 
     <p class="text-muted small mt-4">
         We'll only use this info to personalize your experience on EscaPinas.
@@ -75,7 +83,7 @@ $fields = [
         </div>
     </div>
 </div>
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     var activeIdx = null;
     var confirmModal = new bootstrap.Modal(document.getElementById('saveConfirmModal'));
@@ -104,20 +112,47 @@ $fields = [
     function openModal(idx) {
         activeIdx = idx;
         confirmModal.show();
-
+// <!-- mga binago ko (ralph) -->
         document.getElementById('confirmSave').onclick = function() {
             var row = document.getElementById('row-' + activeIdx);
             var input = row.querySelector('.custom-input');
             var view = row.querySelector('.view-text');
+            var newValue = input.value.trim();
+            var column = input.getAttribute('data-column');
 
-            if (input.value.trim() !== "") {
-                view.textContent = input.value.trim();
-            } else {
-                view.textContent = "Not set";
-            }
+            // Show loading state on button
+            const btn = this;
+            const originalText = btn.textContent;
+            btn.disabled = true;
+            btn.textContent = "Saving...";
 
-            toggleEdit(activeIdx, false);
-            confirmModal.hide();
+            var formData = new FormData();
+            formData.append('column', column);
+            formData.append('value', newValue);
+
+            fetch('/EscaPinas/frontend/profile/api/updateProfile.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    view.textContent = newValue || "Not set";
+                    toggleEdit(activeIdx, false);
+                    confirmModal.hide();
+                } else {
+                    alert("Error: " + data.error);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert("Server communication failed. Check if the file path is correct.");
+            })
+            .finally(() => {
+                btn.disabled = false;
+                btn.textContent = originalText;
+            });
         };
+// <!-- mga binago ko (ralph) -->
     }
 </script>

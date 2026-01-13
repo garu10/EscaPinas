@@ -7,7 +7,6 @@ session_start();
 include_once __DIR__ . "/../php/connect.php"; 
 
 header('Content-Type: application/json');
-
 $uid = $_SESSION['user_id'] ?? null;
 $pid = $_POST['payment_id'] ?? null;
 

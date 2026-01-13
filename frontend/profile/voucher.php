@@ -2,7 +2,7 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-include_once "/../php/connect.php";
+include_once "php/connect.php";
 
 $user_id = $_SESSION['user_id'] ?? 0;
 $myVouchers = [];
