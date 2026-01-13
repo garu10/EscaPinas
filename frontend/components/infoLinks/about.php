@@ -123,6 +123,36 @@ session_start(); ?>
             </div>
         </div>
 
+        <!-- Partnership Section -->
+        <div class="py-5">
+            <div class="container">
+                <div class="text-center mb-5">
+                    <h2 class="fw-bold mb-4">Our Partnerships</h2>
+                    <p class="text-muted">We collaborate with trusted partners to enhance your travel experience.</p>
+                </div>
+                <div class="row align-items-center g-5">
+                    <div class="col-md-6 d-flex justify-content-center">
+                        <div class="story-text text-muted" style="margin-bottom: -1rem; margin-top: -15%;">
+                            <p style="text-align: justify;"><strong>BookStack</strong> is our partner in literary adventures, providing access to a vast collection of books for rent. Whether you're looking to dive into Filipino literature, learn about local culture, or simply enjoy a good read during your travels, BookStack makes knowledge accessible and affordable.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 text-center">
+                        <div class="d-flex justify-content-center" style="margin-right: -9%;">
+                            <div class="logo-wrapper p-2 rounded-5 d-inline-block">
+                                <img src="/EscaPinas/frontend/assets/images/book_logo.png"
+                                     alt="BookStack Logo - Book Rental Platform"
+                                     class="img-fluid rounded-5 p-4 brand-logo-img"
+                                     style="max-width: 232px;">
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-center mt-5" style="margin-right: -16%;">
+                            <a href="#" class="btn btn-outline-success rounded-pill">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="container">
             <div class="cta-div shadow-lg text-center">
                 <div class="container">
