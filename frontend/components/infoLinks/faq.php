@@ -1,23 +1,15 @@
-<?php session_start(); ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Frequently Asked Questions | EscaPinas</title>
-    
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-    
-    <link rel="stylesheet" href="../../assets/css/faq.css">
-</head>
+<?php
+$_title = "Escapinas - Frequently Asked Questions";
+session_start(); ?>
+
+<?php include "../header.php"; ?>
+<link rel="stylesheet" href="../../assets/css/faq.css">
+
 <body>
     <?php include "../navbar.php"; ?>
 
-    <main class="container">
+    <div class="container my-5">
         <div class="faq-main-wrapper">
-            
             <div class="faq-header-inside">
                 <h1>Frequently Asked Questions</h1>
                 <div class="title-line"></div>
@@ -49,7 +41,7 @@
                     </h2>
                     <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
                         <div class="accordion-body">
-                            We accept payments through secure digital gateways including <strong>GCash</strong> and <strong>PayPal</strong>. Please ensure to settle the required deposit to secure your slot.
+                            We accept payments through <strong>card</strong> and secure a digital gateway, <strong>PayPal</strong>. Please ensure to settle the required deposit to secure your slot.
                         </div>
                     </div>
                 </div>
@@ -58,12 +50,12 @@
                     <h2 class="accordion-header">
                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
                             <i class="bi bi-x-octagon me-3 text-success"></i>
-                            What is your cancellation and refund policy?
+                            Can I cancel my tour and get a refund?
                         </button>
                     </h2>
                     <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
                         <div class="accordion-body">
-                            Cancellations made at least <strong>7 days prior</strong> to the tour are eligible for a 50% refund. Unfortunately, bookings cancelled within 48 hours of departure are strictly non-refundable.
+                            EscaPinas operates under a strict <strong>No-Cancellation</strong> and <strong>No-Refund policy</strong>. Once a booking is confirmed and payment is processed, all slots are considered final and non-refundable. However, you can contact the EscaPinas through our email or number to discuss possible rescheduling options.
                         </div>
                     </div>
                 </div>
@@ -77,7 +69,7 @@
                     </h2>
                     <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
                         <div class="accordion-body">
-                            Safety is our top priority. If there are official coast guard advisories or extreme weather conditions, EscaPinas reserves the right to reschedule or cancel the trip for your safety.
+                            Safety is our top priority. If there are official coast guard advisories or extreme weather conditions, EscaPinas reserves the right to reschedule the trip for your safety.
                         </div>
                     </div>
                 </div>
@@ -85,11 +77,25 @@
                 <div class="accordion-item">
                     <h2 class="accordion-header">
                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5">
+                            <i class="bi bi-airplane-engines me-3 text-success"></i>
+                            Do you handle airline bookings?
+                        </button>
+                    </h2>
+                    <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            While we provide the flight details, airfare is often managed through external providers. We provide all necessary documentation so you can check your status directly with the airline.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq6">
                             <i class="bi bi-luggage me-3 text-success"></i>
                             What should I bring during the tour?
                         </button>
                     </h2>
-                    <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div id="faq6" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
                         <div class="accordion-body">
                             We recommend bringing comfortable swimwear, sun protection (sunblock/hats), a valid ID, and extra cash for personal expenses. Don't forget your camera to capture the memories!
                         </div>
@@ -110,9 +116,9 @@
                 </div>
             </div>
         </div>
-    </main>
+    </div>
 
     <?php include "../footer.php"; ?>
-    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

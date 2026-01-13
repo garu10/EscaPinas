@@ -1,29 +1,21 @@
-<?php session_start(); ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Privacy Policy | EscaPinas</title>
-    
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-    
-    <link rel="stylesheet" href="../../assets/css/privacy.css">
-</head>
+<?php
+$_title = "Escapinas - Privacy Policy";
+session_start(); ?>
+
+<?php include "../header.php"; ?>
+<link rel="stylesheet" href="../../assets/css/privacy.css">
+
 <body>
     <?php include "../navbar.php"; ?>
 
-    <main class="container">
+    <div class="container my-5">
         <div class="privacy-main-wrapper">
-            
             <div class="privacy-header-inside">
                 <h1>Privacy Policy</h1>
                 <div class="title-line"></div>
             </div>
 
-            <div class="row g-4">
+            <div class="row g-4 justify-content-center">
                 <div class="col-md-6 col-lg-4">
                     <div class="policy-card">
                         <i class="bi bi-database-add policy-icon"></i>
@@ -60,7 +52,7 @@
                     <div class="policy-card">
                         <i class="bi bi-share policy-icon"></i>
                         <h4>5. Third-Party Sharing</h4>
-                        <p>We do not sell your data. We only share necessary details with payment gateways (GCash, PayPal) and local tour operators to fulfill your booking.</p>
+                        <p>We do not sell your data. We only share necessary details with payment gateway (PayPal) and local tour operators to fulfill your booking.</p>
                     </div>
                 </div>
 
@@ -85,7 +77,7 @@
                 </div>
             </div>
         </div>
-    </main>
+    </div>
 
     <?php include "../footer.php"; ?>
 </body>
