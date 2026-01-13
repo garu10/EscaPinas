@@ -4,7 +4,7 @@
             
             <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mt-5 text-center">
                 <div class="mb-3">
-                    <img src="/EscaPinas/frontend/assets/images/Logo 1.png" height="150" class="d-inline-block align-text-top">
+                    <img src="/EscaPinas/frontend/assets/images/logov3.png" height="150" class="d-inline-block align-text-top">
                 </div>
                 <p class="small text-light">
                     EscaPinas is your gateway to affordable tours across the Philippines. Explore, enjoy, and create unforgettable memories with every trip.
