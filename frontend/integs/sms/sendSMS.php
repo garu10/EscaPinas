@@ -1,10 +1,10 @@
 <?php
 include_once("../frontend/php/connect.php");
 
-function sendSMS($rawNumber, $message, $user_id = null, $type = 'Review') {
+function sendSMS($rawNumber, $message, $user_id, $type = 'Review') {
     global $conn; 
-    $number = preg_replace('/[^0-9]/', '', $rawNumber);
 
+    $number = preg_replace('/[^0-9]/', '', $rawNumber);
     if (strlen($number) === 11 && substr($number, 0, 2) === '09') {
         $number = '63' . substr($number, 1);
     }
@@ -37,10 +37,15 @@ function sendSMS($rawNumber, $message, $user_id = null, $type = 'Review') {
     $messageId = $resData['id'] ?? null;
     $status = ($httpCode == 200 || $httpCode == 201) ? 'sent' : 'failed';
 
-    if ($user_id) {
-        $stmt = $conn->prepare("INSERT INTO sms_logs (user_id, contact_num, sms_type, message_content, status, message_id) VALUES (?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("isssss", $user_id, $rawNumber, $type, $message, $status, $messageId);
-        $stmt->execute();
+    if (!empty($user_id)) {
+        try {
+            $stmt = $conn->prepare("INSERT INTO sms_logs (user_id, contact_num, sms_type, message_content, status, message_id) VALUES (?, ?, ?, ?, ?, ?)");
+            $stmt->bind_param("isssss", $user_id, $rawNumber, $type, $message, $status, $messageId);
+            $stmt->execute();
+        } catch (mysqli_sql_exception $e) {
+            error_log("SMS Log DB Error: " . $e->getMessage());
+            return "SMS Sent but Logging Failed: Foreign Key constraint violated.";
+        }
     }
 
     return "HTTP $httpCode | $response";

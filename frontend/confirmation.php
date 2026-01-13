@@ -40,18 +40,21 @@ if ($ref) {
             }
         }
 
-        // --- SMS LOGIC (Already has session protection) ---
         if (!isset($_SESSION['sms_sent_' . $ref])) {
             $sms_script = __DIR__ . "/integs/sms/sendSMS.php";
             if (file_exists($sms_script)) {
                 require_once $sms_script;
                 if (function_exists('sendBookingSMS')) {
-                    $sms_response = sendBookingSMS($booking['contact_num'], $booking['booking_reference']);
+                    $sms_response = sendBookingSMS(
+                        $booking['contact_num'], 
+                        $booking['booking_reference'], 
+                        $booking['user_id']
+                    );
                     $_SESSION['sms_sent_' . $ref] = true;
                 }
             }
         }
-    }
+        }
 }
 ?>
 <?php include "components/header.php"; ?>
