@@ -21,6 +21,76 @@ function sendSMS($to, $msg)
     curl_close($ch);
 }
 
+// Function para sa BookStack API - Check if user exists
+function checkBookStackUser($identifier)
+{
+    $api_url = "http://192.168.1.16:8080/BookStack/api/users.php";
+    
+    // BookStack API requires admin credentials for authentication
+    $admin_username = "Hiro Setsuya";   // BookStack admin username
+    $admin_password = "Adrian1#";       // BookStack admin password
+    
+    try {
+        // Create a stream context with Basic Auth using base64_encode
+        $context = stream_context_create([
+            "http" => [
+                "header" => "Authorization: Basic " . base64_encode("$admin_username:$admin_password")
+            ]
+        ]);
+        
+        // Fetch the JSON data from the API
+        $response = @file_get_contents($api_url, false, $context);
+        
+        if ($response === false) {
+            error_log("BookStack API failed to retrieve data");
+            return false;
+        }
+        
+        if (empty($response)) {
+            error_log("BookStack API returned empty response");
+            return false;
+        }
+        
+        // Decode JSON to PHP array
+        $data = json_decode($response, true);
+        
+        if (!is_array($data)) {
+            error_log("BookStack API response is not valid JSON: " . substr($response, 0, 200));
+            return false;
+        }
+        
+        // Handle different response formats
+        // If response is a single user object (has 'user_id' key)
+        if (isset($data['user_id'])) {
+            // Single user object returned
+            if (($data['email'] === $identifier || ($data['user_name'] ?? '') === $identifier) && ($data['is_account_verified'] ?? 0) == 1) {
+                return $data;
+            }
+        } 
+        // If response is array of users
+        elseif (is_array($data) && count($data) > 0) {
+            // Check if first element is a user object
+            $first_key = array_key_first($data);
+            
+            if (isset($data[$first_key]['user_id'])) {
+                // Array of user objects
+                foreach ($data as $user) {
+                    if (is_array($user) && isset($user['user_id'])) {
+                        if (($user['email'] === $identifier || ($user['user_name'] ?? '') === $identifier) && ($user['is_account_verified'] ?? 0) == 1) {
+                            return $user;
+                        }
+                    }
+                }
+            }
+        }
+        
+        return false;
+    } catch (Exception $e) {
+        error_log("BookStack API Exception: " . $e->getMessage());
+        return false;
+    }
+}
+
 $error_msg = "";
 $show_resend = false;
 $resend_email = "";
@@ -44,37 +114,111 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $identifier = mysqli_real_escape_string($conn, $_POST['email']);
     $password = $_POST['password'];
 
-    // Updated Query: Check email OR user_name
+    // First, check if user exists in EscaPinas database (main database)
     $get_user = "SELECT * FROM users WHERE email = '$identifier' OR username = '$identifier' LIMIT 1";
     $result = mysqli_query($conn, $get_user);
-
+    
+    $user_found = false;
+    $user_data = null;
+    
+    // Check if user exists in EscaPinas database
     if ($result && mysqli_num_rows($result) > 0) {
-        $user = mysqli_fetch_assoc($result);
-
-        // Verify password using the hash
-        if (password_verify($password, $user['password'])) {
-            if ($user['is_verified'] == 0) {
-                $error_msg = "Account not verified. Please check your SMS for the code.";
-                $show_resend = true;
-                $resend_email = $user['email'];
-            } else {
-                $_SESSION['user_id'] = $user['user_id'];
-                $_SESSION['username'] = $user['username']; 
-                $_SESSION['first_name'] = $user['first_name'];
-                $_SESSION['role'] = $user['role'];
-
-                if ($user['role'] == 'admin') {
-                    header("Location: admin_dashboard.php");
-                } else {
-                    header("Location: ../index.php");
-                }
-                exit();
-            }
-        } else {
-            $error_msg = "Invalid Password!";
-        }
+        $user_data = mysqli_fetch_assoc($result);
+        $user_found = true;
     } else {
+        // If not found in EscaPinas database, check BookStack API
+        $bookstack_user = checkBookStackUser($identifier);
+        if ($bookstack_user) {
+            $user_data = $bookstack_user;
+            $user_found = true;
+        }
+    }
+    
+    if (!$user_found) {
         $error_msg = "No account found with that Username or Email!";
+    } else {
+        // Check if account is verified
+        $is_verified = isset($user_data['is_account_verified']) ? $user_data['is_account_verified'] : (isset($user_data['is_verified']) ? $user_data['is_verified'] : 0);
+        
+        if ($is_verified == 0) {
+            $error_msg = "Account not verified. Please verify your account first.";
+            $show_resend = true;
+            $resend_email = $user_data['email'];
+        } else {
+            // Verify password - try both password and password_hash fields
+            $password_hash = isset($user_data['password']) ? $user_data['password'] : (isset($user_data['password_hash']) ? $user_data['password_hash'] : '');
+            
+            if (empty($password_hash)) {
+                $error_msg = "Account password not found in system!";
+            } elseif (password_verify($password, $password_hash)) {
+                // Password correct - If from BookStack, insert/update into EscaPinas database
+                $user_name = $user_data['user_name'] ?? $user_data['username'] ?? '';
+                $email = mysqli_real_escape_string($conn, $user_data['email']);
+                $phone_number = mysqli_real_escape_string($conn, $user_data['phone_number'] ?? $user_data['contact_num'] ?? '');
+                $role = $user_data['role'] ?? 'user';
+                
+                // Check if user already exists in EscaPinas database by email
+                $check_user = "SELECT user_id FROM users WHERE email = '$email' LIMIT 1";
+                $check_result = mysqli_query($conn, $check_user);
+                
+                if ($check_result && mysqli_num_rows($check_result) > 0) {
+                    // User exists, update the record (don't update user_id to avoid conflicts)
+                    $existing_user = mysqli_fetch_assoc($check_result);
+                    $existing_user_id = $existing_user['user_id'];
+                    
+                    $update_query = "UPDATE users SET 
+                        username = '$user_name',
+                        contact_num = '$phone_number',
+                        role = '$role',
+                        password = '$password_hash',
+                        is_verified = '$is_verified'
+                        WHERE email = '$email'";
+                    mysqli_query($conn, $update_query);
+                    
+                    // Use the existing user_id for session
+                    $_SESSION['user_id'] = $existing_user_id;
+                } else {
+                    // New user from BookStack, insert into database WITHOUT specifying user_id
+                    // This allows the database to auto-generate a unique user_id
+                    $insert_query = "INSERT INTO users (
+                        username, 
+                        email, 
+                        contact_num, 
+                        role, 
+                        password, 
+                        is_verified
+                    ) VALUES (
+                        '$user_name',
+                        '$email',
+                        '$phone_number',
+                        '$role',
+                        '$password_hash',
+                        '$is_verified'
+                    )";
+                    
+                    if (mysqli_query($conn, $insert_query)) {
+                        // Get the auto-generated user_id
+                        $_SESSION['user_id'] = mysqli_insert_id($conn);
+                    } else {
+                        error_log("Database Insert Error: " . mysqli_error($conn));
+                        // Still set session with BookStack user_id if insert fails
+                        $_SESSION['user_id'] = $user_data['user_id'] ?? '';
+                    }
+                }
+                
+                // Set session data
+                $_SESSION['username'] = $user_name; 
+                $_SESSION['user_name'] = $user_name;
+                $_SESSION['email'] = $user_data['email'];
+                $_SESSION['role'] = $role;
+
+                // Redirect to home page for all users
+                header("Location: ../index.php");
+                exit();
+            } else {
+                $error_msg = "Invalid Password!";
+            }
+        }
     }
 }
 ?>

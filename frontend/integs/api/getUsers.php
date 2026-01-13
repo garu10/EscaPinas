@@ -2,14 +2,23 @@
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
 include '../../php/connect.php';
-$externalUrl = "http://192.168.1.15/EscaPinas\frontend\integs\api\sendUsers.php"; // ito need palitan ng tamang URL ng external system
 
-$json_data = @file_get_contents($externalUrl);
+// 1. Ensure this IP matches your MacBook's current IP
+// 2. Ensure users1.php is the filename on the other project
+$externalUrl = "http://192.168.1.16:8080/BookStack/api/users.php"; 
 
-if ($json_data === FALSE) {
-    echo json_encode(["status" => "error", "message" => "Could not connect to External API."]);
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, $externalUrl);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+
+$json_data = curl_exec($ch);
+
+if (curl_errno($ch)) {
+    echo json_encode(["status" => "error", "message" => "Connection failed: " . curl_error($ch)]);
     exit;
 }
+curl_close($ch);
 
 $externalUsers = json_decode($json_data, true);
 
@@ -18,20 +27,22 @@ if (!empty($externalUsers) && is_array($externalUsers)) {
     $errors = 0;
 
     foreach ($externalUsers as $user) {
-        // 1. Sanitize the data from the external source
+        // Match the keys exactly as they are returned by users1.php
         $username = mysqli_real_escape_string($conn, $user['username']);
         $email    = mysqli_real_escape_string($conn, $user['email']);
-        $hash     = mysqli_real_escape_string($conn, $user['password_hash']);
+        
+        // Note: users1.php returns it as 'password', NOT 'password_hash'
+        $pass     = mysqli_real_escape_string($conn, $user['password']);
         $role     = mysqli_real_escape_string($conn, $user['role']); 
 
-        
-        $sql = "INSERT INTO users (username, email, password_hash, role) 
-                VALUES ('$username', '$email', '$hash', '$role')
+        // SQL updated to use 'password' column to match your users table
+        $sql = "INSERT INTO users (username, email, password, role) 
+                VALUES ('$username', '$email', '$pass', '$role')
                 ON DUPLICATE KEY UPDATE 
-                password_hash = '$hash', 
+                password = '$pass', 
                 role = '$role'";
 
-        if (executeQuery( $sql)) {
+        if (mysqli_query($conn, $sql)) {
             $count++; 
         } else {
             $errors++;
@@ -44,6 +55,6 @@ if (!empty($externalUsers) && is_array($externalUsers)) {
         "failed" => $errors
     ]);
 } else {
-    echo json_encode(["status" => "error", "message" => "No data received or invalid JSON format."]);
+    echo json_encode(["status" => "error", "message" => "No data found or URL incorrect."]);
 }
 ?>
