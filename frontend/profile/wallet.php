@@ -7,24 +7,30 @@ if (!$uid) {
     echo "<div class='text-center py-5'><p class='text-muted'>Please log in to view your wallet.</p></div>";
     return;
 }
-
-// 1. Calculate Balance by Summing all transactions
-$balanceQuery = "SELECT SUM(amount) AS total_balance FROM wallet_transactions WHERE user_id = $uid";
+// // mga binago ko (ralph)
+// 1. Get the Current Balance (The 'running_balance' of the latest entry)
+$balanceQuery = "SELECT running_balance FROM refund_wallet 
+                  WHERE user_id = $uid 
+                  ORDER BY updated_at DESC LIMIT 1";
 $balanceResult = executeQuery($balanceQuery);
 $balanceData = mysqli_fetch_assoc($balanceResult);
-$currentBalance = $balanceData['total_balance'] ?? 0.00;
+$currentBalance = $balanceData['running_balance'] ?? 0.00;
 
-// 2. Fetch Transaction History
-$historyQuery = "SELECT * FROM wallet_transactions 
+// 2. Fetch Transaction History from the same table
+$historyQuery = "SELECT amount, type, description, updated_at 
+                  FROM refund_wallet 
                   WHERE user_id = $uid 
-                  ORDER BY created_at DESC";
+                  ORDER BY updated_at DESC";
 $historyResult = executeQuery($historyQuery);
+// // mga binago ko (ralph)
 ?>
 
 <div class="mb-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h4 class="fw-bold text-success m-0">My E-Wallet</h4>
-        <span class="text-muted small">Updated as of <?= date('M d, Y') ?></span>
+        <h4 class="fw-bold text-success m-0">My Wallet History</h4>
+        <!-- // mga binago ko (ralph) -->
+        <span class="badge bg-success rounded-pill"><?= mysqli_num_rows($historyResult) ?> Transactions</span>
+        <!-- // mga binago ko (ralph) -->
     </div>
 
     <div class="card border-0 shadow-sm rounded-4 bg-success text-white p-4 mb-4" 
@@ -41,9 +47,6 @@ $historyResult = executeQuery($historyQuery);
     </div>
 
     <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
-        <div class="card-header bg-white py-3 border-0">
-            <h6 class="fw-bold m-0 text-dark">Transaction History</h6>
-        </div>
         <div class="table-responsive">
             <table class="table table-hover align-middle mb-0">
                 <thead class="table-light text-muted small text-uppercase">
@@ -60,7 +63,9 @@ $historyResult = executeQuery($historyQuery);
                                 <td class="ps-4">
                                     <div class="fw-bold text-dark"><?= htmlspecialchars($row['description']) ?></div>
                                     <div class="text-muted" style="font-size: 0.75rem;">
-                                        <?= date('M d, Y • h:i A', strtotime($row['created_at'])) ?>
+                                        <!-- // mga binago ko (ralph) -->
+                                        <?= date('M d, Y • h:i A', strtotime($row['updated_at'])) ?>
+                                        <!-- // mga binago ko (ralph) -->
                                     </div>
                                 </td>
                                 <td class="text-center">
@@ -77,12 +82,11 @@ $historyResult = executeQuery($historyQuery);
                             </tr>
                         <?php endwhile; ?>
                     <?php else: ?>
+                        <!-- // mga binago ko (ralph) -->
                         <tr>
-                            <td colspan="3" class="text-center py-5 text-muted">
-                                <i class="bi bi-clock-history d-block mb-2 h3"></i>
-                                No transactions yet.
-                            </td>
+                            <td colspan="3" class="text-center py-5 text-muted">No transactions found in your refund wallet.</td>
                         </tr>
+                        <!-- // mga binago ko (ralph) -->
                     <?php endif; ?>
                 </tbody>
             </table>

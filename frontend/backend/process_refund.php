@@ -36,15 +36,27 @@ if ($payment) {
     $bid = $payment['booking_id'];
 
     mysqli_begin_transaction($conn);
-
+// mga binago ko (ralph)
     try {
+        // 1. Mark payment as refunded
         mysqli_query($conn, "UPDATE payments SET payment_status = 'REFUNDED' WHERE payment_id = '$pid'");
         
+        // 2. Cancel the booking
         mysqli_query($conn, "UPDATE bookings SET booking_status = 'Cancelled' WHERE booking_id = '$bid'");
 
-        $walletQuery = "INSERT INTO refund_wallet (user_id, balance) VALUES ('$uid', '$amount') 
-                        ON DUPLICATE KEY UPDATE balance = balance + $amount";
-        
+        // 3. Get the LATEST balance for this user to calculate the new running balance
+        $currentBalanceQuery = "SELECT running_balance FROM refund_wallet WHERE user_id = '$uid' ORDER BY updated_at DESC LIMIT 1";
+        $balanceRes = mysqli_query($conn, $currentBalanceQuery);
+        $row = mysqli_fetch_assoc($balanceRes);
+        $oldBalance = $row ? $row['running_balance'] : 0;
+        $newBalance = $oldBalance + $amount;
+
+        // 4. Insert NEW row for history (Ledger Style)
+        // Note: We use the columns we added: amount, type, description, and running_balance
+        $description = "Refund for Booking #" . $bid;
+        $walletQuery = "INSERT INTO refund_wallet (user_id, amount, type, description, running_balance) 
+                        VALUES ('$uid', '$amount', 'Refund', '$description', '$newBalance')";
+// mga binago ko (ralph)
         if (!mysqli_query($conn, $walletQuery)) {
             throw new Exception("Wallet Update Failed: " . mysqli_error($conn));
         }
