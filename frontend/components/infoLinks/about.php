@@ -132,7 +132,7 @@ session_start(); ?>
                 </div>
                 <div class="row align-items-center g-5">
                     <div class="col-md-6 d-flex justify-content-center">
-                        <div class="story-text text-muted" style="margin-bottom: -1rem; margin-top: -15%;">
+                        <div class="story-text text-muted" style="margin-bottom: -1rem; margin-top: -15%; margin-left: 15%;">
                             <p style="text-align: justify;"><strong>BookStack</strong> is our partner in literary adventures, providing access to a vast collection of books for rent. Whether you're looking to dive into Filipino literature, learn about local culture, or simply enjoy a good read during your travels, BookStack makes knowledge accessible and affordable.</p>
                         </div>
                     </div>
@@ -146,6 +146,7 @@ session_start(); ?>
                             </div>
                         </div>
                         <div class="d-flex justify-content-center mt-5" style="margin-right: -16%;">
+                            <!-- palitan ng link ng bookstack -->
                             <a href="#" class="btn btn-outline-success rounded-pill">Learn More</a>
                         </div>
                     </div>
