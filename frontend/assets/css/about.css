@@ -2,38 +2,38 @@
 body { 
     font-family: 'Poppins', sans-serif; 
     background-color: #ffffff; 
-    color: #333; 
+    color: #333;
+    overflow-x: hidden; 
 }
 
-/* Header & Banner */
-.about-header {
-    background: linear-gradient(rgba(5, 50, 7, 0.75), rgba(12, 164, 88, 0.65)), 
-                url('/EscaPinas/frontend/assets/images/banner_about.jpg');
-    background-size: 100%; 
-    background-position: center top; 
-    background-attachment: fixed;
-    color: white;
-    padding: 100px 0; 
-    text-align: center;
+/* Banner */
+.about-banner {
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat;
+    height: 250px;
 }
 
-.title-divider {
-    height: 3px; 
-    width: 80px;
-    background-color: white;
-    margin: 0 auto 1.5rem;
+@media (min-width: 768px) {
+    .about-banner {
+        height: 450px;
+        background-attachment: fixed;
+    }
 }
-/* Logo specific */
-.brand-logo-img {
-    max-height: 350px; 
-    width: auto;       
-    display: block;    
-    margin: 0 auto;    
-    margin-left: 10%;
-    transform: scale(1.2); 
-    border: 1px solid #0CA458; 
-    box-shadow: 0 8px 20px rgba(12, 164, 88, 0.2); 
-    border-radius: 12px; 
+
+.main-story-logo {
+    max-height: 350px;
+    border: 1px solid #0CA458;
+    box-shadow: 0 8px 20px rgba(12, 164, 88, 0.2);
+    border-radius: 12px;
+    display: block; 
+}
+
+@media (min-width: 768px) {
+    .main-story-logo {
+        transform: scale(1.1);
+        margin-left: 160px !important; 
+    }
 }
 
 /* Statistics */
@@ -43,13 +43,17 @@ body {
     border-radius: 15px;
     background: #fff;
     transition: transform 0.3s ease;
+    height: 100%;
 }
 
-/* Containers */
+.stat-box:hover {
+    transform: translateY(-5px);
+}
+
+/* Mission/Vision */
 .mv-container {
     background-color: #f8f9fa;
-    border-radius: 40px;
-    padding: 80px 0;
+    border-radius: 30px;
 }
 
 .icon-box {
@@ -65,15 +69,27 @@ body {
     margin-bottom: 20px;
 }
 
-/* CTA Section */
-.cta-section {
-    background: linear-gradient(45deg, #053207, #0ca458);
-    color: white;
-    padding: 80px 0;
-    border-radius: 30px;
-    margin-bottom: -60px;
-    position: relative;
-    z-index: 2;
+/* Responsive Borders */
+@media (min-width: 768px) {
+    .border-md-end { border-right: 1px solid #dee2e6 !important; }
+    .border-md-start { border-left: 1px solid #dee2e6 !important; }
+}
+
+/* Partner Section */
+.partner-logo {
+    max-width: 200px;
+    padding: 1rem;
+    border: 1px solid #eee;
+    border-radius: 20px;
+}
+
+.text-justify {
+    text-align: justify;
+}
+
+/* CTA */
+.cta-div {
+    background: linear-gradient(45deg, #053207, #0ca458) !important;
 }
 
 .story-text {
@@ -81,6 +97,45 @@ body {
     font-size: 1.1rem;
 }
 
-.footer-spacer {
-    height: 140px;
+.partner-logo-small {
+    max-height: 180px !important; 
+    padding: 1rem !important;
+    transform: scale(1) !important; 
+    margin-bottom: 15px;
+}
+
+.story-text.text-muted {
+    text-align: center;
+}
+
+
+.col-md-6.text-center .story-text {
+    text-align: center;
+}
+
+.text-justify {
+    text-align: justify !important;
+    text-justify: inter-word !important;
+    hyphens: auto; 
+}
+
+.text-justify p {
+    margin-bottom: 0;
+}
+
+.partner-logo-small {
+    max-height: 200px !important; /* Adjust this to make it smaller/larger */
+    transform: scale(1) !important; 
+    padding: 1.5rem !important;
+    margin: 0 auto;
+    display: inline-block;
+}
+
+/* Responsive tweaks */
+@media (max-width: 767px) {
+    .story-text.ms-md-auto {
+        max-width: 100% !important;
+        text-align: justify; /* Keeps it justified on mobile too */
+        padding: 0 10px;
+    }
 }
