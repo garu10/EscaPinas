@@ -48,6 +48,9 @@ $page = $_GET['page'] ?? 'personal';
                         <a href="profile.php?page=review" class="<?= $page == 'review' ? 'fw-bold text-success' : '' ?>">
                             <i class="bi bi-wallet2"></i> My Ratings
                         </a>
+                        <a href="profile.php?page=wallet" class="<?= $page == 'wallet' ? 'fw-bold text-success' : '' ?>">
+                            <i class="bi bi-wallet2"></i> Wallet
+                        </a>
                         <a href="/EscaPinas/frontend/components/infolinks/about.php">
                             <i class="bi bi-info-circle"></i> About Us
                         </a>
@@ -78,6 +81,9 @@ $page = $_GET['page'] ?? 'personal';
                         case 'personal':
                         default:
                             include "profile/personal.php";
+                            break;
+                        case 'wallet':
+                            include "profile/wallet.php";
                             break;
                     }
                     ?>
