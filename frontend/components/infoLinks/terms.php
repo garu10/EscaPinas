@@ -97,6 +97,7 @@ session_start(); ?>
                 </div>
             </div>
         </div>
+        
         <div class="row justify-content-center mb-5">
             <div class="col-lg-12">
                 <div class="terms-help-box d-flex align-items-center">
