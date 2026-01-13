@@ -33,7 +33,7 @@
                         </a>
                     </p>
                     <p class="d-flex align-items-center justify-content-center justify-content-md-start mb-2">
-                        <i class="bi bi-telephone me-3 fs-5"></i> +63 966 693 5239
+                        <i class="bi bi-telephone me-3 fs-5"></i> +63 962 972 6088
                     </p>
                 </div>
             </div>
