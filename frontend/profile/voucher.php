@@ -2,17 +2,18 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-include_once "php/connect.php";
+include_once "../../php/connect.php";
 
 $user_id = $_SESSION['user_id'] ?? 0;
 $myVouchers = [];
 
 if ($user_id > 0) {
     // UPDATED SQL: Ensure we select System_type (or external_system depending on your actual column name)
+    // CHANGE: t.template_id TO t.voucher_id
     $fetch_sql = "SELECT t.code, t.title, t.discount_amount, t.discount_type, t.System_type
-                  FROM user_vouchers uv
-                  JOIN voucher_templates t ON uv.template_id = t.template_id
-                  WHERE uv.user_id = ? AND uv.is_redeemed = 0 AND t.expires_at > NOW()";
+                FROM user_vouchers uv
+                JOIN voucher_templates t ON uv.voucher_id = t.voucher_id
+                WHERE uv.user_id = ? AND uv.is_redeemed = 0 AND t.expires_at > NOW()";
 
     $stmt = $conn->prepare($fetch_sql);
     $stmt->bind_param("i", $user_id);
