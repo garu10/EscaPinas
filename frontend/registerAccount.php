@@ -1,5 +1,6 @@
 <?php
 include("php/connect.php");
+include("integs/api/api-connect/api-connect.php");
 
 $showVerificationModal = isset($_GET['verify']) ? true : false;
 $registeredEmail = isset($_GET['email']) ? mysqli_real_escape_string($conn, $_GET['email']) : "";
@@ -11,6 +12,69 @@ function formatPhone($number)
         $number = "+63" . substr($number, 1);
     }
     return $number;
+}
+
+// Function to check if email exists in BookStack API
+function checkEmailInBookStack($email)
+{
+    $api_url = BOOKSTACK_API_USERS;
+    
+    // BookStack API requires admin credentials for authentication
+    $admin_username = "Hiro Setsuya";   // BookStack admin username
+    $admin_password = "Adrian1#";       // BookStack admin password
+    
+    try {
+        // Create a stream context with Basic Auth using base64_encode
+        $context = stream_context_create([
+            "http" => [
+                "header" => "Authorization: Basic " . base64_encode("$admin_username:$admin_password")
+            ]
+        ]);
+        
+        // Fetch the JSON data from the API
+        $response = @file_get_contents($api_url, false, $context);
+        
+        if ($response === false) {
+            return false; // API failed, allow registration
+        }
+        
+        if (empty($response)) {
+            return false;
+        }
+        
+        // Decode JSON to PHP array
+        $data = json_decode($response, true);
+        
+        if (!is_array($data)) {
+            return false;
+        }
+        
+        // Check if email exists in the response
+        // Handle single user object
+        if (isset($data['user_id'])) {
+            if ($data['email'] === $email) {
+                return true; // Email found in BookStack
+            }
+        } 
+        // Handle array of users
+        elseif (is_array($data) && count($data) > 0) {
+            $first_key = array_key_first($data);
+            
+            if (isset($data[$first_key]['user_id'])) {
+                // Array of user objects
+                foreach ($data as $user) {
+                    if (is_array($user) && isset($user['email']) && $user['email'] === $email) {
+                        return true; // Email found in BookStack
+                    }
+                }
+            }
+        }
+        
+        return false; // Email not found in BookStack
+    } catch (Exception $e) {
+        error_log("BookStack API Exception: " . $e->getMessage());
+        return false; // API error, allow registration
+    }
 }
 
 function sendSMS($to, $msg)
@@ -57,12 +121,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     date_default_timezone_set('Asia/Manila');
     $expiry_time = date("Y-m-d H:i:s", strtotime('+1 minute'));
 
+    // Check if email exists in EscaPinas database
     $checkEmail = "SELECT email FROM users WHERE email = '$email' LIMIT 1";
     $result = mysqli_query($conn, $checkEmail);
 
     if ($result && mysqli_num_rows($result) > 0) {
-        echo "<script>alert('Email already exists!'); window.history.back();</script>";
-    } else {
+        echo "<script>alert('Email already exists in EscaPinas!'); window.history.back();</script>";
+    } 
+    // Check if email exists in BookStack API
+    elseif (checkEmailInBookStack($email)) {
+        echo "<script>alert('Email already exists in BookStack! Please use a different email.'); window.history.back();</script>";
+    } 
+    else {
         $insertUser = "INSERT INTO users (first_name, last_name, middle_initial, contact_num, province, city, username, email, password, role, is_verified, verification_code, otp_expiry) 
                        VALUES ('$fname', '$last_name', '$middle_initial', '$contact_num', '$province', '$city','$user_name', '$email', '$hashed_password', 'user', 0, '$otp_code', '$expiry_time')";
 

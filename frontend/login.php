@@ -1,6 +1,7 @@
 <?php
 session_start();
 include 'php/connect.php';
+include 'integs/api/api-connect/api-connect.php';
 
 // Function para sa Resend SMS
 function sendSMS($to, $msg)
@@ -24,7 +25,7 @@ function sendSMS($to, $msg)
 // Function para sa BookStack API - Check if user exists
 function checkBookStackUser($identifier)
 {
-    $api_url = "http://192.168.1.16:8080/BookStack/api/users.php";
+    $api_url = BOOKSTACK_API_USERS;
     
     // BookStack API requires admin credentials for authentication
     $admin_username = "Hiro Setsuya";   // BookStack admin username
