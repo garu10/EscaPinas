@@ -21,10 +21,10 @@ session_start(); ?>
                     <div class="col-md-6">
                         <h6 class="text-success fw-bold text-uppercase">Our Story</h6>
                         <h2 class="display-5 fw-bold mb-4">The Heart of EscaPinas</h2>
-                        <div class="story-text text-muted text-justify">
-                            <p class="text-justify">It all began with a simple backpack and a deep-seated love for the Filipino landscape. In the heart of Tanauan City, EscaPinas was conceptualized not as a business, but as a movement to bridge the gap between dream destinations and reality.</p>
-                            <p class="text-justify">We realized that many of our fellow countrymen and international friends were missing out on the raw beauty of <strong>Pilipinas</strong> due to complex bookings and intimidating costs.</p>
-                            <p class="text-justify">Today, EscaPinas stands as more than just a booking site. We are storytellers, adventure-seekers, and your ultimate guide to the 7,641 reasons why we love our country.</p>
+                        <div class="story-text text-muted text-start">
+                            <p>It all began with a simple backpack and a deep-seated love for the Filipino landscape. In the heart of Tanauan City, EscaPinas was conceptualized not as a business, but as a movement to bridge the gap between dream destinations and reality.</p>
+                            <p>We realized that many of our fellow countrymen and international friends were missing out on the raw beauty of <strong>Pilipinas</strong> due to complex bookings and intimidating costs.</p>
+                            <p>Today, EscaPinas stands as more than just a booking site. We are storytellers, adventure-seekers, and your ultimate guide to the 7,641 reasons why we love our country.</p>
                         </div>
                     </div>
                     <div class="col-md-6">
