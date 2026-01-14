@@ -1,6 +1,5 @@
 <?php
 include_once __DIR__ . "/../php/connect.php";
-
 //include_once(__DIR__ . "/../../php/connect.php"); comment out ko muna ito para gumana sakin
 
 $uid = $_SESSION['user_id'] ?? null;
