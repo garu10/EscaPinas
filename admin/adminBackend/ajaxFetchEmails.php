@@ -20,6 +20,7 @@ try {
             $emails[] = [
                 'id'      => $row['mail_id'],
                 'from'    => $row['sender_name'],
+                'email' => $row['sender_username'],
                 'subject' => $row['subject'],
                 'date'    => date("M d, H:i", strtotime($row['date_received'])),
                 'unread'  => (bool)$row['is_unread'],

@@ -1,7 +1,8 @@
 <?php
 ob_start();
 require_once __DIR__ . '/../../vendor/autoload.php';
-require_once __DIR__ . '/../../frontend/php/connect.php'; 
+require_once __DIR__ . '/../../frontend/php/connect.php';
+
 use PhpImap\Mailbox;
 
 header('Content-Type: application/json');
@@ -13,7 +14,7 @@ $pass = 'tkwa oeyg csxd dfst';
 try {
     $mailbox = new Mailbox($server, $user, $pass);
     $mailsIds = $mailbox->searchMailbox('ALL');
-    
+
     if (empty($mailsIds)) {
         ob_clean();
         echo json_encode(['success' => true, 'new_emails' => 0]);
@@ -28,16 +29,24 @@ try {
         $stmt = $conn->prepare("SELECT id FROM admin_emails WHERE mail_id = ?");
         $stmt->bind_param("i", $mailId);
         $stmt->execute();
-        
+
         if ($stmt->get_result()->num_rows == 0) {
             $mail = $mailbox->getMail($mailId, false);
+
+            // 1. Get display name (e.g., "John Doe")
             $from = htmlspecialchars($mail->fromName ?: $mail->fromAddress);
+
+            // 2. Get full email address (e.g., "johndoe@gmail.com")
+            $fullEmail = $mail->fromAddress;
+
             $body = $mail->textHtml ?: nl2br(htmlspecialchars($mail->textPlain));
             $unread = $mail->isSeen ? 0 : 1;
             $date = date("Y-m-d H:i:s", strtotime($mail->date));
 
-            $ins = $conn->prepare("INSERT INTO admin_emails (mail_id, sender_name, subject, body, date_received, is_unread) VALUES (?, ?, ?, ?, ?, ?)");
-            $ins->bind_param("issssi", $mailId, $from, $mail->subject, $body, $date, $unread);
+            // 3. Insert into database using the full email address
+            $ins = $conn->prepare("INSERT INTO admin_emails (mail_id, sender_name, sender_username, subject, body, date_received, is_unread) VALUES (?, ?, ?, ?, ?, ?, ?)");
+            // Note: I am keeping your column name 'sender_username' but filling it with the 'fullEmail' as requested
+            $ins->bind_param("isssssi", $mailId, $from, $fullEmail, $mail->subject, $body, $date, $unread);
             $ins->execute();
             $new_count++;
         }
