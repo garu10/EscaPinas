@@ -30,10 +30,6 @@ $wishlistResult = executeQuery($wishlistQuery);
                 <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden wishlist-card">
                     <div class="position-relative">
                         <img src="<?= htmlspecialchars($tour['image']) ?>" class="card-img-top" style="height: 180px; object-fit: cover;" alt="Tour">
-                        <button class="btn btn-light btn-sm position-absolute top-0 end-0 m-2 rounded-circle shadow-sm text-danger" 
-                                onclick="removeFromWishlist(<?= $tour['wishlist_id'] ?>)" title="Remove">
-                            <i class="bi bi-heart-fill"></i>
-                        </button>
                     </div>
 
                     <div class="card-body p-3">

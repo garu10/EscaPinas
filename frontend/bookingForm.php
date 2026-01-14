@@ -42,6 +42,21 @@ foreach ($availableVouchers as $v) {
 $userResult = executeQuery("SELECT * FROM users WHERE user_id = $user_id");
 $user = ($userResult) ? $userResult->fetch_assoc() : null;
 
+
+
+// Get user's wallet balance
+$walletQuery = "SELECT running_balance FROM refund_wallet 
+                WHERE user_id = $user_id 
+                ORDER BY updated_at DESC LIMIT 1";
+$walletResult = executeQuery($walletQuery);
+$walletData = mysqli_fetch_assoc($walletResult);
+$userWalletBalance = $walletData['running_balance'] ?? 0.00;
+
+$tour_id = isset($_GET['tour_id']) ? intval($_GET['tour_id']) : 1;
+$pax = isset($_GET['pax']) ? max(1, intval($_GET['pax'])) : 1;
+$client_region = isset($_GET['client_region']) ? $_GET['client_region'] : "";
+
+
 $tourQuery = "SELECT t.*, d.destination_name, r.island_name FROM tour_packages t 
                   JOIN destinations d ON t.destination_id = d.destination_id 
                   JOIN regions r ON d.island_id = r.island_id WHERE t.tour_id = $tour_id";
@@ -74,7 +89,60 @@ $inclusions = executeQuery("SELECT * FROM tour_inclusions WHERE tour_id = $tour_
 ?>
 
 <?php include "components/header.php"; ?>
+
 <link rel="stylesheet" href="..\frontend\assets\css\bookingForm.css">
+
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        .tour-img {
+            width: 100%;
+            max-width: 400px;
+            border-radius: 15px;
+            object-fit: cover;
+        }
+
+        .voucher-card:hover {
+            border-color: #198754 !important;
+            cursor: pointer;
+            background-color: #f0fff4;
+        }
+
+        .sticky-summary {
+            position: sticky;
+            top: 20px;
+        }
+
+        .payment-methods .form-check-input:checked {
+            background-color: #198754;
+            border-color: #198754;
+        }
+
+        .payment-methods .form-check-label {
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .payment-methods .form-check-label:hover {
+            color: #198754;
+        }
+
+        #payWithWalletBtn {
+            position: relative;
+            z-index: 10;
+            cursor: pointer;
+        }
+
+        #payWithWalletBtn:disabled {
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+    </style>
+
 </head>
 
 <body>
@@ -298,7 +366,42 @@ $inclusions = executeQuery("SELECT * FROM tour_inclusions WHERE tour_id = $tour_
                             </span>
                         </div>
 
-                        <div id="paypal-button-container"></div>
+                        <!-- Payment Method Selection -->
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Payment Method</label>
+                            <div class="payment-methods">
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="radio" name="payment_method" id="wallet_payment" value="wallet" checked>
+                                    <label class="form-check-label d-flex align-items-center" for="wallet_payment">
+                                        <i class="bi bi-wallet2 me-2"></i>
+                                        Wallet Balance (₱<?= number_format($userWalletBalance, 2) ?>)
+                                    </label>
+                                </div>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="radio" name="payment_method" id="paypal_payment" value="paypal">
+                                    <label class="form-check-label d-flex align-items-center" for="paypal_payment">
+                                        <i class="bi bi-paypal me-2"></i>
+                                        PayPal / Credit Card
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Wallet Payment Button -->
+                        <div id="wallet-payment-section">
+                            <button type="button" id="payWithWalletBtn" class="btn btn-success w-100 mb-2">
+                                <i class="bi bi-wallet2 me-2"></i>Pay with Wallet Balance
+                            </button>
+                            <div id="wallet-balance-warning" class="alert alert-warning py-2 small d-none">
+                                <i class="bi bi-exclamation-triangle me-1"></i>
+                                Insufficient wallet balance.
+                            </div>
+                        </div>
+
+                        <!-- PayPal Payment Section -->
+                        <div id="paypal-payment-section" style="display: none;">
+                            <div id="paypal-button-container"></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -404,7 +507,100 @@ $inclusions = executeQuery("SELECT * FROM tour_inclusions WHERE tour_id = $tour_
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2
             });
+
+            // Update wallet payment button state
+            updateWalletPaymentButton();
         }
+
+        function updateWalletPaymentButton() {
+            const walletBalance = parseFloat("<?php echo $userWalletBalance; ?>");
+            const payWithWalletBtn = document.getElementById('payWithWalletBtn');
+            const warningDiv = document.getElementById('wallet-balance-warning');
+
+            if (walletBalance < finalTotal) {
+                payWithWalletBtn.disabled = true;
+                payWithWalletBtn.innerHTML = '<i class="bi bi-wallet2 me-2"></i>Insufficient Balance';
+                warningDiv.innerHTML = '<i class="bi bi-exclamation-triangle me-1"></i>Insufficient wallet balance. You need ₱' + (finalTotal - walletBalance).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}) + ' more.';
+                warningDiv.classList.remove('d-none');
+            } else {
+                payWithWalletBtn.disabled = false;
+                payWithWalletBtn.innerHTML = '<i class="bi bi-wallet2 me-2"></i>Pay with Wallet Balance';
+                warningDiv.classList.add('d-none');
+            }
+        }
+
+        // Payment Method Switching
+        document.querySelectorAll('input[name="payment_method"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                const walletSection = document.getElementById('wallet-payment-section');
+                const paypalSection = document.getElementById('paypal-payment-section');
+                
+                if (this.value === 'wallet') {
+                    walletSection.style.display = 'block';
+                    paypalSection.style.display = 'none';
+                } else {
+                    walletSection.style.display = 'none';
+                    paypalSection.style.display = 'block';
+                }
+            });
+        });
+
+        // Wallet Payment Functionality
+        document.getElementById('payWithWalletBtn').addEventListener('click', function() {
+            const loc = document.querySelector('input[name="locpoints_id"]:checked');
+            if (!loc) {
+                Swal.fire('Requirement', 'Please select a Pickup Point first.', 'warning');
+                return;
+            }
+
+            const walletBalance = parseFloat("<?php echo $userWalletBalance; ?>");
+            if (walletBalance < finalTotal) {
+                Swal.fire('Insufficient Balance', 'Your wallet balance is not enough to complete this payment.', 'error');
+                return;
+            }
+
+            // Confirm payment
+            Swal.fire({
+                title: 'Confirm Payment',
+                text: `Pay ₱${finalTotal.toLocaleString()} using wallet balance?`,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, Pay Now',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Process wallet payment
+                    fetch('backend/process_wallet_payment.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        },
+                        body: new URLSearchParams({
+                            tour_id: '<?php echo $tour_id; ?>',
+                            schedule_id: document.getElementById('schedule_id').value,
+                            total_amount: finalTotal.toFixed(2),
+                            locpoints_id: document.querySelector('input[name="locpoints_id"]:checked').value,
+                            voucher_code: document.getElementById('voucherInput').value
+                        })
+                    })
+                    .then(res => res.json())
+                    .then(res => {
+                        if (res.success) {
+                            Swal.fire('Success!', 'Payment completed successfully!', 'success')
+                            .then(() => {
+                                window.location.href = "confirmation.php?ref=" + res.ref;
+                            });
+                        } else {
+                            Swal.fire('Error', res.message, 'error');
+                        }
+                    })
+                    .catch(err => {
+                        console.error("Wallet Payment Error:", err);
+                        Swal.fire('Error', 'Failed to process payment. Please try again.', 'error');
+                    });
+                }
+            });
+        });
 
         paypal.Buttons({
             createOrder: (data, actions) => {
@@ -453,6 +649,11 @@ $inclusions = executeQuery("SELECT * FROM tour_inclusions WHERE tour_id = $tour_
                     });
             }
         }).render('#paypal-button-container');
+
+        // Initialize wallet payment button state after DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            updateWalletPaymentButton();
+        });
     </script>
 
 </body>
