@@ -51,7 +51,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     <div class="col-md-2"><input type="text" class="form-control" placeholder="M.I." name="middle_initial" maxlength="1"></div>
                                     <div class="col-md-5"><input type="text" class="form-control" placeholder="Last Name" name="last_name" required></div>
                                 </div>
-                                <div class="mb-3"><input type="text" class="form-control" placeholder="Contact Number" name="contact_num" required></div>
+                                <div class="mb-3">
+                                    <input type="tel"
+                                        class="form-control"
+                                        placeholder="Contact Number (e.g., 09123456789)"
+                                        name="contact_num"
+                                        pattern="09[0-9]{9}"
+                                        maxlength="11"
+                                        oninput="this.value = this.value.replace(/[^0-9]/g, '');"
+                                        required> 
+                                </div>
                                 <div class="row g-2 mb-3">
                                     <div class="col-md-6"><input type="text" class="form-control" placeholder="Province" name="province"></div>
                                     <div class="col-md-6"><input type="text" class="form-control" placeholder="City" name="city"></div>
@@ -61,8 +70,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 </div>
                                 <div class="mb-3"><input type="email" class="form-control" placeholder="Email Address" name="email" required></div>
                                 <div class="row g-2 mb-3">
-                                    <div class="col-md-6"><input type="password" class="form-control" placeholder="Password" name="password" required></div>
-                                    <div class="col-md-6"><input type="password" class="form-control" placeholder="Confirm Password" name="confirm_password" required></div>
+                                    <div class="col-md-12"><input type="password" class="form-control" placeholder="Password (min 8 character)" name="password" minlength="8" required></div>
+                                    <div class="col-md-12"><input type="password" class="form-control" placeholder="Confirm Password" name="confirm_password" minlength="8" required></div>
                                 </div>
                                 <button type="submit" class="btn btn-primary btn-login w-100">Register</button>
                                 <div class="register-link mt-3 text-center">Already have an Account? <a href="login.php">Login</a></div>
