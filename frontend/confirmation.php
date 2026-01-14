@@ -63,9 +63,9 @@ if ($ref) {
 
     <?php if ($booking): ?>
         <div class="card shadow-lg border-0 p-4 mx-auto conf-car" style="max-width: 500px; border-top: 30px solid #198754 !important; border-radius: 15px;">
-            <i class="fas fa-check-circle fa-5x text-success mb-3"></i>
-            <h3 class="fw-bold">Booking Confirmed!</h3>
-            <p class="text-muted">Thank you for booking with EscaPinas.</p>
+            <div class="fas fa-check-circle fa-5x text-success mb-3"></div>
+            <div class="h3 fw-bold">Booking Confirmed!</div>
+            <div class="text-muted">Thank you for booking with EscaPinas.</div>
 
             <div class="alert alert-info small">
                 <i class="fas fa-sms"></i>

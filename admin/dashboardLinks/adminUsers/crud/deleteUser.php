@@ -17,7 +17,7 @@
 
 //     $sql = "DELETE FROM users WHERE user_id = $user_id";
 
-//     if (mysqli_query($conn, $sql)) {
+//     if (executeQuery( $sql)) {
 //         header("Location: ../../../adminDashboard.php?page=adminUsers&status=deleted");
 //     } else {
 //         echo "Error: Could not delete user.";

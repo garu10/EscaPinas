@@ -1,3 +1,4 @@
+
 body {
     font-family: 'Poppins', sans-serif;
     background-color: #f8f9fa;
@@ -5,28 +6,18 @@ body {
 
 .tour-img {
     width: 100%;
-    height: 120px;
-    object-fit: cover;
+    max-width: 400px;
     border-radius: 15px;
+    object-fit: cover;
 }
 
-.form-control-soft {
-    background-color: #f1f3f5;
-    border: none;
-    padding: 10px 15px;
+.voucher-card:hover {
+    border-color: #198754 !important;
+    cursor: pointer;
+    background-color: #f0fff4;
 }
 
-.form-control-soft:focus {
-    background-color: #e9ecef;
-    box-shadow: none;
-    outline: 2px solid #198754;
-}
-
-.btn-success {
-    background-color: #198754;
-    border-color: #198754;
-}
-
-.btn-success:hover {
-    background-color: #146c43;
+.sticky-summary {
+    position: sticky;
+    top: 20px;
 }

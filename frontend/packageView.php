@@ -52,10 +52,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <!-- maglalagay ng slots -->
                 <div class="card shadow p-5 rounded-5">
                     <div class="mb-2 d-flex justify-content-between align-items-center flex-wrap">
-                        <h1 class="fw-bold text-success ">₱
+                        <div class="h1 fw-bold text-success ">₱
                             <?php echo htmlspecialchars($tour['price']); ?> <small
                                 class="fw-bold text-muted fs-6 fw-normal">/ PAX</small>
-                        </h1>
+                        </div>
                         <div class="text-warning fs-6">
                             <span class="text-success small ms-2">
                                 <?= $average ?> RATING (
@@ -76,12 +76,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </div>
 
                     <div class="mb-3">
-                        <h1 class="fw-bold text-success mb-3">
+                        <div class="h1 fw-bold text-success mb-3">
                             <?php echo htmlspecialchars($tour['tour_name']); ?>
-                        </h1>
-                        <p class="text-secondary leading-relaxed">
+                        </div>
+                        <div class="text-secondary leading-relaxed">
                             <?php echo htmlspecialchars($tour['description']); ?>
-                        </p>
+                        </div>
                     </div>
                     <div class="row mb-5 justify-content-start g-2">
                         <div class="col-auto d-flex align-items-center gap-2 px-3">
@@ -130,15 +130,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     ?>
                                 </div>
                             </div>
-                            <p class="text-secondary mb-0">
+                            <div class="text-secondary mb-0">
                                 "<?= htmlspecialchars($review['review_text']) ?>"
-                            </p>
+                            </div>
                         </div>
                     </div>
                 <?php endwhile; ?>
             <?php else: ?>
                 <div class="col-12 text-center py-4">
-                    <p class="text-muted italic">No reviews yet for this tour. Be the first to share your experience!</p>
+                    <div class="text-muted italic">No reviews yet for this tour. Be the first to share your experience!</div>
                 </div>
             <?php endif; ?>
         </div>

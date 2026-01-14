@@ -44,7 +44,7 @@ $discoverTours = array_slice($randomTours, 0, 4);
     </div>
 
     <div class="container my-5">
-        <h2 class="fw-bold text-success text-center mb-4 text-uppercase">Popular Attractions</h2>
+        <div class="h2 fw-bold text-success text-center mb-4 text-uppercase">Popular Attractions</div>
 
         <div class="row g-3 justify-content-center align-items-center mb-5">
             <div class="col-auto">
@@ -74,7 +74,7 @@ $discoverTours = array_slice($randomTours, 0, 4);
             <?php if (empty($allTours)): ?>
                 <div class="col-12 text-center py-5">
                     <i class="bi bi-emoji-frown fs-1 text-muted"></i>
-                    <p class="mt-2 text-muted">No tours available at the moment.</p>
+                    <div class="mt-2 text-muted">No tours available at the moment.</div>
                 </div>
             <?php else: ?>
                 <?php foreach ($allTours as $tour): ?>
@@ -86,16 +86,16 @@ $discoverTours = array_slice($randomTours, 0, 4);
 
                             <div class="card-body d-flex flex-column">
                                 <div class="d-flex justify-content-between align-items-start mb-2">
-                                    <h5 class="fw-bold mb-0 text-success"><?php echo htmlspecialchars($tour['tour_name']); ?></h5>
+                                    <div class="h5 fw-bold mb-0 text-success"><?php echo htmlspecialchars($tour['tour_name']); ?></div>
                                     <span class="badge bg-light text-success border border-success-subtle rounded-pill">
                                         <i class="bi bi-clock"></i> <?php echo htmlspecialchars($tour['duration_days']); ?>D/<?php echo htmlspecialchars($tour['duration_nights']); ?>N
                                     </span>
                                 </div>
 
-                                <p class="text-muted small mb-3">
+                                <div class="text-muted small mb-3">
                                     <i class="bi bi-geo-alt-fill text-danger"></i>
                                     <?php echo htmlspecialchars($tour['island_name'] . " | " . $tour['destination_name']); ?>
-                                </p>
+                                </div>
 
                                 <div class="mt-auto border-top pt-3">
                                     <div class="row align-items-center">
@@ -135,17 +135,17 @@ $discoverTours = array_slice($randomTours, 0, 4);
 
                         <div class="card-body p-2 text-start d-flex flex-column justify-content-between">
                             <div>
-                                <p class="fw-bold mb-0 small text-truncate">
+                                <div class="fw-bold mb-0 small text-truncate">
                                     <?php echo htmlspecialchars($row['tour_name']); ?>
-                                </p>
-                                <p class="text-muted mb-1" style="font-size: 0.7rem;">
+                                </div>
+                                <div class="text-muted mb-1" style="font-size: 0.7rem;">
                                     <i class="bi bi-geo-alt-fill text-danger"></i>
                                     <?php echo htmlspecialchars($row['island_name'] . " | " . $row['destination_name']); ?>
-                                </p>
-                                <p class="mb-2 text-dark" style="font-size: 0.7rem;">
+                                </div>
+                                <div class="mb-2 text-dark" style="font-size: 0.7rem;">
                                     <i class="bi bi-clock-history text-success"></i>
                                     <?php echo htmlspecialchars($row['duration_days']); ?>D / <?php echo htmlspecialchars($row['duration_nights']); ?>N
-                                </p>
+                                </div>
                             </div>
 
                             <div class="d-flex justify-content-between align-items-center mt-1 border-top pt-2">

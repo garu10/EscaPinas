@@ -3,8 +3,13 @@ $_title="Book Tour";
 session_start();
 include_once "php/connect.php";
 
+// prefer POST, fallback to GET
+$tour_id = isset($_POST['tour_id']) ? intval($_POST['tour_id']) : (isset($_GET['tour_id']) ? intval($_GET['tour_id']) : 1);
+$pax = isset($_POST['pax']) ? max(1, intval($_POST['pax'])) : (isset($_GET['pax']) ? max(1, intval($_GET['pax'])) : 1);
+$client_region = isset($_POST['client_region']) ? $_POST['client_region'] : (isset($_GET['client_region']) ? $_GET['client_region'] : '');
+
 if (!isset($_SESSION['user_id'])) {
-    $redirect = isset($_GET['tour_id']) ? '?tour_id=' . intval($_GET['tour_id']) : '';
+    $redirect = '?tour_id=' . $tour_id; // keep simple redirect to login
     header("Location: login.php$redirect");
     exit;
 }
@@ -31,16 +36,11 @@ if ($vRes) {
 
 $js_voucher_list = [];
 foreach ($availableVouchers as $v) {
-    // na handle ba ng js yung discount type na fixed or percentage??
     $js_voucher_list[$v['code']] = floatval($v['discount_amount']);
 }
 
 $userResult = executeQuery("SELECT * FROM users WHERE user_id = $user_id");
 $user = ($userResult) ? $userResult->fetch_assoc() : null;
-
-$tour_id = isset($_GET['tour_id']) ? intval($_GET['tour_id']) : 1;
-$pax = isset($_GET['pax']) ? max(1, intval($_GET['pax'])) : 1;
-$client_region = isset($_GET['client_region']) ? $_GET['client_region'] : "";
 
 $tourQuery = "SELECT t.*, d.destination_name, r.island_name FROM tour_packages t 
                   JOIN destinations d ON t.destination_id = d.destination_id 
@@ -65,41 +65,16 @@ if (!empty($client_region)) {
 }
 $vat = ($subtotal + $airfare_fee) * 0.12;
 $total = ($subtotal + $airfare_fee + $vat);
-// binago ni ralph sa booking form -- bagong query for tour sched
+
 $schedules = executeQuery("SELECT * FROM tour_schedules 
                             WHERE tour_id = $tour_id 
                             AND available_slots >= $pax 
                             AND start_date >= CURDATE()");
-// binago ni ralph sa booking form -- bagong query for tour sched
 $inclusions = executeQuery("SELECT * FROM tour_inclusions WHERE tour_id = $tour_id");
 ?>
 
 <?php include "components/header.php"; ?>
-
-    <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #f8f9fa;
-        }
-
-        .tour-img {
-            width: 100%;
-            max-width: 400px;
-            border-radius: 15px;
-            object-fit: cover;
-        }
-
-        .voucher-card:hover {
-            border-color: #198754 !important;
-            cursor: pointer;
-            background-color: #f0fff4;
-        }
-
-        .sticky-summary {
-            position: sticky;
-            top: 20px;
-        }
-    </style>
+<link rel="stylesheet" href="..\frontend\assets\css\bookingForm.css">
 </head>
 
 <body>
@@ -133,9 +108,10 @@ $inclusions = executeQuery("SELECT * FROM tour_inclusions WHERE tour_id = $tour_
                             <div class="h5 fw-bold text-dark">₱<?php echo number_format($base_price, 2); ?></div>
                         </div>
                         <div class="bg-light rounded-pill px-3 py-2 d-flex align-items-center gap-3">
-                            <a href="?tour_id=<?php echo $tour_id ?>&pax=<?php echo max(1, $pax - 1) ?>&client_region=<?php echo $client_region ?>" class="btn btn-sm btn-light rounded-circle shadow-sm">-</a>
-                            <span class="fw-bold"><?php echo $pax; ?></span>
-                            <a href="?tour_id=<?php echo $tour_id ?>&pax=<?php echo $pax + 1 ?>&client_region=<?php echo $client_region ?>" class="btn btn-sm btn-light rounded-circle shadow-sm">+</a>
+                            <!-- buttons will submit the POST form -->
+                            <button type="button" class="btn btn-sm btn-light rounded-circle shadow-sm" onclick="changePax(-1)">-</button>
+                            <span class="fw-bold" id="paxDisplay"><?php echo $pax; ?></span>
+                            <button type="button" class="btn btn-sm btn-light rounded-circle shadow-sm" onclick="changePax(1)">+</button>
                         </div>
                     </div>
                 </div>
@@ -146,7 +122,10 @@ $inclusions = executeQuery("SELECT * FROM tour_inclusions WHERE tour_id = $tour_
             <div class="col-md-7">
                 <div class="h5 text-success fw-bold mb-3">Booking Details</div>
                 <div class="card border-0 shadow-sm rounded-4 p-4 mb-4">
-                    <form id="bookingForm">
+                    <form id="bookingForm" method="post">
+                        <input type="hidden" name="tour_id" id="tour_id" value="<?= $tour_id ?>">
+                        <input type="hidden" name="pax" id="pax" value="<?= $pax ?>">
+                        <input type="hidden" name="client_region" id="client_region" value="<?= htmlspecialchars($client_region) ?>">
 
                         <div class="mb-4">
                             <label class="form-label small fw-bold text-success">
@@ -160,11 +139,11 @@ $inclusions = executeQuery("SELECT * FROM tour_inclusions WHERE tour_id = $tour_
                                         <input
                                             class="form-check-input"
                                             type="radio"
-                                            name="client_region"
+                                            name="client_region_radio"
                                             id="<?= $regId ?>"
                                             value="<?= $reg ?>"
                                             <?= ($client_region === $reg) ? 'checked' : '' ?>
-                                            onchange="window.location.href='?tour_id=<?= $tour_id ?>&pax=<?= $pax ?>&client_region=' + this.value">
+                                            onclick="setRegionAndSubmit('<?= $reg ?>')">
                                         <label class="form-check-label small" for="<?= $regId ?>">
                                             <?= $reg ?>
                                         </label>
@@ -172,10 +151,10 @@ $inclusions = executeQuery("SELECT * FROM tour_inclusions WHERE tour_id = $tour_
                                 <?php endforeach; ?>
                             </div>
                         </div>
-                        <!-- binago ni ralph sa booking form -- para madisplay yung slots ng schedules -->
+
                         <div class="mb-4">
                             <label class="form-label small fw-bold">Select Travel Date:</label>
-                            <select id="schedule_id" class="form-select form-select-sm w-50" required>
+                            <select id="schedule_id" name="schedule_id" class="form-select form-select-sm w-50" required>
                                 <?php if (mysqli_num_rows($schedules) > 0): ?>
                                     <?php mysqli_data_seek($schedules, 0); while ($s = $schedules->fetch_assoc()): ?>
                                         <option value="<?php echo $s['schedule_id']; ?>">
@@ -188,7 +167,7 @@ $inclusions = executeQuery("SELECT * FROM tour_inclusions WHERE tour_id = $tour_
                                 <?php endif; ?>
                             </select>
                         </div>
-                        <!-- binago ni ralph sa booking form -- para madisplay yung slots ng schedules -->
+
                         <div class="mb-4">
                             <label class="form-label small fw-bold">
                                 Pickup / Dropoff Point
@@ -281,7 +260,7 @@ $inclusions = executeQuery("SELECT * FROM tour_inclusions WHERE tour_id = $tour_
 
                         <div class="d-flex justify-content-between mb-2 small">
                             <span>VAT (12%)</span>
-                            <span>₱<?= number_format($vat, 2); ?></span>
+                            <span>₱<?= number_format($vat, 2) ?></span>
                         </div>
 
                         <div id="discountDisplay" class="d-none justify-content-between text-success small fw-bold mt-2">
@@ -346,8 +325,6 @@ $inclusions = executeQuery("SELECT * FROM tour_inclusions WHERE tour_id = $tour_
     </div>
 
     <?php include "components/footer.php"; ?>
-
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://www.paypal.com/sdk/js?client-id=AZXarGlWci9EF_NV33Uzb79jiNCHrRaA9WCLLFRpl0Tuzul7OIh5Pgc1Frl114bn2MNsUgR1kphO2D1z&currency=PHP"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
@@ -357,6 +334,19 @@ $inclusions = executeQuery("SELECT * FROM tour_inclusions WHERE tour_id = $tour_
         const vouchersMap = <?php echo json_encode($js_voucher_list); ?>;
         const baseTotalVal = parseFloat("<?php echo $total; ?>");
         let finalTotal = baseTotalVal; // Ito ang gagamitin ng PayPal
+
+        function changePax(delta) {
+            const paxInput = document.getElementById('pax');
+            let newPax = Math.max(1, parseInt(paxInput.value || '1') + delta);
+            paxInput.value = newPax;
+            document.getElementById('paxDisplay').innerText = newPax;
+            document.getElementById('bookingForm').submit();
+        }
+
+        function setRegionAndSubmit(region) {
+            document.getElementById('client_region').value = region;
+            document.getElementById('bookingForm').submit();
+        }
 
         function selectVoucher(code) {
             document.getElementById('voucherInput').value = code;
@@ -379,16 +369,17 @@ $inclusions = executeQuery("SELECT * FROM tour_inclusions WHERE tour_id = $tour_
 
         function applyVoucherLogic(code) {
             const amount = vouchersMap[code] || 0;
+            const amountNum = Number(amount);
             const discountDiv = document.getElementById('discountDisplay');
             const totalDisplay = document.getElementById('totalAmountText');
             const errorMsg = document.getElementById('voucherErrorMessage');
 
-            if (amount > 0) {
-                finalTotal = Math.max(0, baseTotalVal - amount);
+            if (amountNum > 0) {
+                finalTotal = Math.max(0, baseTotalVal - amountNum);
 
                 discountDiv.classList.remove('d-none');
                 discountDiv.classList.add('d-flex');
-                document.getElementById('discountValue').innerText = "- ₱" + amount.toLocaleString(undefined, {
+                document.getElementById('discountValue').innerText = "- ₱" + amountNum.toLocaleString(undefined, {
                     minimumFractionDigits: 2
                 });
                 errorMsg.classList.add('d-none');
@@ -440,8 +431,8 @@ $inclusions = executeQuery("SELECT * FROM tour_inclusions WHERE tour_id = $tour_
                         },
                         body: new URLSearchParams({
                             orderID: data.orderID,
-                            tour_id: '<?php echo $tour_id; ?>',
-                            pax: '<?php echo $pax; ?>',
+                            tour_id: document.getElementById('tour_id').value,
+                            pax: document.getElementById('pax').value,
                             schedule_id: document.getElementById('schedule_id').value,
                             total_amount: finalTotal.toFixed(2),
                             locpoints_id: document.querySelector('input[name="locpoints_id"]:checked').value,
