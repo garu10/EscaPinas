@@ -1,0 +1,62 @@
+.sms-table-card {
+    border: none;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.sms-table thead {
+    background-color: #f8f9fa;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.5px;
+}
+
+.sms-table tbody tr {
+    transition: background-color 0.2s ease;
+}
+
+.sms-table .font-monospace {
+    font-size: 0.85rem;
+    color: #6c757d;
+}
+
+/* Modal Enhancements */
+.modal-content.rounded-4 {
+    border-radius: 20px !important;
+}
+
+.modal-label {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: #adb5bd;
+    display: block;
+    margin-bottom: 2px;
+}
+
+.message-box {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    padding: 15px;
+    border-radius: 12px;
+    white-space: pre-wrap;
+    line-height: 1.5;
+    font-size: 0.95rem;
+    color: #212529;
+}
+
+/* Action Buttons */
+.btn-circle-custom {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: transform 0.2s;
+}
+
+.btn-circle-custom:hover {
+    transform: scale(1.1);
+}
