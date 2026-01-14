@@ -44,7 +44,7 @@ if (mysqli_num_rows($check_result) > 0) {
         echo json_encode(['status' => 'removed']);
     } else {
         http_response_code(500);
-        echo json_encode(['status' => 'error', 'message' => 'Delete failed']);
+        echo json_encode(['status' => 'error', 'message' => 'Delete failed: ' . mysqli_error($conn)]);
     }
 } else {
     // Add to wishlist
@@ -53,7 +53,7 @@ if (mysqli_num_rows($check_result) > 0) {
         echo json_encode(['status' => 'added']);
     } else {
         http_response_code(500);
-        echo json_encode(['status' => 'error', 'message' => 'Insert failed']);
+        echo json_encode(['status' => 'error', 'message' => 'Insert failed: ' . mysqli_error($conn)]);
     }
 }
 ?>

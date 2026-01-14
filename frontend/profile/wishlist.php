@@ -33,7 +33,12 @@ $wishlistResult = executeQuery($wishlistQuery);
                     </div>
 
                     <div class="card-body p-3">
-                        <h6 class="fw-bold text-dark mb-1 text-truncate"><?= htmlspecialchars($tour['tour_name']) ?></h6>
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <h6 class="fw-bold text-dark mb-1 text-truncate flex-grow-1"><?= htmlspecialchars($tour['tour_name']) ?></h6>
+                            <button class="btn btn-sm btn-outline-danger ms-2" onclick="removeFromWishlist(<?= $tour['tour_id'] ?>)">
+                                <i class="bi bi-x-lg"></i>
+                            </button>
+                        </div>
                         <p class="text-muted small mb-2">
                             <i class="bi bi-clock me-1"></i><?= $tour['duration_days'] ?>D/<?= $tour['duration_nights'] ?>N
                         </p>
@@ -55,9 +60,29 @@ $wishlistResult = executeQuery($wishlistQuery);
 </div>
 
 <script>
-function removeFromWishlist(wishlistId) {
+function removeFromWishlist(tourId) {
     if(confirm('Remove this item from your wishlist?')) {
-        window.location.href = `../backend/remove_wishlist.php?id=${wishlistId}`;
+        fetch('/EscaPinas/frontend/api/toggle_wishlist.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: `tour_id=${tourId}`
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Wishlist remove response:', data);
+            if (data.status === 'removed') {
+                // Reload the page to show updated wishlist
+                location.reload();
+            } else {
+                alert('Error: ' + (data.message || 'Failed to remove from wishlist') + ' (Status: ' + data.status + ')');
+            }
+        })
+        .catch(err => {
+            console.error('Error:', err);
+            alert('Failed to remove from wishlist');
+        });
     }
 }
 </script>
