@@ -69,7 +69,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     <input type="text" class="form-control" placeholder="Username" name="user_name" required>
                                 </div>
                                 <div class="mb-3"><input type="email" class="form-control" placeholder="Email Address" name="email" required></div>
-                                <div class="row g-2 mb-3">
+                                <div class="row g-2 mb-2">
                                     <div class="col-md-12"><input type="password" class="form-control" placeholder="Password (min 8 character)" name="password" minlength="8" required></div>
                                     <div class="col-md-12"><input type="password" class="form-control" placeholder="Confirm Password" name="confirm_password" minlength="8" required></div>
                                 </div>
@@ -109,9 +109,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="modals/passwordMismatch.js"></script>
-    <script src="modals/emailExists.js"></script>
-    <script src="modals/emailExistsbook.js"></script>
+    <script src="../frontend/assets/js/passwordMismatch.js"></script>
+    <script src="../frontend/assets/js/emailExists.js"></script>
+    <script src="../frontend/assets/js/emailExistsbook.js"></script>
     <script src="assets/js/register.js"></script>
     <script>
         <?php if ($showVerificationModal): ?>

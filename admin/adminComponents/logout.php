@@ -15,6 +15,6 @@ if (ini_get("session.use_cookies")) {
 session_destroy();
 
 //redirect after log out
-header("Location: ../../frontend/login.php");
+header("Location: ../adminLogin.php");
 exit();
 ?>
