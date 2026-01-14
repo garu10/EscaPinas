@@ -25,7 +25,7 @@ $css = "../admin/assets/css/adminProfile.css";
 <body>
     <?php include 'adminComponents/adminNav.php'; ?>
 
-    <div class="container my-5">
+    <div class="container-fluid my-5">
         <div class="row g-4">
             <div class="col-md-3">
                 <div class="account-sidebar shadow-sm">

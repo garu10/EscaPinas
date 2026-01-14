@@ -1,6 +1,13 @@
 <?php
 session_start();
 include("backend/packageViewSelect.php");
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Wishlist functionality is now handled via API
+    http_response_code(405);
+    echo json_encode(['status' => 'error', 'message' => 'Use the API endpoint for wishlist operations']);
+    exit;
+}
 ?>
 
 <!doctype html>
@@ -164,33 +171,7 @@ include("backend/packageViewSelect.php");
         </div>
     </div>
     <?php include "components/footer.php"; ?>
-    <script>
-        function toggleWishlist(btn, tourId) {
-            fetch('backend/handle_wishlist.php', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: `tour_id=${tourId}`
-            })
-            .then(response => {
-                if (!response.ok) throw new Error('Network response was not ok');
-                return response.json();
-            })
-            .then(data => {
-                console.log("Response from server:", data); // Check if this shows up
-                if (data.status === 'added') {
-                    btn.classList.replace('btn-outline-danger', 'btn-danger');
-                    btn.innerHTML = '<i class="bi bi-heart-fill me-2"></i> Added to Wishlist';
-                } else if (data.status === 'removed') {
-                    btn.classList.replace('btn-danger', 'btn-outline-danger');
-                    btn.innerHTML = '<i class="bi bi-heart me-2"></i> Add to Wishlist';
-                }
-            })
-            .catch(err => {
-                console.error('Wishlist Error:', err);
-                alert("Could not update wishlist. Check console for details.");
-            });
-        }
-    </script>
+    <script src="assets/js/packageView.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 </body>
 </html>

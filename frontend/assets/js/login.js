@@ -14,7 +14,7 @@ document.getElementById('loginForm').addEventListener('submit', function(e) {
     .then(response => response.json())
     .then(data => {
         if (data.status === 'success') {
-            window.location.href = 'packages.php';
+            window.location.href = '../index.php';
         } else {
             alert(data.message);
         }

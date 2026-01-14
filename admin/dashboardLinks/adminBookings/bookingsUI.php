@@ -17,9 +17,6 @@ $result = executeQuery($query);
                 <h4 class="fw-bold text-success mb-1">Booking Management</h4>
                 <p class="text-muted small mb-0">Monitor and update client reservation statuses.</p>
             </div>
-            <button class="btn btn-success rounded-pill px-4 shadow-sm btn-sm">
-                <i class="bi bi-download me-2"></i>Export List
-            </button>
         </div>
     </div>
 

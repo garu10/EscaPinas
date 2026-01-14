@@ -1,5 +1,6 @@
 <?php
 include_once __DIR__ . "/../php/connect.php";
+
 if (!isset($_SESSION['user_id'])) {
     header("Location: /EscaPinas/frontend/login.php");
     exit();
