@@ -6,7 +6,7 @@ include '../../php/connect.php';
 
 $query = "SELECT * FROM voucher_templates WHERE expires_at > NOW()";
 
-$result = mysqli_query($conn, $query);
+$result = executeQuery( $query);
 $vouchers = [];
 
 if ($result) {

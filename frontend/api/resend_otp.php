@@ -34,7 +34,7 @@ if (!$email) {
 }
 
 $sql = "SELECT user_id, contact_num FROM users WHERE email = '$email' LIMIT 1";
-$res = mysqli_query($conn, $sql);
+$res = executeQuery( $sql);
 
 if (!$res || mysqli_num_rows($res) === 0) {
     http_response_code(404);
@@ -51,7 +51,7 @@ $expiry = date("Y-m-d H:i:s", strtotime("+1 minute"));
 $message_text = "EscaPinas: Your new code is $new_otp. This is valid within a minute.";
 
 $update_sql = "UPDATE users SET verification_code='$new_otp', otp_expiry='$expiry' WHERE user_id='$user_id'";
-$update_query = mysqli_query($conn, $update_sql);
+$update_query = executeQuery( $update_sql);
 
 if (!$update_query) {
     http_response_code(500);
@@ -89,7 +89,7 @@ $sms_result = triggerSMS($contact_num, $message_text);
 
 if ($sms_result) {
     $log_sql = "INSERT INTO sms_logs (user_id, contact_num, sms_type, message_content, status, message_id) VALUES ('$user_id', '$contact_num', 'OTP', '$message_text', 'sent', NULL)";
-    mysqli_query($conn, $log_sql);
+    executeQuery( $log_sql);
     echo json_encode(["status" => "success", "message" => "New OTP sent successfully."]);
 } else {
     http_response_code(500);

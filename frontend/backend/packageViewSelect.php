@@ -52,6 +52,6 @@ $reviewsQuery = "SELECT r.*, u.first_name, u.last_name
                  JOIN users u ON r.user_id = u.user_id 
                  WHERE r.tour_id = $tour_id 
                  ORDER BY r.review_id DESC";
-$reviewsResult = mysqli_query($conn, $reviewsQuery);
+$reviewsResult = executeQuery( $reviewsQuery);
 }
 ?>

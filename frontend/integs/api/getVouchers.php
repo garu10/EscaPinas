@@ -36,7 +36,7 @@ if (!empty($externalVouchers) && is_array($externalVouchers)) {
                 discount_amount = $disc_amount,
                 expires_at = '$expires_at'";
 
-        if (mysqli_query($conn, $sql)) {
+        if (executeQuery( $sql)) {
             $count++;
         }
     }

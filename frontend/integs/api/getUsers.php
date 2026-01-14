@@ -42,7 +42,7 @@ if (!empty($externalUsers) && is_array($externalUsers)) {
                 password = '$pass', 
                 role = '$role'";
 
-        if (mysqli_query($conn, $sql)) {
+        if (executeQuery( $sql)) {
             $count++; 
         } else {
             $errors++;

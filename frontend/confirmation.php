@@ -14,7 +14,7 @@ if ($ref) {
             WHERE b.booking_reference = '$ref'
             LIMIT 1";
 
-    $result = mysqli_query($conn, $sql);
+    $result = executeQuery( $sql);
 
     if ($result && mysqli_num_rows($result) > 0) {
         $booking = mysqli_fetch_assoc($result);
@@ -32,7 +32,7 @@ if ($ref) {
 
                     if ($email_sent) {
                         $bid = $booking['booking_id'];
-                        mysqli_query($conn, "UPDATE bookings SET is_email_sent = 1 WHERE booking_id = $bid");
+                        executeQuery( "UPDATE bookings SET is_email_sent = 1 WHERE booking_id = $bid");
                     }
                 }
             }

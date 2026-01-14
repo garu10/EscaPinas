@@ -13,7 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $sql = "INSERT INTO ratings (user_id, tour_id, review_text, rating_score) 
                 VALUES ('$user_id', '$tour_id', '$review_text', '$rating_score')";
 
-        if (mysqli_query($conn, $sql)) {
+        if (executeQuery( $sql)) {
             header("Location: ../../profile.php?page=reviews&status=success");
             exit();
         } else {

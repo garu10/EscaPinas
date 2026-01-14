@@ -9,7 +9,7 @@ $searchQuery = "SELECT tour_packages.*, destinations.destination_name, regions.i
                 LEFT JOIN regions ON destinations.island_id = regions.island_id 
                 WHERE tour_packages.status = 'Available'
                 ORDER BY tour_packages.tour_name ASC";
-$searchResult = mysqli_query($conn, $searchQuery);
+$searchResult = executeQuery( $searchQuery);
 $allTours = [];
 while ($row = mysqli_fetch_assoc($searchResult)) {
     $allTours[] = $row;
@@ -21,7 +21,7 @@ $searchQuery = "SELECT tour_packages.*, destinations.destination_name, regions.i
                 LEFT JOIN regions ON destinations.island_id = regions.island_id 
                 WHERE tour_packages.status = 'Available'
                 ORDER BY tour_packages.tour_name ASC";
-$searchResult = mysqli_query($conn, $searchQuery);
+$searchResult = executeQuery( $searchQuery);
 $allTours = [];
 if ($searchResult) {
     while ($row = mysqli_fetch_assoc($searchResult)) {
@@ -57,8 +57,8 @@ $reviewsQuery = "
     LIMIT 3
 ";
 
-$result = mysqli_query($conn, $query);
-$reviewsResult = mysqli_query($conn, $reviewsQuery);
+$result = executeQuery( $query);
+$reviewsResult = executeQuery( $reviewsQuery);
 
 if (!$result) { die("Tour query error: " . mysqli_error($conn)); }
 if (!$reviewsResult) { die("Review query error: " . mysqli_error($conn)); }

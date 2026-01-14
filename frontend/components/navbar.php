@@ -7,7 +7,7 @@
     if ($isLoggedIn) {
         $uid = $_SESSION['user_id'];
         $userQuery = "SELECT first_name, last_name FROM users WHERE user_id = $uid";
-        $userResult = mysqli_query($conn, $userQuery);
+        $userResult = executeQuery( $userQuery);
         if ($userData = mysqli_fetch_assoc($userResult)) {
             $userName = $userData['first_name'] . " " . $userData['last_name'];
         }

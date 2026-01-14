@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['voucher_id']) && isset
 
     // check if the user has already claimed this voucher template
     $check_query = "SELECT claim_id FROM user_vouchers WHERE user_id = '$user_id' AND voucher_id = '$voucher_id'";
-    $check_result = mysqli_query($conn, $check_query);
+    $check_result = executeQuery( $check_query);
 
     if (mysqli_num_rows($check_result) > 0) {
         echo "already_claimed";

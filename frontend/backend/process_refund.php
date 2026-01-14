@@ -22,7 +22,7 @@ if (!isset($conn)) {
 
 $pid = mysqli_real_escape_string($conn, $pid);
 $query = "SELECT amount, booking_id FROM payments WHERE payment_id = '$pid' AND user_id = '$uid' AND payment_status = 'COMPLETED'";
-$res = mysqli_query($conn, $query);
+$res = executeQuery( $query);
 
 if (!$res) {
     echo json_encode(['status' => 'error', 'message' => 'Query Failed: ' . mysqli_error($conn)]);
@@ -39,14 +39,14 @@ if ($payment) {
 // mga binago ko (ralph)
     try {
         // 1. Mark payment as refunded
-        mysqli_query($conn, "UPDATE payments SET payment_status = 'REFUNDED' WHERE payment_id = '$pid'");
+        executeQuery( "UPDATE payments SET payment_status = 'REFUNDED' WHERE payment_id = '$pid'");
         
         // 2. Cancel the booking
-        mysqli_query($conn, "UPDATE bookings SET booking_status = 'Cancelled' WHERE booking_id = '$bid'");
+        executeQuery( "UPDATE bookings SET booking_status = 'Cancelled' WHERE booking_id = '$bid'");
 
         // 3. Get the LATEST balance for this user to calculate the new running balance
         $currentBalanceQuery = "SELECT running_balance FROM refund_wallet WHERE user_id = '$uid' ORDER BY updated_at DESC LIMIT 1";
-        $balanceRes = mysqli_query($conn, $currentBalanceQuery);
+        $balanceRes = executeQuery( $currentBalanceQuery);
         $row = mysqli_fetch_assoc($balanceRes);
         $oldBalance = $row ? $row['running_balance'] : 0;
         $newBalance = $oldBalance + $amount;
@@ -57,7 +57,7 @@ if ($payment) {
         $walletQuery = "INSERT INTO refund_wallet (user_id, amount, type, description, running_balance) 
                         VALUES ('$uid', '$amount', 'Refund', '$description', '$newBalance')";
 // mga binago ko (ralph)
-        if (!mysqli_query($conn, $walletQuery)) {
+        if (!executeQuery( $walletQuery)) {
             throw new Exception("Wallet Update Failed: " . mysqli_error($conn));
         }
 

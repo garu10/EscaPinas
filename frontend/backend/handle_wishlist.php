@@ -33,12 +33,12 @@ if ($tid <= 0) {
 
 // chinecheck dine if existing na yung tour dun sa wishlist
 $check_query = "SELECT * FROM wishlist WHERE user_id = $uid AND tour_id = $tid";
-$check_result = mysqli_query($conn, $check_query);
+$check_result = executeQuery( $check_query);
 
 if (mysqli_num_rows($check_result) > 0) {
     // delete query para maremove sa wishlist yung tour if nage-exists na
     $delete = "DELETE FROM wishlist WHERE user_id = $uid AND tour_id = $tid";
-    if (mysqli_query($conn, $delete)) {
+    if (executeQuery( $delete)) {
         echo json_encode(['status' => 'removed']);
     } else {
         echo json_encode(['status' => 'error', 'message' => 'Delete failed']);
@@ -46,7 +46,7 @@ if (mysqli_num_rows($check_result) > 0) {
 } else {
     // insert query para maadd sa wishlist yung tour
     $insert = "INSERT INTO wishlist (user_id, tour_id) VALUES ($uid, $tid)";
-    if (mysqli_query($conn, $insert)) {
+    if (executeQuery( $insert)) {
         echo json_encode(['status' => 'added']);
     } else {
         echo json_encode(['status' => 'error', 'message' => 'Insert failed']);
