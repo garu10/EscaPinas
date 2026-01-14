@@ -1,4 +1,7 @@
-<?php include 'adminComponents/head.php'; ?>
+<?php 
+$title = "| Email Management";
+include 'adminComponents/head.php';
+?>
 
 <body>
     <?php include 'adminComponents/adminNav.php'; ?>
