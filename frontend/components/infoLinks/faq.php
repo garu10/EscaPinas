@@ -55,7 +55,7 @@ session_start(); ?>
                     </h2>
                     <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
                         <div class="accordion-body">
-                            EscaPinas operates under a strict <strong>No-Cancellation</strong> and <strong>No-Refund policy</strong>. Once a booking is confirmed and payment is processed, all slots are considered final and non-refundable. However, you can contact the EscaPinas through our email or number to discuss possible rescheduling options.
+                            Clients can cancel their booking and will automatically receive a full refund of the payment. Once the cancellation is confirmed in your dashboard, the EscaPinas processes the reversal immediately.
                         </div>
                     </div>
                 </div>

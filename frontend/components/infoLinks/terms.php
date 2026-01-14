@@ -44,7 +44,7 @@ session_start(); ?>
                     <div class="term-card">
                         <i class="bi bi-clock-history term-icon"></i>
                         <h4>4. Cancellation & Refunds</h4>
-                        <p>EscaPinas maintains a strict No-Cancellation and No-Refund policy. Once a booking is confirmed and payment is processed, all slots are considered final.</p>
+                        <p>Clients can cancel their booking and will automatically receive a full refund of the payment. Once the cancellation is confirmed in your dashboard, the system processes the reversal immediately.</p>
                     </div>
                 </div>
 

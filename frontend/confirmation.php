@@ -19,8 +19,6 @@ if ($ref) {
     if ($result && mysqli_num_rows($result) > 0) {
         $booking = mysqli_fetch_assoc($result);
 
-        // --- EMAIL GATEKEEPER ---
-        // Only send if the database says it hasn't been sent yet
         if ($booking['is_email_sent'] == 0) {
             $email_script = __DIR__ . "/integs/email/sendEmail.php";
             if (file_exists($email_script)) {
@@ -64,7 +62,7 @@ if ($ref) {
 <div class="container my-5 text-center">
 
     <?php if ($booking): ?>
-        <div class="card shadow-lg border-0 p-4 mx-auto conf-card">
+        <div class="card shadow-lg border-0 p-4 mx-auto conf-car" style="max-width: 500px; border-top: 30px solid #198754 !important; border-radius: 15px;">
             <i class="fas fa-check-circle fa-5x text-success mb-3"></i>
             <h3 class="fw-bold">Booking Confirmed!</h3>
             <p class="text-muted">Thank you for booking with EscaPinas.</p>
@@ -86,7 +84,7 @@ if ($ref) {
                 </p>
             </div>
 
-            <a href="profile.php?tab=bookings" class="btn btn-success rounded-pill w-100">
+            <a href="profile.php?page=booking" class="btn btn-success rounded-pill w-100">
                 View My Bookings
             </a>
         </div>
