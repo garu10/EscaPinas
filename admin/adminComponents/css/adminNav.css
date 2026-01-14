@@ -41,3 +41,28 @@
     transform: rotate(-10deg);
     transition: 0.3s;
 }
+
+/* Styling for the nav container */
+.admin-nav-container {
+    z-index: 1050;
+    background-color: #ffffff;
+}
+
+/* Modal specific tweaks without animations */
+#logoutConfirmModal .modal-content {
+    border: none;
+}
+
+#logoutConfirmModal .btn-danger {
+    background-color: #dc3545;
+    border: none;
+}
+
+#logoutConfirmModal .btn-danger:hover {
+    background-color: #bb2d3b;
+}
+
+#logoutConfirmModal .btn-light {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+}

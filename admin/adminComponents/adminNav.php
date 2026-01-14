@@ -24,7 +24,7 @@
                 </div>
 
                 <div class="ms-4 border-start ps-4">
-                    <a href="javascript:void(0)" onclick="confirmLogout()" class="nav-link-item logout-item text-danger fw-bold">
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#logoutConfirmModal" class="nav-link-item logout-item text-danger fw-bold">
                         <i class="fas fa-sign-out-alt me-1"></i> <span>Logout</span>
                     </a>
                 </div>
@@ -32,10 +32,33 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="logoutConfirmModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow rounded-4">
 
+            <div class="modal-body text-center p-5">
+                <div class="text-danger mb-4">
+                    <i class="fas fa-door-open fa-3x"></i>
+                </div>
+
+                <h3 class="fw-bold text-dark">Leaving so soon?</h3>
+                <p class="text-muted mb-4">Are you sure you want to log out? You will need to login again to manage EscaPinas.</p>
+
+                <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                    <button type="button" class="btn btn-light px-4 py-2 fw-semibold" data-bs-dismiss="modal">
+                        Cancel
+                    </button>
+                    <a href="adminComponents/logout.php" class="btn btn-danger px-4 py-2 fw-semibold">
+                        Yes, Log me out
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
 <script>
     function showLoadingToast() {
-        // You can replace this with a real Toast notification
         console.log("Connecting to Mail Server...");
     }
 
