@@ -18,11 +18,11 @@ function formatPhone($number)
 function checkEmailInBookStack($email)
 {
     $api_url = BOOKSTACK_API_USERS;
-    
+
     // BookStack API requires admin credentials for authentication
     $admin_username = "Hiro Setsuya";   // BookStack admin username
     $admin_password = "Adrian1#";       // BookStack admin password
-    
+
     try {
         // Create a stream context with Basic Auth using base64_encode
         $context = stream_context_create([
@@ -30,36 +30,36 @@ function checkEmailInBookStack($email)
                 "header" => "Authorization: Basic " . base64_encode("$admin_username:$admin_password")
             ]
         ]);
-        
+
         // Fetch the JSON data from the API
         $response = @file_get_contents($api_url, false, $context);
-        
+
         if ($response === false) {
             return false; // API failed, allow registration
         }
-        
+
         if (empty($response)) {
             return false;
         }
-        
+
         // Decode JSON to PHP array
         $data = json_decode($response, true);
-        
+
         if (!is_array($data)) {
             return false;
         }
-        
+
         // Check if email exists in the response
         // Handle single user object
         if (isset($data['user_id'])) {
             if ($data['email'] === $email) {
                 return true; // Email found in BookStack
             }
-        } 
+        }
         // Handle array of users
         elseif (is_array($data) && count($data) > 0) {
             $first_key = array_key_first($data);
-            
+
             if (isset($data[$first_key]['user_id'])) {
                 // Array of user objects
                 foreach ($data as $user) {
@@ -69,7 +69,7 @@ function checkEmailInBookStack($email)
                 }
             }
         }
-        
+
         return false; // Email not found in BookStack
     } catch (Exception $e) {
         error_log("BookStack API Exception: " . $e->getMessage());
@@ -96,7 +96,7 @@ function sendSMS($to, $msg)
         error_log("SMS Error: " . curl_error($ch));
     }
     curl_close($ch);
-    return $result; 
+    return $result;
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -111,10 +111,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = $_POST['password'];
     $confirm_password = $_POST['confirm_password'];
 
-    if ($password !== $confirm_password) {
-        echo "<script>alert('Error: Passwords do not match.'); window.history.back();</script>";
-        exit();
-    }
 
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
     $otp_code = rand(100000, 999999);
@@ -123,23 +119,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Check if email exists in EscaPinas database
     $checkEmail = "SELECT email FROM users WHERE email = '$email' LIMIT 1";
-    $result = mysqli_query($conn, $checkEmail);
+    $result =executeQuery($checkEmail);
 
     if ($result && mysqli_num_rows($result) > 0) {
-        echo "<script>alert('Email already exists in EscaPinas!'); window.history.back();</script>";
-    } 
+        // Redirects back to register.php with an error flag in the URL
+        header("Location: registerAccount.php?error=email_exists");
+        exit();
+    }
     // Check if email exists in BookStack API
     elseif (checkEmailInBookStack($email)) {
-        echo "<script>alert('Email already exists in BookStack! Please use a different email.'); window.history.back();</script>";
-    } 
-    else {
+        header("Location: registerAccount.php?error=emailBook_exists");
+    } else {
         $insertUser = "INSERT INTO users (first_name, last_name, middle_initial, contact_num, province, city, username, email, password, role, is_verified, verification_code, otp_expiry) 
                        VALUES ('$fname', '$last_name', '$middle_initial', '$contact_num', '$province', '$city','$user_name', '$email', '$hashed_password', 'user', 0, '$otp_code', '$expiry_time')";
 
-        if (mysqli_query($conn, $insertUser)) {
+        if (executeQuery($insertUser)) {
             $new_user_id = mysqli_insert_id($conn);
             $message_content = "EscaPinas: Ang iyong code ay $otp_code. Valid ito sa loob ng 1 minuto.";
-            
+
             $smsResponse = sendSMS($contact_num, $message_content);
             $responseData = json_decode($smsResponse, true);
             $api_message_id = isset($responseData['id']) ? $responseData['id'] : null;
@@ -147,8 +144,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $logStatus = $api_message_id ? 'sent' : 'failed';
             $insertLog = "INSERT INTO sms_logs (user_id, contact_num, sms_type, message_content, status, message_id) 
                           VALUES ('$new_user_id', '$contact_num', 'OTP', '$message_content', '$logStatus', '$api_message_id')";
-            
-            mysqli_query($conn, $insertLog);
+
+           executeQuery($insertLog);
 
             header("Location: registerAccount.php?verify=true&email=" . urlencode($email));
             exit();
@@ -244,125 +241,132 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
+    <script src="../frontend/modals/passwordMismatch.js"></script>
+    <script src="../frontend/modals/emailExists.js"></script>
+    <script src="../frontend/modals/emailBookExists.js"></script>
     <script>
-    let countdown;
+        let countdown;
 
-    function startCountdown(duration, display) {
-        let timer = duration, minutes, seconds;
-        clearInterval(countdown);
-        countdown = setInterval(function() {
-            minutes = parseInt(timer / 60, 10);
-            seconds = parseInt(timer % 60, 10);
-            display.textContent = (minutes < 10 ? "0" : "") + minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
-            if (--timer < 0) {
-                clearInterval(countdown);
-                document.getElementById('btnVerify').disabled = true;
-                document.getElementById('otp_input').disabled = true;
-                document.getElementById('resendContainer').style.display = 'block';
-            }
-        }, 1000);
-    }
-
-    function resendOTP() {
-        let emailInput = document.getElementById('resendEmail');
-        let email = emailInput.value;
-
-        if (!email) {
-            alert("Email not found. Please refresh the page.");
-            return;
+        function startCountdown(duration, display) {
+            let timer = duration,
+                minutes, seconds;
+            clearInterval(countdown);
+            countdown = setInterval(function() {
+                minutes = parseInt(timer / 60, 10);
+                seconds = parseInt(timer % 60, 10);
+                display.textContent = (minutes < 10 ? "0" : "") + minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
+                if (--timer < 0) {
+                    clearInterval(countdown);
+                    document.getElementById('btnVerify').disabled = true;
+                    document.getElementById('otp_input').disabled = true;
+                    document.getElementById('resendContainer').style.display = 'block';
+                }
+            }, 1000);
         }
 
-        const resendBtn = document.querySelector('#resendContainer button');
-        resendBtn.disabled = true;
-        resendBtn.innerText = "Sending...";
+        function resendOTP() {
+            let emailInput = document.getElementById('resendEmail');
+            let email = emailInput.value;
 
-        fetch('integs/sms/resend_logic.php', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: 'email=' + encodeURIComponent(email)
-        })
-        .then(async response => {
-            const text = await response.text(); 
-            try {
-                if (!response.ok) throw new Error(`Server Error: ${response.status}`);
-                return JSON.parse(text);
-            } catch (err) {
-                console.error("Raw Response:", text);
-                throw new Error("Ang server ay nagbigay ng invalid response. I-check ang Network Tab.");
+            if (!email) {
+                alert("Email not found. Please refresh the page.");
+                return;
             }
-        })
-        .then(data => {
-            if (data.status === 'success') {
-                alert('Bagong code ang ipinadala!');
-                document.getElementById('btnVerify').disabled = false;
-                document.getElementById('otp_input').disabled = false;
-                document.getElementById('otp_input').value = '';
-                document.getElementById('resendContainer').style.display = 'none';
 
-                clearInterval(countdown);
-                startCountdown(60, document.querySelector('#timer'));
-            } else {
-                alert('Error: ' + data.message);
-            }
-        })
-        .catch(err => {
-            console.error(err);
-            alert("Connection Error: " + err.message);
-        })
-        .finally(() => {
-            resendBtn.disabled = false;
-            resendBtn.innerText = "RESEND NEW CODE";
-        });
-    }
+            const resendBtn = document.querySelector('#resendContainer button');
+            resendBtn.disabled = true;
+            resendBtn.innerText = "Sending...";
 
-    document.getElementById('otpForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        const email = document.getElementById('resendEmail').value;
-        const otp = document.getElementById('otp_input').value;
+            fetch('integs/sms/resend_logic.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: 'email=' + encodeURIComponent(email)
+                })
+                .then(async response => {
+                    const text = await response.text();
+                    try {
+                        if (!response.ok) throw new Error(`Server Error: ${response.status}`);
+                        return JSON.parse(text);
+                    } catch (err) {
+                        console.error("Raw Response:", text);
+                        throw new Error("Ang server ay nagbigay ng invalid response. I-check ang Network Tab.");
+                    }
+                })
+                .then(data => {
+                    if (data.status === 'success') {
+                        alert('Bagong code ang ipinadala!');
+                        document.getElementById('btnVerify').disabled = false;
+                        document.getElementById('otp_input').disabled = false;
+                        document.getElementById('otp_input').value = '';
+                        document.getElementById('resendContainer').style.display = 'none';
 
-        if (!otp) {
-            alert("Pakilagay ang OTP code.");
-            return;
+                        clearInterval(countdown);
+                        startCountdown(60, document.querySelector('#timer'));
+                    } else {
+                        alert('Error: ' + data.message);
+                    }
+                })
+                .catch(err => {
+                    console.error(err);
+                    alert("Connection Error: " + err.message);
+                })
+                .finally(() => {
+                    resendBtn.disabled = false;
+                    resendBtn.innerText = "RESEND NEW CODE";
+                });
         }
 
-        fetch('integs/sms/verify_otp.php', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-           body: `email=${encodeURIComponent(email)}&otp_input=${encodeURIComponent(otp)}`
-        })
-        .then(async response => {
-            const text = await response.text();
-            try {
-                if (!response.ok) throw new Error(`Server Error: ${response.status}`);
-                return JSON.parse(text);
-            } catch (err) {
-                console.error("Raw Response:", text);
-                throw new Error("Invalid response mula sa server.");
-            }
-        })
-        .then(data => {
-            if (data.status === 'success') {
-                alert(data.message);
-                window.location.href = 'login.php';
-            } else {
-                alert(data.message);
-            }
-        })
-        .catch(err => {
-            console.error(err);
-            alert("Verification Error: " + err.message);
-        });
-    });
+        document.getElementById('otpForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('resendEmail').value;
+            const otp = document.getElementById('otp_input').value;
 
-    <?php if ($showVerificationModal): ?>
-        var myModal = new bootstrap.Modal(document.getElementById('successModal'), {
-            backdrop: 'static'
+            if (!otp) {
+                alert("Pakilagay ang OTP code.");
+                return;
+            }
+
+            fetch('integs/sms/verify_otp.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: `email=${encodeURIComponent(email)}&otp_input=${encodeURIComponent(otp)}`
+                })
+                .then(async response => {
+                    const text = await response.text();
+                    try {
+                        if (!response.ok) throw new Error(`Server Error: ${response.status}`);
+                        return JSON.parse(text);
+                    } catch (err) {
+                        console.error("Raw Response:", text);
+                        throw new Error("Invalid response mula sa server.");
+                    }
+                })
+                .then(data => {
+                    if (data.status === 'success') {
+                        alert(data.message);
+                        window.location.href = 'login.php';
+                    } else {
+                        alert(data.message);
+                    }
+                })
+                .catch(err => {
+                    console.error(err);
+                    alert("Verification Error: " + err.message);
+                });
         });
-        myModal.show();
-        startCountdown(60, document.querySelector('#timer'));
-    <?php endif; ?>
-</script>
+
+        <?php if ($showVerificationModal): ?>
+            var myModal = new bootstrap.Modal(document.getElementById('successModal'), {
+                backdrop: 'static'
+            });
+            myModal.show();
+            startCountdown(60, document.querySelector('#timer'));
+        <?php endif; ?>
+    </script>
 </body>
 
 </html>
