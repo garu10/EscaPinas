@@ -1,8 +1,17 @@
 <?php
 session_start();
+//para ito sa no caching ng page at back button after logout
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
+if (!isset($_SESSION['role']) || strtolower($_SESSION['role']) !== 'admin') {
+    header("Location: ../login.php");
+    exit();
+}
 include_once("../frontend/php/connect.php");
 
 
+$title = "Admin Dashboard - EscaPinas Tour & Travel";
 // Temporary placeholders (mapapaltan base sa DB data)
 $profileImage = $_SESSION['profile_image'] ?? "assets/images/logo2.jpg";
 $userName = $_SESSION['username'] ?? "EscaPinas";
@@ -20,8 +29,7 @@ $css = "../admin/assets/css/adminProfile.css";
         <div class="row g-4">
             <div class="col-md-3">
                 <div class="account-sidebar shadow-sm">
-                    <h4 class="profile-name"><?= $userName; ?></h4>
-                    <a href="profile.php?page=personal" class="text-center d-block text-decoration-none text-dark small">Update personal info</a>
+                    <div class="h3 profile-name"><?= $userName; ?></div>
 
                     <div class="sidebar-links">
                         <a href="adminDashboard.php?page=adminSMS" class="fw-bold text-success">SMS</a>
@@ -120,6 +128,19 @@ $css = "../admin/assets/css/adminProfile.css";
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
         crossorigin="anonymous"></script>
+    <script>
+        // prevent users from going back to the previous page after logout
+        if (window.history.replaceState) {
+            window.history.replaceState(null, null, window.location.href);
+        }
+
+        window.onpageshow = function(event) {
+            if (event.persisted) {
+                // if page cache is used, reload the page
+                window.location.reload();
+            }
+        };
+    </script>
 </body>
 
 </html>

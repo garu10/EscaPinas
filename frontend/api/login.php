@@ -95,7 +95,7 @@ if (empty($identifier) || empty($password)) {
 
 // First, check if user exists in EscaPinas database
 $get_user = "SELECT * FROM users WHERE email = '$identifier' OR username = '$identifier' LIMIT 1";
-$result = mysqli_query($conn, $get_user);
+$result = executeQuery( $get_user);
 
 $user_found = false;
 $user_data = null;
@@ -150,14 +150,14 @@ $role = $user_data['role'] ?? 'user';
 
 // If from BookStack, sync to EscaPinas database
 $check_user = "SELECT user_id FROM users WHERE email = '$email' LIMIT 1";
-$check_result = mysqli_query($conn, $check_user);
+$check_result = executeQuery( $check_user);
 
 if ($check_result && mysqli_num_rows($check_result) > 0) {
     $existing_user = mysqli_fetch_assoc($check_result);
     $_SESSION['user_id'] = $existing_user['user_id'];
 } else {
     $insert_query = "INSERT INTO users (username, email, contact_num, role, password, is_verified) VALUES ('$user_name', '$email', '$phone_number', '$role', '$password_hash', '$is_verified')";
-    if (mysqli_query($conn, $insert_query)) {
+    if (executeQuery( $insert_query)) {
         $_SESSION['user_id'] = mysqli_insert_id($conn);
     } else {
         http_response_code(500);
