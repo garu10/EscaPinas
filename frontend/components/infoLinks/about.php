@@ -122,7 +122,7 @@ session_start(); ?>
                          class="img-fluid brand-logo-img partner-logo-small">
                 </div>
                 <div class="d-flex justify-content-center">
-                    <a href="#" class="btn btn-outline-success rounded-pill px-5 py-2 fw-semibold">Learn More</a>
+                    <a href="http://10.180.181.43:8080/BookStack/index.php" class="btn btn-outline-success rounded-pill px-5 py-2 fw-semibold">Learn More</a>
                 </div>
             </div>
         </div>

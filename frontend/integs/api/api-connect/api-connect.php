@@ -6,7 +6,7 @@
  */
 
 // BookStack Base URL
-define('BOOKSTACK_BASE_URL', 'http://192.168.1.16:8080');
+define('BOOKSTACK_BASE_URL', 'http://10.180.181.43:8080');
 define('BOOKSTACK_API_PATH', '/BookStack/api');
 
 // EscaPinas API Endpoints

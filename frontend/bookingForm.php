@@ -205,13 +205,13 @@ $inclusions = executeQuery("SELECT * FROM tour_inclusions WHERE tour_id = $tour_
                                 ?>
                                     <div class="form-check">
                                         <input
-                                            class="form-check-input"
+                                            class="form-check-input region-radio"
                                             type="radio"
                                             name="client_region_radio"
                                             id="<?= $regId ?>"
                                             value="<?= $reg ?>"
                                             <?= ($client_region === $reg) ? 'checked' : '' ?>
-                                            onclick="setRegionAndSubmit('<?= $reg ?>')">
+                                            onchange="loadLocationPoints('<?= $reg ?>')">
                                         <label class="form-check-label small" for="<?= $regId ?>">
                                             <?= $reg ?>
                                         </label>
@@ -240,36 +240,8 @@ $inclusions = executeQuery("SELECT * FROM tour_inclusions WHERE tour_id = $tour_
                             <label class="form-label small fw-bold">
                                 Pickup / Dropoff Point
                             </label>
-                            <div class="border rounded-3 p-3 bg-light">
-                                <?php
-                                if (!empty($client_region)) {
-                                    $locQ = ($airfare_fee > 0)
-                                        ? "SELECT * FROM location_points WHERE origin_island='Tours Requiring AirTravel'"
-                                        : "SELECT * FROM location_points WHERE origin_island='$client_region'";
-
-                                    $lRes = executeQuery($locQ);
-
-                                    while ($l = $lRes->fetch_assoc()) {
-                                        $locId = "loc_" . $l['locpoints_id'];
-                                        echo "
-                                <div class='form-check mb-2'>
-                                    <input
-                                        class='form-check-input'
-                                        type='radio'
-                                        name='locpoints_id'
-                                        id='$locId'
-                                        value='{$l['locpoints_id']}'
-                                        required
-                                    >
-                                    <label class='form-check-label small' for='$locId'>
-                                        " . htmlspecialchars($l['pickup_points']) . "
-                                    </label>
-                                </div>";
-                                    }
-                                } else {
-                                    echo "<small class='text-muted'>Select region first.</small>";
-                                }
-                                ?>
+                            <div class="border rounded-3 p-3 bg-light" id="locationPointsContainer">
+                                <small class='text-muted'>Select region first.</small>
                             </div>
                         </div>
 
@@ -437,6 +409,58 @@ $inclusions = executeQuery("SELECT * FROM tour_inclusions WHERE tour_id = $tour_
         const vouchersMap = <?php echo json_encode($js_voucher_list); ?>;
         const baseTotalVal = parseFloat("<?php echo $total; ?>");
         let finalTotal = baseTotalVal; // Ito ang gagamitin ng PayPal
+
+        // Load location points dynamically when region is selected
+        function loadLocationPoints(region) {
+            const container = document.getElementById('locationPointsContainer');
+            const airfareFee = <?php echo $airfare_fee; ?>;
+            
+            // Prepare the query
+            let query = '';
+            if (airfareFee > 0) {
+                query = "Tours Requiring AirTravel";
+            } else {
+                query = region;
+            }
+            
+            // Fetch location points via AJAX
+            fetch('api/get_location_points.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: 'region=' + encodeURIComponent(query)
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success && data.locations.length > 0) {
+                    let html = '';
+                    data.locations.forEach(loc => {
+                        html += `
+                            <div class='form-check mb-2'>
+                                <input
+                                    class='form-check-input'
+                                    type='radio'
+                                    name='locpoints_id'
+                                    id='loc_${loc.locpoints_id}'
+                                    value='${loc.locpoints_id}'
+                                    required
+                                >
+                                <label class='form-check-label small' for='loc_${loc.locpoints_id}'>
+                                    ${loc.pickup_points}
+                                </label>
+                            </div>`;
+                    });
+                    container.innerHTML = html;
+                } else {
+                    container.innerHTML = "<small class='text-muted'>No location points available for this region.</small>";
+                }
+            })
+            .catch(err => {
+                console.error('Error loading locations:', err);
+                container.innerHTML = "<small class='text-danger'>Error loading locations.</small>";
+            });
+        }
 
         function changePax(delta) {
             const paxInput = document.getElementById('pax');
